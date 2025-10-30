@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sakina/cubits/HomeCubit/home_cubit.dart';
 import 'package:sakina/helpers/constants/colors.dart';
 import 'package:sakina/helpers/constants/fonts.dart';
 import 'package:sakina/widgets/custom_item_surah.dart';
 import 'package:sakina/widgets/custom_item_ayah.dart';
 
-class DisplaySurahPage extends StatelessWidget {
+class DisplaySurahPage extends StatefulWidget {
   final CustomItemSurah surah;
   final CustomItemSurah surahEnglish;
   const DisplaySurahPage({
@@ -18,6 +22,13 @@ class DisplaySurahPage extends StatelessWidget {
   static const String pageRoute = 'desplaySurahPage';
 
   @override
+  State<DisplaySurahPage> createState() => _DisplaySurahPageState();
+}
+
+class _DisplaySurahPageState extends State<DisplaySurahPage> {
+  ScrollController controller = ScrollController();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -25,7 +36,7 @@ class DisplaySurahPage extends StatelessWidget {
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
         title: Text(
-          surah.name,
+          widget.surah.name,
           style: TextStyle(
             fontFamily: poppins,
             fontWeight: FontWeight.bold,
@@ -71,7 +82,7 @@ class DisplaySurahPage extends StatelessWidget {
                       height: 25,
                     ),
                     Text(
-                      surah.name,
+                      widget.surah.name,
                       style: TextStyle(
                         fontFamily: poppins,
                         fontWeight: FontWeight.normal,
@@ -81,7 +92,7 @@ class DisplaySurahPage extends StatelessWidget {
                     ),
                     Gap(10),
                     Text(
-                      surah.englishName,
+                      widget.surah.englishName,
                       style: TextStyle(
                         fontFamily: poppins,
                         fontWeight: FontWeight.normal,
@@ -103,7 +114,7 @@ class DisplaySurahPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          surah.revelationType.toUpperCase(),
+                          widget.surah.revelationType.toUpperCase(),
                           style: TextStyle(
                             fontFamily: poppins,
                             color: Colors.white,
@@ -122,7 +133,7 @@ class DisplaySurahPage extends StatelessWidget {
                         ),
                         Gap(4),
                         Text(
-                          '${surah.ayahs.length} VERSES',
+                          '${widget.surah.ayahs.length} VERSES',
                           style: TextStyle(
                             fontFamily: poppins,
                             color: Colors.white,
@@ -139,20 +150,78 @@ class DisplaySurahPage extends StatelessWidget {
             ),
             Gap(30),
             Expanded(
-              child: ListView.builder(
-                itemCount: surah.ayahs.length,
-                itemBuilder: (context, index) {
-                  return CustomItemAyah(
-                    surah: surah,
-                    ayah: surah.ayahs[index],
-                    ayahEnglish: surahEnglish.ayahs[index],
-                  );
-                },
+              child: BodyOfSurah(
+                surah: widget.surah,
+                surahEnglish: widget.surahEnglish,
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class BodyOfSurah extends StatefulWidget {
+  final CustomItemSurah surah;
+  final CustomItemSurah surahEnglish;
+  const BodyOfSurah({
+    required this.surah,
+    required this.surahEnglish,
+    super.key,
+  });
+
+  @override
+  State<BodyOfSurah> createState() => _BodyOfSurahState();
+}
+
+class _BodyOfSurahState extends State<BodyOfSurah> {
+  late ScrollController scrollController;
+  Timer? debounced;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController = ScrollController(
+      initialScrollOffset: getOffset(widget.surah.name),
+    );
+    scrollController.addListener(onScroll);
+  }
+
+  double getOffset(String surahName) {
+    return context.read<HomeCubit>().getOffset(surahName);
+  }
+
+  void onScroll() {
+    debounced?.cancel();
+    debounced = Timer(Duration(milliseconds: 300), () {
+      context.read<HomeCubit>().saveOffset(
+        widget.surah.name,
+        scrollController.offset,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    debounced?.cancel();
+    scrollController.removeListener(onScroll);
+    scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      controller: scrollController,
+      itemCount: widget.surah.ayahs.length,
+      itemBuilder: (context, index) {
+        return CustomItemAyah(
+          surah: widget.surah,
+          ayah: widget.surah.ayahs[index],
+          ayahEnglish: widget.surahEnglish.ayahs[index],
+        );
+      },
     );
   }
 }

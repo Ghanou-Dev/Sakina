@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sakina/cubits/HomeCubit/home_cubit.dart';
 import 'package:sakina/helpers/constants/colors.dart';
 import 'package:sakina/pages/BottomBar/bookmark.dart';
 import 'package:sakina/pages/BottomBar/douaa.dart';
@@ -17,6 +19,17 @@ class BottomBarPage extends StatefulWidget {
 }
 
 class _BottomBarPageState extends State<BottomBarPage> {
+  Future<void> loadData() async {
+    await context.read<HomeCubit>().getAudioSuwars();
+    await context.read<HomeCubit>().getTaffsirOfAllSuwars();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
   int currentIndex = 0;
   List<Widget> pages = [
     HomePage(),
@@ -28,7 +41,11 @@ class _BottomBarPageState extends State<BottomBarPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[currentIndex],
+      // body: pages[currentIndex],
+      body: IndexedStack(
+        index: currentIndex,
+        children: pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (value) {

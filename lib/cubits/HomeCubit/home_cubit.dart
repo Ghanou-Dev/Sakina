@@ -3,7 +3,7 @@ import 'package:sakina/models/reciter_chikh_model.dart';
 import 'package:sakina/models/surah_model.dart';
 import 'package:sakina/cubits/HomeCubit/home_state.dart';
 import 'package:sakina/services/get_all_reciers.dart';
-import 'package:sakina/services/get_all_suwars.dart';
+import 'package:sakina/services/get_all_suwars_with_identifir.dart';
 import 'package:sakina/widgets/custom_item_surah.dart';
 import 'package:sakina/widgets/reciter_chikh_item.dart';
 
@@ -15,12 +15,13 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> getSuwars() async {
     emit(HomeLoading());
-    final List<SurahModel> listSuwars = await GetAllSuwars.suwars(
+    final List<SurahModel> listSuwars = await GetAllSuwarsWithIdentifir.call(
       identifir: 'ar.abdurrahmaansudais',
     );
-    final List<SurahModel> listSuwarsEnglish = await GetAllSuwars.suwars(
-      identifir: 'en.asad',
-    );
+    final List<SurahModel> listSuwarsEnglish =
+        await GetAllSuwarsWithIdentifir.call(
+          identifir: 'en.asad',
+        );
     suwars = listSuwars
         .map(
           (item) => CustomItemSurah(
@@ -46,9 +47,37 @@ class HomeCubit extends Cubit<HomeState> {
         )
         .toList();
     emit(
-      HomeLoadedSuwars(
+      HomeDataLoaded(
         customItemSuwars: suwars,
         customItemSuwarsEnglish: suwarsEnglish,
+        taffsirOffAllSuwars: [],
+      ),
+    );
+  }
+
+  // get taffsir of all suwars in quran
+  List<CustomItemSurah> taffsirOffAllSuwars = [];
+  Future<void> getTaffsirOfAllSuwars() async {
+    List<SurahModel> taffsirSuwars = await GetAllSuwarsWithIdentifir.call(
+      identifir: 'ar.muyassar',
+    );
+    taffsirOffAllSuwars = taffsirSuwars
+        .map(
+          (surah) => CustomItemSurah(
+            number: surah.number,
+            name: surah.name,
+            englishName: surah.englishName,
+            englishNameTranslation: surah.englishNameTranslation,
+            revelationType: surah.revelationType,
+            ayahs: surah.ayahs,
+          ),
+        )
+        .toList();
+    emit(
+      HomeDataLoaded(
+        customItemSuwars: suwars,
+        customItemSuwarsEnglish: suwarsEnglish,
+        taffsirOffAllSuwars: taffsirOffAllSuwars,
       ),
     );
   }
@@ -65,5 +94,16 @@ class HomeCubit extends Cubit<HomeState> {
         index: index,
       );
     }).toList();
+  }
+
+  // create map for saved scroll offset
+  Map<String, double> _savedScrollOffsets = {};
+
+  void saveOffset(String surahName, double offset) {
+    _savedScrollOffsets[surahName] = offset;
+  }
+
+  double getOffset(String surahName) {
+    return _savedScrollOffsets[surahName] ?? 0.0;
   }
 }

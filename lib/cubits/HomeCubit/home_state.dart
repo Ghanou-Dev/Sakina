@@ -6,13 +6,13 @@ class HomeInitial extends HomeState {}
 
 class HomeLoading extends HomeState {}
 
-class HomeLoadedSuwars extends HomeState {
+class HomeDataLoaded extends HomeState {
   final List<CustomItemSurah> customItemSuwars;
   final List<CustomItemSurah> customItemSuwarsEnglish;
-  HomeLoadedSuwars({
+  final List<CustomItemSurah> taffsirOffAllSuwars;
+  HomeDataLoaded({
     required this.customItemSuwars,
     required this.customItemSuwarsEnglish,
+    required this.taffsirOffAllSuwars,
   });
 }
-
-

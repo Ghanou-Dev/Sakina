@@ -1,7 +1,7 @@
 import 'package:sakina/helpers/api.dart';
 import 'package:sakina/models/chikh_model.dart';
 
-class GetAllAvaliableDataService {
+class GetAllAvaliableArabicQuranDataService {
   // get all availabel data
   static Future<List<ChikhModel>> getAllData({
     required String format,
@@ -11,7 +11,7 @@ class GetAllAvaliableDataService {
     String url =
         'http://api.alquran.cloud/v1/edition?format=$format&language=$language&type=$type';
 
-    final data = await Api.get(url: url ,keyMap: "data");
+    final data = await Api.get(url: url, keyMap: "data");
     List<ChikhModel> listChikhes = (data as List<dynamic>)
         .map((d) => ChikhModel.fromJson(d))
         .toList();
