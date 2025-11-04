@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:sakina/helpers/constants/data_qurane_pages.dart';
 
@@ -22,7 +21,6 @@ class _DisplayQuranePageState extends State<DisplayQuranePage> {
       (end - start) + 1,
       (index) => start + index,
     );
-    log('$numPages');
   }
 
   @override

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sakina/helpers/constants/colors.dart';
+import 'package:sakina/helpers/constants/fonts.dart';
 
 class MawakitSalat extends StatelessWidget {
   const MawakitSalat({super.key});
@@ -7,7 +9,22 @@ class MawakitSalat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SalatPage'),
+        title: Text(
+          'Mawaqit Al-Salat',
+          style: TextStyle(
+            fontFamily: poppins,
+            fontWeight: FontWeight.bold,
+            color: primaryColor,
+          ),
+        ),
+        leading: TextButton(
+          onPressed: () {},
+          child: Image.asset(
+            'assets/images/menu.png',
+            height: 24,
+            width: 24,
+          ),
+        ),
       ),
     );
   }

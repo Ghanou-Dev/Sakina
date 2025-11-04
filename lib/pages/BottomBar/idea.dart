@@ -29,18 +29,7 @@ class Idea extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(width: double.infinity),
-          Text(
-            'Soon ..',
-            style: TextStyle(
-              fontFamily: poppins,
-              color: primaryColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-            ),
-          ),
-        ],
+        children: [],
       ),
     );
   }
