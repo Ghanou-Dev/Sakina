@@ -19,15 +19,15 @@ class BottomBarPage extends StatefulWidget {
 }
 
 class _BottomBarPageState extends State<BottomBarPage> {
-  Future<void> loadData() async {
-    await context.read<HomeCubit>().getAudioSuwars();
-    await context.read<HomeCubit>().getTaffsirOfAllSuwars();
-  }
-
   @override
   void initState() {
     super.initState();
     loadData();
+  }
+
+  Future<void> loadData() async {
+    await context.read<HomeCubit>().getAudioSuwars();
+    await context.read<HomeCubit>().getTaffsirOfAllSuwars();
   }
 
   int currentIndex = 0;

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
@@ -249,7 +247,6 @@ class _PlaySurahState extends State<PlaySurah> {
               BlocBuilder<AudioCubit, AudioState>(
                 builder: (context, state) {
                   if (state is AudioLoaded) {
-                    log('1 => ${state.isPlaying}');
                     return IconButton(
                       onPressed: () async {
                         if (state.isPlaying) {

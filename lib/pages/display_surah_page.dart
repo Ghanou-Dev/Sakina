@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -20,13 +21,16 @@ class DisplaySurahPage extends StatefulWidget {
   });
 
   static const String pageRoute = 'desplaySurahPage';
-
   @override
   State<DisplaySurahPage> createState() => _DisplaySurahPageState();
 }
 
 class _DisplaySurahPageState extends State<DisplaySurahPage> {
-  ScrollController controller = ScrollController();
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  }
 
   @override
   Widget build(BuildContext context) {

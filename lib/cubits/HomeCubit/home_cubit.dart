@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sakina/models/reciter_chikh_model.dart';
 import 'package:sakina/models/surah_model.dart';
@@ -80,6 +82,7 @@ class HomeCubit extends Cubit<HomeState> {
         taffsirOffAllSuwars: taffsirOffAllSuwars,
       ),
     );
+    log('Taffsir of all suwars has loaded');
   }
 
   late List<ReciterChikhItem> reciterChikhs;

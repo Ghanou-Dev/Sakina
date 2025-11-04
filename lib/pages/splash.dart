@@ -26,10 +26,6 @@ class _SpalshState extends State<Spalsh> {
     );
   }
 
-  // void loadData() async {
-  //   await context.read<HomeCubit>().getSuwars();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

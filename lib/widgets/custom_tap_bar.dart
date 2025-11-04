@@ -5,6 +5,7 @@ import 'package:sakina/helpers/constants/fonts.dart';
 import 'package:sakina/cubits/HomeCubit/home_cubit.dart';
 import 'package:sakina/cubits/HomeCubit/home_state.dart';
 import 'package:sakina/pages/display_chikh_suwars.dart';
+import 'package:sakina/pages/display_qurane_page.dart';
 import 'package:sakina/pages/display_surah_page.dart';
 import 'package:sakina/pages/display_taffsir_of_surah_page.dart';
 
@@ -194,11 +195,20 @@ class _ListenState extends State<Listen> with AutomaticKeepAliveClientMixin {
   }
 }
 
-class Read extends StatelessWidget {
+class Read extends StatefulWidget {
   const Read({super.key});
 
   @override
+  State<Read> createState() => _ReadState();
+}
+
+class _ReadState extends State<Read> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     final suwarsData = context.read<HomeCubit>().suwars;
     return Column(
       children: [
@@ -209,7 +219,16 @@ class Read extends StatelessWidget {
               return Column(
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DisplayQuranePage(
+                            index: index,
+                          ),
+                        ),
+                      );
+                    },
                     child: suwarsData[index],
                   ),
                   Divider(color: Colors.grey.shade300),
