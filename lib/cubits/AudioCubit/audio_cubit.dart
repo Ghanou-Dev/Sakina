@@ -17,6 +17,7 @@ class AudioCubit extends Cubit<AudioState> {
   String lastSurahRead = 'Al-Fatiha';
 
   int index = 0;
+  String chikhName = '';
   bool lastPlayingState = false;
 
   Future<void> init() async {
@@ -92,6 +93,7 @@ class AudioCubit extends Cubit<AudioState> {
     required List<CustomItemSurah> suwars,
   }) async {
     index = initialIndex;
+    chikhName = chikh.name;
     List<String> numberSuwars = reciter.surah_list;
     List<String> urls = numberSuwars
         .map(

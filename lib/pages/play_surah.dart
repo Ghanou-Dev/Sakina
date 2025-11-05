@@ -33,17 +33,19 @@ class _PlaySurahState extends State<PlaySurah> {
   @override
   void initState() {
     super.initState();
-
     play();
   }
 
   Future<void> play() async {
-    await context.read<AudioCubit>().playSurah(
-      initialIndex: widget.surahIndex,
-      reciter: widget.surahAudio,
-      suwars: widget.suwars,
-      chikh: widget.chikh,
-    );
+    if (context.read<AudioCubit>().index != widget.surahIndex ||
+        context.read<AudioCubit>().chikhName != widget.chikh.name) {
+      await context.read<AudioCubit>().playSurah(
+        initialIndex: widget.surahIndex,
+        reciter: widget.surahAudio,
+        suwars: widget.suwars,
+        chikh: widget.chikh,
+      );
+    }
   }
 
   @override
@@ -180,16 +182,19 @@ class _PlaySurahState extends State<PlaySurah> {
               //////
               String formatTime(Duration d) {
                 String toDigits(int n) => n.toString().padLeft(2, '0');
+                String hours = toDigits(d.inHours.remainder(60));
                 String minutes = toDigits(d.inMinutes.remainder(60));
                 String secondes = toDigits(d.inSeconds.remainder(60));
-                return '$minutes:$secondes';
+                return hours == '00'
+                    ? '$minutes:$secondes'
+                    : '$hours:$minutes:$secondes';
               }
 
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 16.0),
+                    padding: const EdgeInsets.only(left: 4.0),
                     child: Text(
                       formatTime(position),
                       style: TextStyle(
@@ -201,7 +206,7 @@ class _PlaySurahState extends State<PlaySurah> {
                     ),
                   ),
                   SizedBox(
-                    width: 300,
+                    width: 280,
                     child: Slider(
                       thumbColor: primaryColor,
                       max: duration.inSeconds.toDouble(),
@@ -216,7 +221,7 @@ class _PlaySurahState extends State<PlaySurah> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
+                    padding: const EdgeInsets.only(right: 4.0),
                     child: Text(
                       formatTime(duration),
                       style: TextStyle(

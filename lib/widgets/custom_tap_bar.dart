@@ -163,13 +163,10 @@ class _ListenState extends State<Listen> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
-  final ScrollController scrollController2 = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
     return ListView.builder(
-      controller: scrollController2,
       itemCount: context.read<HomeCubit>().reciterChikhs.length,
       itemBuilder: (context, index) {
         return Column(
@@ -257,35 +254,53 @@ class _TaffsirState extends State<Taffsir> with AutomaticKeepAliveClientMixin {
   Widget build(BuildContext context) {
     super.build(context);
     final suwarsDataText = context.read<HomeCubit>().suwars;
-    final suwarsDataTaffsir = context.read<HomeCubit>().taffsirOffAllSuwars;
-    return Column(
-      children: [
-        Expanded(
-          child: ListView.builder(
-            itemCount: suwarsDataText.length,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => DisplayTaffsirOfSurahPage(
-                            surahText: suwarsDataText[index],
-                            surahTaffsir: suwarsDataTaffsir[index],
+
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        if (state is HomeDataLoaded) {
+          if (state.taffsirOffAllSuwars.isNotEmpty) {
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: suwarsDataText.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DisplayTaffsirOfSurahPage(
+                                        surahText: suwarsDataText[index],
+                                        surahTaffsir:
+                                            state.taffsirOffAllSuwars[index],
+                                      ),
+                                ),
+                              );
+                            },
+                            child: suwarsDataText[index],
                           ),
-                        ),
+                          Divider(),
+                        ],
                       );
                     },
-                    child: suwarsDataText[index],
                   ),
-                  Divider(),
-                ],
-              );
-            },
-          ),
-        ),
-      ],
+                ),
+              ],
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
     );
   }
 }
