@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio_background/just_audio_background.dart';
+import 'package:sakina/cubits/InternetCheckerCubit/internet_checker_cubit.dart';
 import 'package:sakina/helpers/constants/colors.dart';
 import 'package:sakina/pages/bottom_bar_page.dart';
 import 'package:sakina/cubits/AudioCubit/audio_cubit.dart';
@@ -40,6 +41,9 @@ class Sakina extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AudioCubit(),
+        ),
+        BlocProvider(
+          create: (context) => InternetCheckerCubit(),
         ),
       ],
       child: MaterialApp(

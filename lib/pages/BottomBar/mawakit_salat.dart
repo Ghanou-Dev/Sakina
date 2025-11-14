@@ -17,14 +17,6 @@ class MawakitSalat extends StatelessWidget {
             color: primaryColor,
           ),
         ),
-        leading: TextButton(
-          onPressed: () {},
-          child: Image.asset(
-            'assets/images/menu.png',
-            height: 24,
-            width: 24,
-          ),
-        ),
       ),
     );
   }

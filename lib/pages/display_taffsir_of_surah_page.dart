@@ -59,7 +59,10 @@ class _DisplayTaffsirOfSurahPageState extends State<DisplayTaffsirOfSurahPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        scrolledUnderElevation: 0,
         title: Text(
           'Taffsir of surah ${widget.surahText.englishName}',
           style: TextStyle(

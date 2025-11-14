@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:sakina/cubits/HomeCubit/home_cubit.dart';
 import 'package:sakina/helpers/constants/colors.dart';
 import 'package:sakina/pages/BottomBar/bookmark.dart';
 import 'package:sakina/pages/BottomBar/douaa.dart';
-import 'package:sakina/pages/BottomBar/idea.dart';
+import 'package:sakina/pages/BottomBar/settings.dart';
 import 'package:sakina/pages/BottomBar/home_page.dart';
 import 'package:sakina/pages/BottomBar/mawakit_salat.dart';
 
@@ -26,22 +27,24 @@ class _BottomBarPageState extends State<BottomBarPage> {
   }
 
   Future<void> loadData() async {
-    await context.read<HomeCubit>().getAudioSuwars();
-    await context.read<HomeCubit>().getTaffsirOfAllSuwars();
+    // هنا عندما يدخل الى الصفحة يصدر امر جلب البيانات مع انه لا توجد نت فيرمي استثناء
+    if (await InternetConnectionChecker.createInstance().hasConnection) {
+      await context.read<HomeCubit>().getAudioSuwars();
+      await context.read<HomeCubit>().getTaffsirOfAllSuwars();
+    }
   }
 
   int currentIndex = 0;
   List<Widget> pages = [
     HomePage(),
-    Idea(),
+    Hadith(),
     MawakitSalat(),
-    Douaa(),
     Bookmark(),
+    Settings(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: pages[currentIndex],
       body: IndexedStack(
         index: currentIndex,
         children: pages,
@@ -65,7 +68,7 @@ class _BottomBarPageState extends State<BottomBarPage> {
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              'assets/icons/lamp.svg',
+              'assets/icons/douaa.svg',
               color: currentIndex == 1 ? primaryColor : secondaryColor,
             ),
             label: '',
@@ -79,14 +82,15 @@ class _BottomBarPageState extends State<BottomBarPage> {
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              'assets/icons/douaa.svg',
+              'assets/icons/bookmark.svg',
               color: currentIndex == 3 ? primaryColor : secondaryColor,
             ),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset(
-              'assets/icons/bookmark.svg',
+            icon: Icon(
+              Icons.settings,
+              size: 32,
               color: currentIndex == 4 ? primaryColor : secondaryColor,
             ),
             label: '',

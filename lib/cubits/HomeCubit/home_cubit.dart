@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sakina/helpers/errors/internet_exceptions.dart';
 import 'package:sakina/models/reciter_chikh_model.dart';
 import 'package:sakina/models/surah_model.dart';
 import 'package:sakina/cubits/HomeCubit/home_state.dart';
@@ -17,90 +19,137 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> getSuwars() async {
     emit(HomeLoading());
-    final List<SurahModel> listSuwars = await GetAllSuwarsWithIdentifir.call(
-      identifir: 'ar.abdurrahmaansudais',
-    );
-    final List<SurahModel> listSuwarsEnglish =
-        await GetAllSuwarsWithIdentifir.call(
-          identifir: 'en.asad',
-        );
-    suwars = listSuwars
-        .map(
-          (item) => CustomItemSurah(
-            number: item.number,
-            name: item.name,
-            englishName: item.englishName,
-            englishNameTranslation: item.englishNameTranslation,
-            revelationType: item.revelationType,
-            ayahs: item.ayahs,
-          ),
-        )
-        .toList();
-    suwarsEnglish = listSuwarsEnglish
-        .map(
-          (item) => CustomItemSurah(
-            number: item.number,
-            name: item.name,
-            englishName: item.englishName,
-            englishNameTranslation: item.englishNameTranslation,
-            revelationType: item.revelationType,
-            ayahs: item.ayahs,
-          ),
-        )
-        .toList();
-    emit(
-      HomeDataLoaded(
-        customItemSuwars: suwars,
-        customItemSuwarsEnglish: suwarsEnglish,
-        taffsirOffAllSuwars: [],
-      ),
-    );
+
+    try {
+      final List<SurahModel> listSuwars = await GetAllSuwarsWithIdentifir.call(
+        identifir: 'ar.abdurrahmaansudais',
+      );
+      suwars = listSuwars
+          .map(
+            (item) => CustomItemSurah(
+              number: item.number,
+              name: item.name,
+              englishName: item.englishName,
+              englishNameTranslation: item.englishNameTranslation,
+              revelationType: item.revelationType,
+              ayahs: item.ayahs,
+            ),
+          )
+          .toList();
+    } on InternetTimeoutEception catch (e) {
+      print('[LOG]: $e');
+      emit(
+        HomeFailure(
+          message: 'Your Internet Connection is wake! Try again later',
+        ),
+      );
+    } on NoInternetException catch (e) {
+      print('[LOG]: $e');
+      emit(HomeFailure(message: 'No Internet!'));
+    } catch (e) {
+      print('[LOG]: $e');
+      emit(HomeFailure(message: 'Error! Try again later'));
+    }
+
+    try {
+      final List<SurahModel> listSuwarsEnglish =
+          await GetAllSuwarsWithIdentifir.call(
+            identifir: 'en.asad',
+          );
+      suwarsEnglish = listSuwarsEnglish
+          .map(
+            (item) => CustomItemSurah(
+              number: item.number,
+              name: item.name,
+              englishName: item.englishName,
+              englishNameTranslation: item.englishNameTranslation,
+              revelationType: item.revelationType,
+              ayahs: item.ayahs,
+            ),
+          )
+          .toList();
+
+      emit(
+        HomeDataLoaded(
+          customItemSuwars: suwars,
+          customItemSuwarsEnglish: suwarsEnglish,
+          taffsirOffAllSuwars: [],
+        ),
+      );
+    } on InternetTimeoutEception catch (e) {
+      print('[LOG]: $e');
+      emit(HomeFailure(message: 'Please check your network and try again!'));
+    } on NoInternetException catch (e) {
+      print('[LOG]: $e');
+      emit(HomeFailure(message: 'No Internet!'));
+    } catch (e) {
+      print('[LOG]: $e');
+      emit(HomeFailure(message: 'Error! Try again later'));
+    }
   }
 
   // get taffsir of all suwars in quran
   List<CustomItemSurah> taffsirOffAllSuwars = [];
   Future<void> getTaffsirOfAllSuwars() async {
-    List<SurahModel> taffsirSuwars = await GetAllSuwarsWithIdentifir.call(
-      identifir: 'ar.muyassar',
-    );
-    taffsirOffAllSuwars = taffsirSuwars
-        .map(
-          (surah) => CustomItemSurah(
-            number: surah.number,
-            name: surah.name,
-            englishName: surah.englishName,
-            englishNameTranslation: surah.englishNameTranslation,
-            revelationType: surah.revelationType,
-            ayahs: surah.ayahs,
-          ),
-        )
-        .toList();
-    emit(
-      HomeDataLoaded(
-        customItemSuwars: suwars,
-        customItemSuwarsEnglish: suwarsEnglish,
-        taffsirOffAllSuwars: taffsirOffAllSuwars,
-      ),
-    );
-    log('Taffsir of all suwars has loaded');
+    try {
+      List<SurahModel> taffsirSuwars = await GetAllSuwarsWithIdentifir.call(
+        identifir: 'ar.muyassar',
+      );
+      taffsirOffAllSuwars = taffsirSuwars
+          .map(
+            (surah) => CustomItemSurah(
+              number: surah.number,
+              name: surah.name,
+              englishName: surah.englishName,
+              englishNameTranslation: surah.englishNameTranslation,
+              revelationType: surah.revelationType,
+              ayahs: surah.ayahs,
+            ),
+          )
+          .toList();
+      emit(
+        HomeDataLoaded(
+          customItemSuwars: suwars,
+          customItemSuwarsEnglish: suwarsEnglish,
+          taffsirOffAllSuwars: taffsirOffAllSuwars,
+        ),
+      );
+      log('Taffsir of all suwars has loaded');
+    } on InternetTimeoutEception catch (e) {
+      print(e);
+      emit(HomeFailure(message: 'Timeout Exceotion !'));
+    } on NoInternetException catch (e) {
+      emit(HomeFailure(message: e.message));
+    } catch (e) {
+      emit(HomeFailure(message: 'Error : $e'));
+    }
   }
 
   late List<ReciterChikhItem> reciterChikhs;
   Future<void> getAudioSuwars() async {
     int index = 0;
-    List<ReciterChikhModel> reciterChikhList =
-        await GetAllReciers.getReciters();
-    reciterChikhs = reciterChikhList.map((chikh) {
-      index++;
-      return ReciterChikhItem(
-        chikh: chikh,
-        index: index,
-      );
-    }).toList();
+    try {
+      List<ReciterChikhModel> reciterChikhList =
+          await GetAllReciers.getReciters();
+      reciterChikhs = reciterChikhList.map((chikh) {
+        index++;
+        return ReciterChikhItem(
+          chikh: chikh,
+          index: index,
+        );
+      }).toList();
+    } on InternetTimeoutEception catch (e) {
+      print(e);
+      emit(HomeFailure(message: 'Timeout Exception'));
+    } on NoInternetException catch (e) {
+      emit(HomeFailure(message: e.message));
+    } catch (e) {
+      emit(HomeFailure(message: '[ERROR] : $e '));
+    }
   }
 
   // create map for saved scroll offset
-  Map<String, double> _savedScrollOffsets = {};
+  final Map<String, double> _savedScrollOffsets = {};
 
   void saveOffset(String surahName, double offset) {
     _savedScrollOffsets[surahName] = offset;

@@ -16,3 +16,8 @@ class HomeDataLoaded extends HomeState {
     required this.taffsirOffAllSuwars,
   });
 }
+
+class HomeFailure extends HomeState {
+  final String message;
+  HomeFailure({required this.message});
+}

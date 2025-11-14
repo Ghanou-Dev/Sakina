@@ -18,14 +18,6 @@ class Bookmark extends StatelessWidget {
             color: primaryColor,
           ),
         ),
-        leading: TextButton(
-          onPressed: () {},
-          child: Image.asset(
-            'assets/images/menu.png',
-            height: 24,
-            width: 24,
-          ),
-        ),
         actions: [
           TextButton(
             onPressed: () {},
