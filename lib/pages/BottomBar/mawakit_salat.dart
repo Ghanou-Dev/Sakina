@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/helpers/constants/colors.dart';
-import 'package:sakina/helpers/constants/fonts.dart';
+import 'package:sakina/constants/colors.dart';
+import 'package:sakina/constants/fonts.dart';
 
 class MawakitSalat extends StatelessWidget {
   const MawakitSalat({super.key});

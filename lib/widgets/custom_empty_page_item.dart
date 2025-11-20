@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
-import 'package:sakina/helpers/constants/colors.dart';
-import 'package:sakina/helpers/constants/fonts.dart';
+import 'package:sakina/constants/colors.dart';
+import 'package:sakina/constants/fonts.dart';
 
 class CustomEmptyPageItem extends StatelessWidget {
   const CustomEmptyPageItem({super.key});

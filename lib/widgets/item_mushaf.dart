@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
-import 'package:sakina/helpers/constants/fonts.dart';
+import 'package:sakina/constants/fonts.dart';
 import 'package:sakina/widgets/suwars_list_view.dart';
 
 class ItemMushaf extends StatefulWidget {
@@ -119,4 +119,3 @@ class _ItemMushafState extends State<ItemMushaf> {
     );
   }
 }
-

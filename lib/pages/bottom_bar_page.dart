@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:sakina/cubits/HomeCubit/home_cubit.dart';
-import 'package:sakina/helpers/constants/colors.dart';
+import 'package:sakina/cubits/InternetCubit/internet_cubit.dart';
+import 'package:sakina/constants/colors.dart';
 import 'package:sakina/pages/BottomBar/bookmark.dart';
 import 'package:sakina/pages/BottomBar/douaa.dart';
 import 'package:sakina/pages/BottomBar/settings.dart';
@@ -27,8 +28,7 @@ class _BottomBarPageState extends State<BottomBarPage> {
   }
 
   Future<void> loadData() async {
-    // هنا عندما يدخل الى الصفحة يصدر امر جلب البيانات مع انه لا توجد نت فيرمي استثناء
-    if (await InternetConnectionChecker.createInstance().hasConnection) {
+    if (await InternetConnection().hasInternetAccess) {
       await context.read<HomeCubit>().getAudioSuwars();
       await context.read<HomeCubit>().getTaffsirOfAllSuwars();
     }
@@ -42,12 +42,44 @@ class _BottomBarPageState extends State<BottomBarPage> {
     Bookmark(),
     Settings(),
   ];
+
+  void _showMessage(String message, bool isConnected) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: isConnected ? Colors.greenAccent : Colors.redAccent,
+        dismissDirection: DismissDirection.startToEnd,
+        duration: isConnected ? Duration(seconds: 3) : Duration(seconds: 3),
+
+        content: Text(
+          message,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.black87,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: currentIndex,
-        children: pages,
+      body: BlocListener<InternetCubit, InternetState>(
+        listener: (context, state) async {
+          if (state is InternetConnectionState) {
+            if (state.isConnected) {
+              _showMessage('Connected', true);
+              await context.read<HomeCubit>().getSuwars();
+              loadData();
+            } else {
+              _showMessage('No internet', false);
+            }
+          }
+        },
+        child: IndexedStack(
+          index: currentIndex,
+          children: pages,
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,

@@ -1,4 +1,4 @@
-import 'package:sakina/helpers/constants/chikh_model_keys.dart';
+import 'package:sakina/constants/chikh_model_keys.dart';
 
 class ChikhModel {
   final String identifier;

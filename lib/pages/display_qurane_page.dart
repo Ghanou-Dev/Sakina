@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/helpers/constants/data_qurane_pages.dart';
+import 'package:sakina/constants/data_qurane_pages.dart';
 
 class DisplayQuranePage extends StatefulWidget {
   final int index;

@@ -1,9 +1,11 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:sakina/cubits/InternetCheckerCubit/internet_checker_cubit.dart';
-import 'package:sakina/helpers/constants/colors.dart';
+import 'package:sakina/app_localizations.dart';
+import 'package:sakina/cubits/InternetCubit/internet_cubit.dart';
+import 'package:sakina/constants/colors.dart';
 import 'package:sakina/pages/bottom_bar_page.dart';
 import 'package:sakina/cubits/AudioCubit/audio_cubit.dart';
 import 'package:sakina/cubits/HomeCubit/home_cubit.dart';
@@ -43,10 +45,33 @@ class Sakina extends StatelessWidget {
           create: (context) => AudioCubit(),
         ),
         BlocProvider(
-          create: (context) => InternetCheckerCubit(),
+          create: (context) => InternetCubit(),
         ),
       ],
       child: MaterialApp(
+        supportedLocales: [
+          Locale('en'),
+          Locale('ar'),
+        ],
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          final languagesCodeSupportedLocales = supportedLocales
+              .map((local) => local.languageCode)
+              .toList();
+          bool isDeviceLandSupported = languagesCodeSupportedLocales.contains(
+            locale!.languageCode,
+          );
+          if (isDeviceLandSupported) {
+            return locale;
+          } else {
+            return supportedLocales.first;
+          }
+        },
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),

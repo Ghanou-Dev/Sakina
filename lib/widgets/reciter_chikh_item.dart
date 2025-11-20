@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sakina/helpers/constants/colors.dart';
-import 'package:sakina/helpers/constants/fonts.dart';
+import 'package:sakina/constants/colors.dart';
+import 'package:sakina/constants/fonts.dart';
 import 'package:sakina/models/reciter_chikh_model.dart';
 
 class ReciterChikhItem extends StatelessWidget {

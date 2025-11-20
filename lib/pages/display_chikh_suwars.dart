@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/helpers/constants/colors.dart';
-import 'package:sakina/helpers/constants/fonts.dart';
+import 'package:sakina/constants/colors.dart';
+import 'package:sakina/constants/fonts.dart';
 import 'package:sakina/widgets/custom_item_surah.dart';
 import 'package:sakina/widgets/item_mushaf.dart';
 import 'package:sakina/widgets/reciter_chikh_item.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/helpers/constants/colors.dart';
-import 'package:sakina/helpers/constants/fonts.dart';
+import 'package:sakina/constants/colors.dart';
+import 'package:sakina/constants/fonts.dart';
 
 class Hadith extends StatelessWidget {
   const Hadith({super.key});

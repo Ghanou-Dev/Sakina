@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:sakina/helpers/errors/internet_exceptions.dart';
+import 'package:sakina/errors/internet_exceptions.dart';
 
 class Api {
   static Future<dynamic> get({

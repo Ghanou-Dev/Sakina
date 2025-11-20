@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sakina/helpers/errors/internet_exceptions.dart';
+import 'package:sakina/errors/internet_exceptions.dart';
 import 'package:sakina/models/reciter_chikh_model.dart';
 import 'package:sakina/models/surah_model.dart';
 import 'package:sakina/cubits/HomeCubit/home_state.dart';
@@ -21,9 +21,15 @@ class HomeCubit extends Cubit<HomeState> {
     emit(HomeLoading());
 
     try {
-      final List<SurahModel> listSuwars = await GetAllSuwarsWithIdentifir.call(
-        identifir: 'ar.abdurrahmaansudais',
-      );
+      final List<SurahModel> listSuwars =
+          await GetAllSuwarsWithIdentifir.call(
+            identifir: 'ar.abdurrahmaansudais',
+          ).timeout(
+            Duration(seconds: 40),
+            onTimeout: () {
+              throw InternetTimeoutEception(message: '');
+            },
+          );
       suwars = listSuwars
           .map(
             (item) => CustomItemSurah(
@@ -39,7 +45,7 @@ class HomeCubit extends Cubit<HomeState> {
     } on InternetTimeoutEception catch (e) {
       print('[LOG]: $e');
       emit(
-        HomeFailure(
+        HomeTimeoutFailure(
           message: 'Your Internet Connection is wake! Try again later',
         ),
       );
@@ -55,6 +61,11 @@ class HomeCubit extends Cubit<HomeState> {
       final List<SurahModel> listSuwarsEnglish =
           await GetAllSuwarsWithIdentifir.call(
             identifir: 'en.asad',
+          ).timeout(
+            Duration(seconds: 40),
+            onTimeout: () {
+              throw InternetTimeoutEception(message: 'Timeout exception');
+            },
           );
       suwarsEnglish = listSuwarsEnglish
           .map(
@@ -74,11 +85,14 @@ class HomeCubit extends Cubit<HomeState> {
           customItemSuwars: suwars,
           customItemSuwarsEnglish: suwarsEnglish,
           taffsirOffAllSuwars: [],
+          reciterChikhs: [],
         ),
       );
     } on InternetTimeoutEception catch (e) {
       print('[LOG]: $e');
-      emit(HomeFailure(message: 'Please check your network and try again!'));
+      emit(
+        HomeTimeoutFailure(message: 'Please check your network and try again!'),
+      );
     } on NoInternetException catch (e) {
       print('[LOG]: $e');
       emit(HomeFailure(message: 'No Internet!'));
@@ -92,9 +106,17 @@ class HomeCubit extends Cubit<HomeState> {
   List<CustomItemSurah> taffsirOffAllSuwars = [];
   Future<void> getTaffsirOfAllSuwars() async {
     try {
-      List<SurahModel> taffsirSuwars = await GetAllSuwarsWithIdentifir.call(
-        identifir: 'ar.muyassar',
-      );
+      List<SurahModel> taffsirSuwars =
+          await GetAllSuwarsWithIdentifir.call(
+            identifir: 'ar.muyassar',
+          ).timeout(
+            Duration(seconds: 40),
+            onTimeout: () {
+              throw InternetTimeoutEception(
+                message: 'Internet conections State is Wake!',
+              );
+            },
+          );
       taffsirOffAllSuwars = taffsirSuwars
           .map(
             (surah) => CustomItemSurah(
@@ -112,12 +134,13 @@ class HomeCubit extends Cubit<HomeState> {
           customItemSuwars: suwars,
           customItemSuwarsEnglish: suwarsEnglish,
           taffsirOffAllSuwars: taffsirOffAllSuwars,
+          reciterChikhs: reciterChikhs,
         ),
       );
       log('Taffsir of all suwars has loaded');
     } on InternetTimeoutEception catch (e) {
       print(e);
-      emit(HomeFailure(message: 'Timeout Exceotion !'));
+      emit(HomeTimeoutFailure(message: 'Timeout Exceotion !'));
     } on NoInternetException catch (e) {
       emit(HomeFailure(message: e.message));
     } catch (e) {
@@ -130,7 +153,12 @@ class HomeCubit extends Cubit<HomeState> {
     int index = 0;
     try {
       List<ReciterChikhModel> reciterChikhList =
-          await GetAllReciers.getReciters();
+          await GetAllReciers.getReciters().timeout(
+            Duration(seconds: 40),
+            onTimeout: () {
+              throw InternetTimeoutEception(message: 'Timeout Exception');
+            },
+          );
       reciterChikhs = reciterChikhList.map((chikh) {
         index++;
         return ReciterChikhItem(
@@ -138,9 +166,17 @@ class HomeCubit extends Cubit<HomeState> {
           index: index,
         );
       }).toList();
+      emit(
+        HomeDataLoaded(
+          customItemSuwars: suwars,
+          customItemSuwarsEnglish: suwarsEnglish,
+          taffsirOffAllSuwars: taffsirOffAllSuwars,
+          reciterChikhs: reciterChikhs,
+        ),
+      );
     } on InternetTimeoutEception catch (e) {
       print(e);
-      emit(HomeFailure(message: 'Timeout Exception'));
+      emit(HomeTimeoutFailure(message: 'Timeout Exception'));
     } on NoInternetException catch (e) {
       emit(HomeFailure(message: e.message));
     } catch (e) {

@@ -1,11 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:sakina/cubits/InternetCheckerCubit/internet_checker_cubit.dart';
-import 'package:sakina/cubits/InternetCheckerCubit/internet_checker_state.dart';
-import 'package:sakina/helpers/constants/colors.dart';
-import 'package:sakina/helpers/constants/fonts.dart';
+import 'package:flutter_gap/flutter_gap.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:sakina/cubits/InternetCubit/internet_cubit.dart';
+import 'package:sakina/constants/colors.dart';
+import 'package:sakina/constants/fonts.dart';
+import 'package:sakina/helpers/extansions.dart';
 import 'package:sakina/pages/bottom_bar_page.dart';
 import 'package:sakina/cubits/HomeCubit/home_cubit.dart';
 import 'package:sakina/cubits/HomeCubit/home_state.dart';
@@ -28,16 +30,11 @@ class _SpalshState extends State<Spalsh> {
       ),
     );
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<InternetCheckerCubit>().checkConnection();
+      context.read<InternetCubit>().checkConnection();
     });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  bool _isClickGetStarted = false;
+  bool isDialogActive = false;
 
   @override
   Widget build(BuildContext context) {
@@ -45,21 +42,15 @@ class _SpalshState extends State<Spalsh> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: BlocListener<InternetCheckerCubit, InternetCheckerState>(
+          child: BlocListener<InternetCubit, InternetState>(
             listener: (context, state) {
-              if (state is InternetCheckerCheck) {
-                if (state.isConnection && state.isLow == false) {
-                  _connected(isConnected: true, message: 'Connected');
-                } else if (state.isConnection && state.isLow == true) {
-                  _connectionStateDialog(
-                    'Internet connection is wake! Please try again later ',
-                  );
-                } else {
-                  if (_isClickGetStarted == false) {
-                    _connectionStateDialog(
-                      'Please Check Your Internet Connection And Try Again',
-                    );
-                  }
+              if (state is InternetConnectionState) {
+                if (state.isConnected == false) {
+                  _connectionStateDialog('No Internet !');
+                }
+                if (state.isConnected && isDialogActive) {
+                  isDialogActive = false;
+                  Navigator.pop(context);
                 }
               }
             },
@@ -69,7 +60,7 @@ class _SpalshState extends State<Spalsh> {
               children: [
                 SizedBox(height: 80),
                 Text(
-                  'Sakina',
+                  'sakina'.tr(context),
                   style: TextStyle(
                     fontFamily: poppins,
                     fontWeight: FontWeight.bold,
@@ -122,14 +113,7 @@ class _SpalshState extends State<Spalsh> {
                         onPressed: () async {
                           _getStarted();
                         },
-                        child: BlocConsumer<HomeCubit, HomeState>(
-                          listener: (context, state) {
-                            if (state is HomeFailure) {
-                              _connectionStateDialog(
-                                state.message,
-                              );
-                            }
-                          },
+                        child: BlocBuilder<HomeCubit, HomeState>(
                           builder: (context, state) {
                             if (state is HomeLoading) {
                               return Center(
@@ -170,23 +154,48 @@ class _SpalshState extends State<Spalsh> {
   }
 
   void _connectionStateDialog(String message) {
+    isDialogActive = true;
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          content: Text(
-            message,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+          backgroundColor: Colors.white,
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Gap(30),
+              Image.asset(
+                'assets/images/no-wifi.png',
+                height: 70,
+                width: 70,
+              ),
+              Gap(30),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
           actions: [
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryColor,
+                foregroundColor: Colors.white,
+              ),
               onPressed: () async {
+                isDialogActive = false;
                 Navigator.of(context).pop();
               },
-              child: Text('Ok'),
+              child: Text(
+                'Ok',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         );
@@ -194,36 +203,13 @@ class _SpalshState extends State<Spalsh> {
     );
   }
 
-  void _connected({required String message, required bool isConnected}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: isConnected ? Colors.greenAccent : Colors.redAccent,
-        content: Text(
-          message,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-      ),
-    );
-  }
-
   Future<void> _getStarted() async {
-    ///////////// 1
-    final connectionState = context
-        .read<InternetCheckerCubit>()
-        .connectionState;
-    if (connectionState == InternetConnectionStatus.disconnected) {
+    // final connectionState = context.read<InternetCubit>().isConnected;
+    final bool isConnected = await InternetConnection().hasInternetAccess;
+    if (isConnected == false) {
       _connectionStateDialog(
         'Please Check your internet connection and try again',
       );
-    } else if (connectionState == InternetConnectionStatus.connected) {
-      _isClickGetStarted = true;
-      await context.read<HomeCubit>().getSuwars();
-      Navigator.of(
-        context,
-      ).pushReplacementNamed(BottomBarPage.pageRoute);
     } else {
       try {
         await context.read<HomeCubit>().getSuwars();

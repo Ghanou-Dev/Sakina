@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sakina/helpers/constants/colors.dart';
-import 'package:sakina/helpers/constants/fonts.dart';
+import 'package:sakina/constants/colors.dart';
+import 'package:sakina/constants/fonts.dart';
 import 'package:sakina/cubits/HomeCubit/home_cubit.dart';
 import 'package:sakina/cubits/HomeCubit/home_state.dart';
 import 'package:sakina/pages/display_chikh_suwars.dart';
@@ -139,6 +139,24 @@ class _TadabborState extends State<Tadabbor>
                     );
                   },
                 );
+              } else if (state is HomeTimeoutFailure) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/no-wifi.png',
+                        width: 150,
+                        height: 150,
+                      ),
+                      Text(
+                        "Please check your internet connection. \nAnd try again later",
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                );
               } else {
                 return Center(
                   child: CircularProgressIndicator(),
@@ -166,26 +184,65 @@ class _ListenState extends State<Listen> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ListView.builder(
-      itemCount: context.read<HomeCubit>().reciterChikhs.length,
-      itemBuilder: (context, index) {
-        return Column(
-          children: [
-            InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => DisplayChikhSuwars(
-                      chikhItem: context.read<HomeCubit>().reciterChikhs[index],
-                      suwars: context.read<HomeCubit>().suwars,
-                    ),
-                  ),
+    return Builder(
+      builder: (context) {
+        return BlocBuilder<HomeCubit, HomeState>(
+          builder: (context, state) {
+            if (state is HomeDataLoaded) {
+              if (state.reciterChikhs.isNotEmpty &&
+                  state.customItemSuwars.isNotEmpty) {
+                return ListView.builder(
+                  itemCount: state.reciterChikhs.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => DisplayChikhSuwars(
+                                  chikhItem: state.reciterChikhs[index],
+                                  suwars: state.customItemSuwars,
+                                ),
+                              ),
+                            );
+                          },
+                          child: state.reciterChikhs[index],
+                        ),
+                        Divider(color: Colors.grey.shade300),
+                      ],
+                    );
+                  },
                 );
-              },
-              child: context.read<HomeCubit>().reciterChikhs[index],
-            ),
-            Divider(color: Colors.grey.shade300),
-          ],
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            } else if (state is HomeTimeoutFailure) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/no-wifi.png',
+                      width: 150,
+                      height: 150,
+                    ),
+                    Text(
+                      "Please check your internet connection. \nAnd try again later",
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
         );
       },
     );
@@ -206,31 +263,65 @@ class _ReadState extends State<Read> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final suwarsData = context.read<HomeCubit>().suwars;
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
-            itemCount: suwarsData.length,
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DisplayQuranePage(
-                            index: index,
+          child: BlocBuilder<HomeCubit, HomeState>(
+            builder: (context, state) {
+              if (state is HomeDataLoaded) {
+                if (state.customItemSuwars.isNotEmpty) {
+                  final suwarsData = state.customItemSuwars;
+                  return ListView.builder(
+                    itemCount: suwarsData.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DisplayQuranePage(
+                                    index: index,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: suwarsData[index],
                           ),
-                        ),
+                          Divider(color: Colors.grey.shade300),
+                        ],
                       );
                     },
-                    child: suwarsData[index],
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              } else if (state is HomeTimeoutFailure) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/no-wifi.png',
+                        width: 150,
+                        height: 150,
+                      ),
+                      Text(
+                        "Please check your internet connection. \nAnd try again later",
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
-                  Divider(color: Colors.grey.shade300),
-                ],
-              );
+                );
+              } else {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
             },
           ),
         ),
@@ -253,12 +344,13 @@ class _TaffsirState extends State<Taffsir> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final suwarsDataText = context.read<HomeCubit>().suwars;
+    // final suwarsDataText = context.read<HomeCubit>().suwars;
 
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         if (state is HomeDataLoaded) {
           if (state.taffsirOffAllSuwars.isNotEmpty) {
+            final suwarsDataText = state.customItemSuwars;
             return Column(
               children: [
                 Expanded(
@@ -295,6 +387,24 @@ class _TaffsirState extends State<Taffsir> with AutomaticKeepAliveClientMixin {
               child: CircularProgressIndicator(),
             );
           }
+        } else if (state is HomeTimeoutFailure) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/no-wifi.png',
+                  width: 150,
+                  height: 150,
+                ),
+                Text(
+                  "Please check your internet connection. \nAnd try again later",
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          );
         } else {
           return Center(
             child: CircularProgressIndicator(),

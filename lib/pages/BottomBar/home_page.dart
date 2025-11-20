@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:sakina/cubits/AudioCubit/audio_cubit.dart';
 import 'package:sakina/cubits/AudioCubit/audio_state.dart';
-import 'package:sakina/cubits/InternetCheckerCubit/internet_checker_cubit.dart';
-import 'package:sakina/cubits/InternetCheckerCubit/internet_checker_state.dart';
-import 'package:sakina/helpers/constants/colors.dart';
-import 'package:sakina/helpers/constants/fonts.dart';
+import 'package:sakina/cubits/InternetCubit/internet_cubit.dart';
+import 'package:sakina/constants/colors.dart';
+import 'package:sakina/constants/fonts.dart';
+import 'package:sakina/helpers/extansions.dart';
 import 'package:sakina/widgets/custom_tap_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -37,7 +36,7 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Sakina',
+          'sakina'.tr(context),
           style: TextStyle(
             fontFamily: poppins,
             fontWeight: FontWeight.bold,
@@ -67,20 +66,19 @@ class BodyHomePage extends StatefulWidget {
 }
 
 class _BodyHomePageState extends State<BodyHomePage> {
-  bool isConnectionBack = false;
   bool isDialogActive = false;
+
   @override
   Widget build(BuildContext context) {
-    return BlocListener<InternetCheckerCubit, InternetCheckerState>(
+    return BlocListener<InternetCubit, InternetState>(
       listener: (context, state) {
-        if (state is InternetCheckerCheck) {
-          isConnectionBack = state.isConnection;
-          if (state.isConnection == false) {
+        if (state is InternetConnectionState) {
+          if (state.isConnected == false) {
             _showDialog('No internet!\nPlease try again later');
           }
-          if (isConnectionBack && isDialogActive) {
-            Navigator.pop(context);
-            _showMessage('Connected');
+          if (state.isConnected && isDialogActive) {
+            isDialogActive = false;
+            Navigator.of(context).pop();
           }
         }
       },
@@ -209,43 +207,50 @@ class _BodyHomePageState extends State<BodyHomePage> {
   }
 
   void _showDialog(String message) {
-    isConnectionBack =
-        context.read<InternetCheckerCubit>().connectionState ==
-        InternetConnectionStatus.connected;
     isDialogActive = true;
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) {
         return AlertDialog(
-          content: Text(
-            message,
-            style: TextStyle(fontWeight: FontWeight.bold),
+          backgroundColor: Colors.white,
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Gap(30),
+              Image.asset(
+                'assets/images/no-wifi.png',
+                height: 70,
+                width: 70,
+              ),
+              Gap(30),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
           actions: [
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryColor,
+                foregroundColor: Colors.white,
+              ),
               onPressed: () async {
-                await SystemNavigator.pop();
+                isDialogActive = false;
+                Navigator.of(context).pop();
               },
-              child: Text('Ok'),
+              child: Text(
+                'Ok',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
           ],
         );
       },
-    );
-  }
-
-  void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.greenAccent,
-        dismissDirection: DismissDirection.startToEnd,
-
-        content: Text(
-          message,
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
-        ),
-      ),
     );
   }
 }

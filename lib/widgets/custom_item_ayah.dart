@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
-import 'package:sakina/helpers/constants/colors.dart';
-import 'package:sakina/helpers/constants/fonts.dart';
+import 'package:sakina/constants/colors.dart';
+import 'package:sakina/constants/fonts.dart';
 import 'package:sakina/models/ayah_model.dart';
 import 'package:sakina/cubits/AudioCubit/audio_cubit.dart';
 import 'package:sakina/cubits/AudioCubit/audio_state.dart';

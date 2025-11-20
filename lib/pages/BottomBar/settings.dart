@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/helpers/constants/colors.dart';
-import 'package:sakina/helpers/constants/fonts.dart';
+import 'package:sakina/constants/colors.dart';
+import 'package:sakina/constants/fonts.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -17,14 +17,6 @@ class Settings extends StatelessWidget {
             color: primaryColor,
           ),
         ),
-        // leading: TextButton(
-        //   onPressed: () {},
-        //   child: Image.asset(
-        //     'assets/images/menu.png',
-        //     height: 24,
-        //     width: 24,
-        //   ),
-        // ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,

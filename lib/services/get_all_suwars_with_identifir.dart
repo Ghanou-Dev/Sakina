@@ -1,5 +1,5 @@
 import 'package:sakina/helpers/api.dart';
-import 'package:sakina/helpers/errors/internet_exceptions.dart';
+import 'package:sakina/errors/internet_exceptions.dart';
 import 'package:sakina/models/surah_model.dart';
 
 class GetAllSuwarsWithIdentifir {
