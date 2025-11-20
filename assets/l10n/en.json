@@ -1,5 +1,11 @@
 {
     "sakina": "Sakina",
     "learen_quran_and": "Learn Quran and",
-    "recite_once_everyday": "Recite once everyday"
+    "recite_once_everyday": "Recite once everyday",
+
+    "no_internet": "No Internet !",
+    "get_started": "Get Started",
+    "ok": "Ok",
+    "Please Check your internet connection and try again": "Please Check your internet connection and try again",
+    "Your internet connection is wake! try again later": "Your internet connection is wake! try again later"
 }

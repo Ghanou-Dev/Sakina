@@ -46,7 +46,7 @@ class _SpalshState extends State<Spalsh> {
             listener: (context, state) {
               if (state is InternetConnectionState) {
                 if (state.isConnected == false) {
-                  _connectionStateDialog('No Internet !');
+                  _connectionStateDialog('no_internet'.tr(context));
                 }
                 if (state.isConnected && isDialogActive) {
                   isDialogActive = false;
@@ -73,7 +73,7 @@ class _SpalshState extends State<Spalsh> {
                   width: double.infinity,
                 ),
                 Text(
-                  'Learn Quran and',
+                  'learen_quran_and'.tr(context),
                   style: TextStyle(
                     fontFamily: poppins,
                     fontSize: 18,
@@ -81,7 +81,7 @@ class _SpalshState extends State<Spalsh> {
                   ),
                 ),
                 Text(
-                  'Recite once everyday',
+                  'recite_once_everyday'.tr(context),
                   style: TextStyle(
                     fontFamily: poppins,
                     fontSize: 18,
@@ -93,6 +93,7 @@ class _SpalshState extends State<Spalsh> {
                 ),
                 Stack(
                   clipBehavior: Clip.none,
+
                   children: [
                     Image.asset(
                       'assets/images/image1.png',
@@ -127,7 +128,7 @@ class _SpalshState extends State<Spalsh> {
                               );
                             } else {
                               return Text(
-                                'Get Started',
+                                'get_started'.tr(context),
                                 style: TextStyle(
                                   fontFamily: poppins,
                                   color: Colors.white,
@@ -193,7 +194,7 @@ class _SpalshState extends State<Spalsh> {
                 Navigator.of(context).pop();
               },
               child: Text(
-                'Ok',
+                'ok'.tr(context),
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
@@ -208,7 +209,7 @@ class _SpalshState extends State<Spalsh> {
     final bool isConnected = await InternetConnection().hasInternetAccess;
     if (isConnected == false) {
       _connectionStateDialog(
-        'Please Check your internet connection and try again',
+        'Please Check your internet connection and try again'.tr(context),
       );
     } else {
       try {
@@ -218,7 +219,7 @@ class _SpalshState extends State<Spalsh> {
         ).pushReplacementNamed(BottomBarPage.pageRoute);
       } catch (e) {
         _connectionStateDialog(
-          'Your internet connection is wake! try again later',
+          'Your internet connection is wake! try again later'.tr(context),
         );
       }
     }

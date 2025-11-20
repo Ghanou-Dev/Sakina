@@ -1,5 +1,10 @@
 {
     "sakina": "سكينة",
     "learen_quran_and": "تعلم القرأن ",
-    "recite_once_everyday": "و اتله  كل يوم"
+    "recite_once_everyday": "و اتله  كل يوم",
+    "no_internet": "لا يوجد اتصال بالانترنت",
+    "get_started": "ابدأ",
+    "ok": "حسنا",
+    "Please Check your internet connection and try again": "تحقق من وجود اتصال بالانترنت ثم اعد المحاولة",
+    "Your internet connection is wake! try again later": "الاتصال بالشبكة ضعيف اعد المحاولة لاحقا"
 }
