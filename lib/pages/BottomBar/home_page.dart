@@ -74,7 +74,9 @@ class _BodyHomePageState extends State<BodyHomePage> {
       listener: (context, state) {
         if (state is InternetConnectionState) {
           if (state.isConnected == false) {
-            _showDialog('No internet!\nPlease try again later');
+            _showDialog(
+              'Please Check your internet connection and try again'.tr(context),
+            );
           }
           if (state.isConnected && isDialogActive) {
             isDialogActive = false;
@@ -118,7 +120,7 @@ class _BodyHomePageState extends State<BodyHomePage> {
                             ),
                             Gap(5),
                             Text(
-                              'Last Read',
+                              'Last Read'.tr(context),
                               style: TextStyle(
                                 fontFamily: poppins,
                                 color: Colors.white,
@@ -159,7 +161,7 @@ class _BodyHomePageState extends State<BodyHomePage> {
                         builder: (context, state) {
                           if (state is AudioLastRead) {
                             return Text(
-                              'Ayah N° :  ${state.ayahNumber}',
+                              '${'Ayah N° :  '.tr(context)}${state.ayahNumber}',
                               style: TextStyle(
                                 fontFamily: poppins,
                                 color: Colors.white,
@@ -169,7 +171,7 @@ class _BodyHomePageState extends State<BodyHomePage> {
                             );
                           } else {
                             return Text(
-                              'Ayah N° :  ${context.read<AudioCubit>().currentAyah}',
+                              '${'Ayah N° :  '.tr(context)}${context.read<AudioCubit>().currentAyah}',
                               style: TextStyle(
                                 fontFamily: poppins,
                                 color: Colors.white,
@@ -244,7 +246,7 @@ class _BodyHomePageState extends State<BodyHomePage> {
                 Navigator.of(context).pop();
               },
               child: Text(
-                'Ok',
+                'ok'.tr(context),
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

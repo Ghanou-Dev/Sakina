@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:sakina/app_localizations.dart';
 import 'package:sakina/cubits/InternetCubit/internet_cubit.dart';
@@ -28,6 +29,13 @@ void main() async {
   await session.configure(
     AudioSessionConfiguration.music(),
   );
+
+  await Hive.initFlutter();
+  Box<String> strBox = await Hive.openBox<String>('String');
+  // strBox.add('Ghani');
+  // strBox.add('Khouloud');
+  List<String> couple = strBox.values.toList();
+  print(couple);
   runApp(Sakina());
 }
 

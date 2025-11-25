@@ -5,8 +5,9 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:sakina/cubits/HomeCubit/home_cubit.dart';
 import 'package:sakina/cubits/InternetCubit/internet_cubit.dart';
 import 'package:sakina/constants/colors.dart';
+import 'package:sakina/helpers/extansions.dart';
 import 'package:sakina/pages/BottomBar/bookmark.dart';
-import 'package:sakina/pages/BottomBar/douaa.dart';
+import 'package:sakina/pages/BottomBar/hadith.dart';
 import 'package:sakina/pages/BottomBar/settings.dart';
 import 'package:sakina/pages/BottomBar/home_page.dart';
 import 'package:sakina/pages/BottomBar/mawakit_salat.dart';
@@ -24,6 +25,12 @@ class _BottomBarPageState extends State<BottomBarPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {});
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     loadData();
   }
 
@@ -68,11 +75,11 @@ class _BottomBarPageState extends State<BottomBarPage> {
         listener: (context, state) async {
           if (state is InternetConnectionState) {
             if (state.isConnected) {
-              _showMessage('Connected', true);
+              _showMessage('Connected'.tr(context), true);
               await context.read<HomeCubit>().getSuwars();
               loadData();
             } else {
-              _showMessage('No internet', false);
+              _showMessage('no_internet'.tr(context), false);
             }
           }
         },

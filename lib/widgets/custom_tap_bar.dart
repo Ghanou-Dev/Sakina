@@ -4,6 +4,7 @@ import 'package:sakina/constants/colors.dart';
 import 'package:sakina/constants/fonts.dart';
 import 'package:sakina/cubits/HomeCubit/home_cubit.dart';
 import 'package:sakina/cubits/HomeCubit/home_state.dart';
+import 'package:sakina/helpers/extansions.dart';
 import 'package:sakina/pages/display_chikh_suwars.dart';
 import 'package:sakina/pages/display_qurane_page.dart';
 import 'package:sakina/pages/display_surah_page.dart';
@@ -43,7 +44,7 @@ class _CustomTabBarState extends State<CustomTabBar>
 
             tabs: [
               Text(
-                'Tadabbor',
+                'Tadabbor'.tr(context),
                 style: TextStyle(
                   fontFamily: poppins,
                   fontWeight: FontWeight.bold,
@@ -51,7 +52,7 @@ class _CustomTabBarState extends State<CustomTabBar>
                 ),
               ),
               Text(
-                'Liten',
+                'Liten'.tr(context),
                 style: TextStyle(
                   fontFamily: poppins,
                   fontWeight: FontWeight.bold,
@@ -59,7 +60,7 @@ class _CustomTabBarState extends State<CustomTabBar>
                 ),
               ),
               Text(
-                'Read',
+                'Read'.tr(context),
                 style: TextStyle(
                   fontFamily: poppins,
                   fontWeight: FontWeight.bold,
@@ -67,7 +68,7 @@ class _CustomTabBarState extends State<CustomTabBar>
                 ),
               ),
               Text(
-                'Taffsir',
+                'Taffsir'.tr(context),
                 style: TextStyle(
                   fontFamily: poppins,
                   fontWeight: FontWeight.bold,
@@ -151,7 +152,8 @@ class _TadabborState extends State<Tadabbor>
                         height: 150,
                       ),
                       Text(
-                        "Please check your internet connection. \nAnd try again later",
+                        "Please Check your internet connection and try again"
+                            .tr(context),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -231,7 +233,9 @@ class _ListenState extends State<Listen> with AutomaticKeepAliveClientMixin {
                       height: 150,
                     ),
                     Text(
-                      "Please check your internet connection. \nAnd try again later",
+                      "Please Check your internet connection and try again".tr(
+                        context,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ],
@@ -311,7 +315,8 @@ class _ReadState extends State<Read> with AutomaticKeepAliveClientMixin {
                         height: 150,
                       ),
                       Text(
-                        "Please check your internet connection. \nAnd try again later",
+                        "Please Check your internet connection and try again"
+                            .tr(context),
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -399,7 +404,9 @@ class _TaffsirState extends State<Taffsir> with AutomaticKeepAliveClientMixin {
                   height: 150,
                 ),
                 Text(
-                  "Please check your internet connection. \nAnd try again later",
+                  "Please Check your internet connection and try again".tr(
+                    context,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ],

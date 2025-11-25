@@ -30,7 +30,9 @@ class _SpalshState extends State<Spalsh> {
       ),
     );
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<InternetCubit>().checkConnection();
+      if (mounted) {
+        context.read<InternetCubit>().checkConnection();
+      }
     });
   }
 
@@ -45,6 +47,8 @@ class _SpalshState extends State<Spalsh> {
           child: BlocListener<InternetCubit, InternetState>(
             listener: (context, state) {
               if (state is InternetConnectionState) {
+                if (!mounted) return;
+
                 if (state.isConnected == false) {
                   _connectionStateDialog('no_internet'.tr(context));
                 }
@@ -112,7 +116,9 @@ class _SpalshState extends State<Spalsh> {
                           fixedSize: WidgetStatePropertyAll(Size(185, 60)),
                         ),
                         onPressed: () async {
-                          _getStarted();
+                          if (mounted) {
+                            _getStarted(context);
+                          }
                         },
                         child: BlocBuilder<HomeCubit, HomeState>(
                           builder: (context, state) {
@@ -155,6 +161,7 @@ class _SpalshState extends State<Spalsh> {
   }
 
   void _connectionStateDialog(String message) {
+    if (!mounted) return;
     isDialogActive = true;
     showDialog(
       context: context,
@@ -204,7 +211,7 @@ class _SpalshState extends State<Spalsh> {
     );
   }
 
-  Future<void> _getStarted() async {
+  Future<void> _getStarted(BuildContext context) async {
     // final connectionState = context.read<InternetCubit>().isConnected;
     final bool isConnected = await InternetConnection().hasInternetAccess;
     if (isConnected == false) {

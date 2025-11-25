@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sakina/constants/colors.dart';
 import 'package:sakina/constants/fonts.dart';
+import 'package:sakina/helpers/extansions.dart';
 
 class Hadith extends StatelessWidget {
   const Hadith({super.key});
@@ -10,7 +11,7 @@ class Hadith extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Hadith',
+          'Hadith'.tr(context),
           style: TextStyle(
             fontFamily: poppins,
             fontWeight: FontWeight.bold,

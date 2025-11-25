@@ -6,5 +6,17 @@
     "get_started": "ابدأ",
     "ok": "حسنا",
     "Please Check your internet connection and try again": "تحقق من وجود اتصال بالانترنت ثم اعد المحاولة",
-    "Your internet connection is wake! try again later": "الاتصال بالشبكة ضعيف اعد المحاولة لاحقا"
+    "Your internet connection is wake! try again later": "الاتصال بالشبكة ضعيف اعد المحاولة لاحقا",
+    "Connected":"متصل",
+    "Last Read":"تمت قراءته مؤخرا",
+    "Ayah N° :  ": "اية رقم :  ",
+    "Tadabbor": "تدبر",
+    "Liten": "استماع",
+    "Read":"قراءة",
+    "Taffsir": "تفسير",
+    "Favoriet": "المفضل",
+    "Hadith":"الحديث",
+    "Mawaqit Al-Salat": "مواقيت الصلاة",
+    "Settings": "الاعدادات"
+
 }
