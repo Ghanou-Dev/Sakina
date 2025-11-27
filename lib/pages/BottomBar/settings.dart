@@ -155,7 +155,9 @@ class _SettingsState extends State<Settings> {
                           ),
                         ),
                         CustomLiustTileItem(
-                          onTap: () {},
+                          onTap: () {
+                            print('Share app');
+                          },
                           nameService: 'Share App',
                           trailing: IconButton(
                             onPressed: () {},

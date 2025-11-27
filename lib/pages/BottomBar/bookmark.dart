@@ -74,6 +74,11 @@ class FavorietBody extends StatelessWidget {
                 pathIcon: 'assets/icons/hadith_icon.svg',
                 onTap: () {},
               ),
+              CustomFavorietPart(
+                partName: 'Hadith',
+                pathIcon: 'assets/icons/surah_text_icon.svg',
+                onTap: () {},
+              ),
             ],
           ),
         ),
@@ -90,12 +95,15 @@ class CustomHadithWidget extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Container(
       width: size.width,
-      height: size.height / 5,
+      height: size.height / 4,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: primaryColor,
-        ),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            blurRadius: 10,
+            color: primaryColor,
+          ),
+        ],
         image: DecorationImage(
           image: AssetImage(
             'assets/images/background.png',
@@ -117,6 +125,7 @@ class CustomHadithWidget extends StatelessWidget {
                   fontFamily: amiri,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
               ),
             ),
@@ -130,7 +139,7 @@ class CustomHadithWidget extends StatelessWidget {
                   fontFamily: poppins,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 18,
                 ),
               ),
             ),
@@ -143,6 +152,7 @@ class CustomHadithWidget extends StatelessWidget {
                   fontFamily: amiri,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
+                  fontSize: 18,
                 ),
               ),
             ),
@@ -170,11 +180,20 @@ class CustomFavorietPart extends StatelessWidget {
       padding: const EdgeInsets.all(12.0),
       child: InkWell(
         onTap: onTap,
+        splashColor: Colors.grey.shade400,
         borderRadius: BorderRadius.circular(20),
-        child: Container(
+        child: Ink(
           decoration: BoxDecoration(
-            border: Border.all(color: primaryColor),
+            color: Colors.white,
+            // border: Border.all(color: primaryColor),
             borderRadius: BorderRadius.circular(20),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                blurRadius: 4,
+                spreadRadius: 0,
+                color: Colors.black45,
+              ),
+            ],
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
