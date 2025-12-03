@@ -5,12 +5,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_ce_flutter/adapters.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:sakina/app_localizations.dart';
-import 'package:sakina/cubits/InternetCubit/internet_cubit.dart';
-import 'package:sakina/constants/colors.dart';
-import 'package:sakina/pages/bottom_bar_page.dart';
-import 'package:sakina/cubits/AudioCubit/audio_cubit.dart';
-import 'package:sakina/cubits/HomeCubit/home_cubit.dart';
-import 'package:sakina/pages/splash.dart';
+import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
+import 'package:sakina/core/constants/colors.dart';
+import 'package:sakina/features/home/pages/bottom_bar_page.dart';
+import 'package:sakina/features/home/cubit/AudioCubit/audio_cubit.dart';
+import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
+import 'package:sakina/splash.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 late final AudioHandler audioHandler;
