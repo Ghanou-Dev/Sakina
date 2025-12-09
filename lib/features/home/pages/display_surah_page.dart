@@ -5,11 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sakina/features/home/cubit/AudioCubit/audio_cubit.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 import 'package:sakina/core/constants/colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/features/home/widgets/custom_item_surah.dart';
 import 'package:sakina/features/home/widgets/custom_item_ayah.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 class DisplaySurahPage extends StatefulWidget {
   final CustomItemSurah surah;
@@ -220,10 +222,21 @@ class _BodyOfSurahState extends State<BodyOfSurah> {
       controller: scrollController,
       itemCount: widget.surah.ayahs.length,
       itemBuilder: (context, index) {
-        return CustomItemAyah(
-          surah: widget.surah,
-          ayah: widget.surah.ayahs[index],
-          ayahEnglish: widget.surahEnglish.ayahs[index],
+        return VisibilityDetector(
+          key: Key(widget.surah.ayahs[index].text),
+          onVisibilityChanged: (info) {
+            if (info.visibleFraction >= 0.8) {
+              context.read<AudioCubit>().changeLastSurahRead(
+                lastSurahRead: widget.surah.englishName,
+                lastAyahReadNumber: index + 1,
+              );
+            }
+          },
+          child: CustomItemAyah(
+            surah: widget.surah,
+            ayah: widget.surah.ayahs[index],
+            ayahEnglish: widget.surahEnglish.ayahs[index],
+          ),
         );
       },
     );

@@ -124,8 +124,10 @@ class _TadabborState extends State<Tadabbor>
                       children: [
                         InkWell(
                           onTap: () {
-                            context.read<AudioCubit>().lastSurahRead =
-                                state.customItemSuwars[index].englishName;
+                            context.read<AudioCubit>().changeLastSurahRead(
+                              lastSurahRead:
+                                  state.customItemSuwars[index].englishName,
+                            );
 
                             Navigator.of(context).push(
                               MaterialPageRoute(

@@ -47,6 +47,7 @@ dependencies:
   internet_connection_checker_plus: ^2.9.1
   hive_ce: ^2.15.1
   hive_ce_flutter: ^2.3.3
+  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   flutter_lints: ^5.0.0
@@ -72,6 +73,7 @@ flutter:
     - assets/l10n/
     - assets/images/
     - assets/icons/
+    - assets/data/
     - assets/ramadan_icons/
 
   

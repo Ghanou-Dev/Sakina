@@ -102,6 +102,8 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  ////////////////////////////// get text suwars ^ /////////////////////////////
+
   // get taffsir of all suwars in quran
   List<CustomItemSurah> taffsirOffAllSuwars = [];
   Future<void> getTaffsirOfAllSuwars() async {
@@ -183,6 +185,8 @@ class HomeCubit extends Cubit<HomeState> {
       emit(HomeFailure(message: '[ERROR] : $e '));
     }
   }
+
+  //////////////////////////////////////////////////////////////////////////////
 
   // create map for saved scroll offset
   final Map<String, double> _savedScrollOffsets = {};

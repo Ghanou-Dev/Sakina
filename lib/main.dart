@@ -31,11 +31,11 @@ void main() async {
   );
 
   await Hive.initFlutter();
-  Box<String> strBox = await Hive.openBox<String>('String');
+  // Box<String> strBox = await Hive.openBox<String>('String');
   // strBox.add('Ghani');
   // strBox.add('Khouloud');
-  List<String> couple = strBox.values.toList();
-  print(couple);
+  // List<String> couple = strBox.values.toList();
+  // print(couple);
   runApp(Sakina());
 }
 

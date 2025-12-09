@@ -20,9 +20,14 @@ class AudioCubit extends Cubit<AudioState> {
   String chikhName = '';
   bool lastPlayingState = false;
 
-  void changeLastSurah({required}) {
-    // lastSurahRead =
-    // emit()
+  void changeLastSurahRead({
+    required String lastSurahRead,
+    int lastAyahReadNumber = 0,
+  }) {
+    lastSurahRead = lastSurahRead;
+    emit(
+      AudioLastRead(lastRead: lastSurahRead, ayahNumber: lastAyahReadNumber),
+    );
   }
 
   Future<void> init() async {

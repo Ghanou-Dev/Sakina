@@ -145,7 +145,7 @@ class _BodyHomePageState extends State<BodyHomePage> {
                             );
                           } else {
                             return Text(
-                              context.read<AudioCubit>().lastSurahRead,
+                              'Al-Fatiha',
                               style: TextStyle(
                                 fontFamily: poppins,
                                 fontWeight: FontWeight.bold,
