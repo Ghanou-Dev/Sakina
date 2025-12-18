@@ -32,7 +32,7 @@ class ReciterModel {
       'server': server,
       'surah_total': surah_total,
       'moshaf_type': moshaf_type,
-      'surah_list': surah_list ,
+      'surah_list': surah_list,
     };
   }
 }

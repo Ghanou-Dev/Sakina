@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sakina/core/errors/internet_exceptions.dart';
+import 'package:sakina/core/errors/exceptions.dart';
 import 'package:sakina/features/home/models/reciter_chikh_model.dart';
 import 'package:sakina/features/home/models/surah_model.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';

@@ -1,5 +1,5 @@
 import 'package:sakina/core/helpers/api.dart';
-import 'package:sakina/core/errors/internet_exceptions.dart';
+import 'package:sakina/core/errors/exceptions.dart';
 import 'package:sakina/features/home/models/reciter_chikh_model.dart';
 
 class GetAllReciers {
