@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-class ApiInterceptor extends Interceptor {
+class Api1Interceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     // نقوم بتمرير الاشياء الثابتة مع كل طلب

@@ -1,4 +1,4 @@
-class ApiEndPoint {
+class Api1Endpoint {
   // base url : quranapi.pages.dev/api/
 
   static String getSpecialSurahInfo({required int surahNumber}) {

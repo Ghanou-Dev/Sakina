@@ -1,4 +1,4 @@
-import 'package:sakina/core/apis/api_keys.dart';
+import 'package:sakina/core/apis/quran_api1/api1_keys.dart';
 import 'package:sakina/features/home/models/audio_model.dart';
 
 class SuraModel {
@@ -34,19 +34,19 @@ class SuraModel {
 
   Map<String, dynamic> toMap() {
     return {
-      ApiKeys.surahName: surahName,
-      ApiKeys.surahNameArabic: surahNameArabic,
-      ApiKeys.surahNameArabicLong: surahNameArabicLong,
-      ApiKeys.surahNameTranslation: surahNameTranslation,
-      ApiKeys.revelationPlace: revelationPlace,
-      ApiKeys.totalAyah: totalAyah,
-      ApiKeys.surahNo: surahNo,
-      ApiKeys.audio: audio,
-      ApiKeys.english: english,
-      ApiKeys.arabic1: arabic1,
-      ApiKeys.arabic2: arabic2,
-      ApiKeys.bengali: bengali,
-      ApiKeys.urdu: urdu,
+      Api1Keys.surahName: surahName,
+      Api1Keys.surahNameArabic: surahNameArabic,
+      Api1Keys.surahNameArabicLong: surahNameArabicLong,
+      Api1Keys.surahNameTranslation: surahNameTranslation,
+      Api1Keys.revelationPlace: revelationPlace,
+      Api1Keys.totalAyah: totalAyah,
+      Api1Keys.surahNo: surahNo,
+      Api1Keys.audio: audio,
+      Api1Keys.english: english,
+      Api1Keys.arabic1: arabic1,
+      Api1Keys.arabic2: arabic2,
+      Api1Keys.bengali: bengali,
+      Api1Keys.urdu: urdu,
     };
   }
 }

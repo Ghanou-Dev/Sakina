@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:sakina/core/dto/surah_dto.dart';
 import 'package:sakina/core/errors/failurs.dart';
 import 'package:sakina/core/errors/exceptions.dart';
-import 'package:sakina/core/services/qurane_service.dart';
+import 'package:sakina/core/services/quran_api1_services/qurane_service.dart';
 import 'package:sakina/features/home/models/audio_model.dart';
 import 'package:sakina/features/home/models/aya_model.dart';
 import 'package:sakina/features/home/models/sura_model.dart';

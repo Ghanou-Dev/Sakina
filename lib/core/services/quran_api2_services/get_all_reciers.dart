@@ -1,4 +1,4 @@
-import 'package:sakina/core/helpers/api.dart';
+import 'package:sakina/core/apis/http_consumer.dart';
 import 'package:sakina/core/errors/exceptions.dart';
 import 'package:sakina/features/home/models/reciter_chikh_model.dart';
 
@@ -7,7 +7,7 @@ class GetAllReciers {
     // يمكن طلبه بعد جلب البيانات جميع اللغات
     final String url = 'https://www.mp3quran.net/api/v3/reciters?language=ar';
     try {
-      final jsonData = await Api.get(url: url, keyMap: 'reciters');
+      final jsonData = await HttpConsumer.get(url: url, keyMap: 'reciters');
       List<ReciterChikhModel> allReciters = (jsonData as List<dynamic>)
           .map((reciter) => ReciterChikhModel.fromJson(reciter))
           .toList();

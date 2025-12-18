@@ -180,7 +180,7 @@ class CustomFavorietPart extends StatelessWidget {
       padding: const EdgeInsets.all(12.0),
       child: InkWell(
         onTap: onTap,
-        splashColor: Colors.grey.shade400,
+        splashColor: Colors.deepPurple.shade50,
         borderRadius: BorderRadius.circular(20),
         child: Ink(
           decoration: BoxDecoration(

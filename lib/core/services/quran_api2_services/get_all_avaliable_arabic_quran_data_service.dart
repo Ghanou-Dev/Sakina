@@ -1,4 +1,4 @@
-import 'package:sakina/core/helpers/api.dart';
+import 'package:sakina/core/apis/http_consumer.dart';
 import 'package:sakina/features/home/models/chikh_model.dart';
 
 class GetAllAvaliableArabicQuranDataService {
@@ -11,7 +11,7 @@ class GetAllAvaliableArabicQuranDataService {
     String url =
         'http://api.alquran.cloud/v1/edition?format=$format&language=$language&type=$type';
 
-    final data = await Api.get(url: url, keyMap: "data");
+    final data = await HttpConsumer.get(url: url, keyMap: "data");
     List<ChikhModel> listChikhes = (data as List<dynamic>)
         .map((d) => ChikhModel.fromJson(d))
         .toList();

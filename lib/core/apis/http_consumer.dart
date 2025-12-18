@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:sakina/core/errors/exceptions.dart';
 
-class Api {
+class HttpConsumer {
   static Future<dynamic> get({
     required String url,
     required String keyMap,

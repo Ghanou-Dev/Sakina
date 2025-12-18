@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sakina/core/errors/exceptions.dart';
 import 'package:sakina/features/home/models/reciter_chikh_model.dart';
 import 'package:sakina/features/home/models/surah_model.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';
-import 'package:sakina/core/services/get_all_reciers.dart';
-import 'package:sakina/core/services/get_all_suwars_with_identifir.dart';
+import 'package:sakina/core/services/quran_api2_services/get_all_reciers.dart';
+import 'package:sakina/core/services/quran_api2_services/get_all_suwars_with_identifir.dart';
 import 'package:sakina/features/home/widgets/custom_item_surah.dart';
 import 'package:sakina/features/home/widgets/reciter_chikh_item.dart';
 
@@ -102,8 +101,6 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  ////////////////////////////// get text suwars ^ /////////////////////////////
-
   // get taffsir of all suwars in quran
   List<CustomItemSurah> taffsirOffAllSuwars = [];
   Future<void> getTaffsirOfAllSuwars() async {
@@ -150,6 +147,7 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  // get audio suwars
   late List<ReciterChikhItem> reciterChikhs;
   Future<void> getAudioSuwars() async {
     int index = 0;
@@ -185,8 +183,6 @@ class HomeCubit extends Cubit<HomeState> {
       emit(HomeFailure(message: '[ERROR] : $e '));
     }
   }
-
-  //////////////////////////////////////////////////////////////////////////////
 
   // create map for saved scroll offset
   final Map<String, double> _savedScrollOffsets = {};

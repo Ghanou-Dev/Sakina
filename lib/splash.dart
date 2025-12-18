@@ -212,7 +212,6 @@ class _SpalshState extends State<Spalsh> {
   }
 
   Future<void> _getStarted(BuildContext context) async {
-    // final connectionState = context.read<InternetCubit>().isConnected;
     final bool isConnected = await InternetConnection().hasInternetAccess;
     if (isConnected == false) {
       _connectionStateDialog(

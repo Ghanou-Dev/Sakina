@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:sakina/core/apis/api_consumer.dart';
-import 'package:sakina/core/apis/api_end_point.dart';
+import 'package:sakina/core/apis/quran_api1/api1_endpoint.dart';
 import 'package:sakina/core/dto/surah_dto.dart';
 
 class QuraneService {
@@ -11,7 +11,7 @@ class QuraneService {
     final List<SurahDto> suwars = [];
     for (int i = 1; i <= 112; i++) {
       final response = await api.get(
-        ApiEndPoint.getSpecialSurahInfo(surahNumber: i),
+        Api1Endpoint.getSpecialSurahInfo(surahNumber: i),
       );
       final jsonData = jsonDecode(response);
       SurahDto surah = SurahDto.fromJson(jsonData);
@@ -25,7 +25,10 @@ class QuraneService {
     required int ayahNo,
   }) async {
     final response = await api.get(
-      ApiEndPoint.getSpecialAyahAudio(surahNumber: surahNo, ayahNumber: ayahNo),
+      Api1Endpoint.getSpecialAyahAudio(
+        surahNumber: surahNo,
+        ayahNumber: ayahNo,
+      ),
     );
     AudioDto ayahAudio = AudioDto.fromJson(response);
     return ayahAudio;

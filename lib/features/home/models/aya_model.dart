@@ -1,4 +1,4 @@
-import 'package:sakina/core/apis/api_keys.dart';
+import 'package:sakina/core/apis/quran_api1/api1_keys.dart';
 
 class AyaModel {
   final String reciter;
@@ -13,9 +13,9 @@ class AyaModel {
 
   Map<String, dynamic> toMap() {
     return {
-      ApiKeys.reciter: reciter,
-      ApiKeys.url: url,
-      ApiKeys.originalUrl: originalUrl,
+      Api1Keys.reciter: reciter,
+      Api1Keys.url: url,
+      Api1Keys.originalUrl: originalUrl,
     };
   }
 }

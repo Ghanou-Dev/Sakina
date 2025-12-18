@@ -1,4 +1,4 @@
-import 'package:sakina/core/apis/api_keys.dart';
+import 'package:sakina/core/apis/quran_api1/api1_keys.dart';
 
 class SurahDto {
   final String surahName;
@@ -33,37 +33,37 @@ class SurahDto {
 
   factory SurahDto.fromJson(jsonData) {
     return SurahDto(
-      surahName: jsonData[ApiKeys.surahName],
-      surahNameArabic: jsonData[ApiKeys.surahNameArabic],
-      surahNameArabicLong: jsonData[ApiKeys.surahNameArabicLong],
-      surahNameTranslation: jsonData[ApiKeys.surahNameTranslation],
-      revelationPlace: jsonData[ApiKeys.revelationPlace],
-      totalAyah: jsonData[ApiKeys.totalAyah],
-      surahNo: jsonData[ApiKeys.surahNo],
-      audio: AudioDto.fromJson(jsonData[ApiKeys.audio]),
-      english: jsonData[ApiKeys.english],
-      arabic1: jsonData[ApiKeys.arabic1],
-      arabic2: jsonData[ApiKeys.arabic2],
-      bengali: jsonData[ApiKeys.bengali],
-      urdu: [ApiKeys.urdu],
+      surahName: jsonData[Api1Keys.surahName],
+      surahNameArabic: jsonData[Api1Keys.surahNameArabic],
+      surahNameArabicLong: jsonData[Api1Keys.surahNameArabicLong],
+      surahNameTranslation: jsonData[Api1Keys.surahNameTranslation],
+      revelationPlace: jsonData[Api1Keys.revelationPlace],
+      totalAyah: jsonData[Api1Keys.totalAyah],
+      surahNo: jsonData[Api1Keys.surahNo],
+      audio: AudioDto.fromJson(jsonData[Api1Keys.audio]),
+      english: jsonData[Api1Keys.english],
+      arabic1: jsonData[Api1Keys.arabic1],
+      arabic2: jsonData[Api1Keys.arabic2],
+      bengali: jsonData[Api1Keys.bengali],
+      urdu: [Api1Keys.urdu],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      ApiKeys.surahName: surahName,
-      ApiKeys.surahNameArabic: surahNameArabic,
-      ApiKeys.surahNameArabicLong: surahNameArabicLong,
-      ApiKeys.surahNameTranslation: surahNameTranslation,
-      ApiKeys.revelationPlace: revelationPlace,
-      ApiKeys.totalAyah: totalAyah,
-      ApiKeys.surahNo: surahNo,
-      ApiKeys.audio: audio,
-      ApiKeys.english: english,
-      ApiKeys.arabic1: arabic1,
-      ApiKeys.arabic2: arabic2,
-      ApiKeys.bengali: bengali,
-      ApiKeys.urdu: urdu,
+      Api1Keys.surahName: surahName,
+      Api1Keys.surahNameArabic: surahNameArabic,
+      Api1Keys.surahNameArabicLong: surahNameArabicLong,
+      Api1Keys.surahNameTranslation: surahNameTranslation,
+      Api1Keys.revelationPlace: revelationPlace,
+      Api1Keys.totalAyah: totalAyah,
+      Api1Keys.surahNo: surahNo,
+      Api1Keys.audio: audio,
+      Api1Keys.english: english,
+      Api1Keys.arabic1: arabic1,
+      Api1Keys.arabic2: arabic2,
+      Api1Keys.bengali: bengali,
+      Api1Keys.urdu: urdu,
     };
   }
 }
@@ -81,17 +81,17 @@ class AyahDto {
 
   factory AyahDto.fromJson(jsonData) {
     return AyahDto(
-      reciter: jsonData[ApiKeys.reciter],
-      url: jsonData[ApiKeys.url],
-      originalUrl: jsonData[ApiKeys.originalUrl],
+      reciter: jsonData[Api1Keys.reciter],
+      url: jsonData[Api1Keys.url],
+      originalUrl: jsonData[Api1Keys.originalUrl],
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      ApiKeys.reciter: reciter,
-      ApiKeys.url: url,
-      ApiKeys.originalUrl: originalUrl,
+      Api1Keys.reciter: reciter,
+      Api1Keys.url: url,
+      Api1Keys.originalUrl: originalUrl,
     };
   }
 }
