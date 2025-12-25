@@ -3,12 +3,10 @@ import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sakina/core/constants/colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
-import 'package:sakina/features/home/models/reciter_chikh_model.dart';
 
-class ReciterChikhItem extends StatelessWidget {
+class ChikhItem extends StatelessWidget {
   final int index;
-  final ReciterChikhModel chikh;
-  const ReciterChikhItem({required this.index, required this.chikh, super.key});
+  const ChikhItem({required this.index, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +66,7 @@ class ReciterChikhItem extends StatelessWidget {
               ),
               Gap(20),
               Text(
-                chikh.name,
+                ' chikh.name',
                 style: TextStyle(
                   fontFamily: amiri,
                   fontWeight: FontWeight.bold,

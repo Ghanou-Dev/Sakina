@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-class Api1Interceptor extends Interceptor {
+class QuranApiInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     // نقوم بتمرير الاشياء الثابتة مع كل طلب

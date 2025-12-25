@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
-import 'package:sakina/features/home/cubit/AudioCubit/audio_cubit.dart';
-import 'package:sakina/features/home/cubit/AudioCubit/audio_state.dart';
 import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
 import 'package:sakina/core/constants/colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
@@ -131,56 +129,24 @@ class _BodyHomePageState extends State<BodyHomePage> {
                         ),
                       ),
                       Gap(20),
-                      BlocBuilder<AudioCubit, AudioState>(
-                        builder: (context, state) {
-                          if (state is AudioLastRead) {
-                            return Text(
-                              state.lastRead,
-                              style: TextStyle(
-                                fontFamily: poppins,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 20,
-                              ),
-                            );
-                          } else {
-                            return Text(
-                              'Al-Fatiha',
-                              style: TextStyle(
-                                fontFamily: poppins,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 20,
-                              ),
-                            );
-                          }
-                        },
+                      Text(
+                        'Al-Fatiha',
+                        style: TextStyle(
+                          fontFamily: poppins,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
                       Gap(5),
-                      BlocBuilder<AudioCubit, AudioState>(
-                        builder: (context, state) {
-                          if (state is AudioLastRead) {
-                            return Text(
-                              '${'Ayah N° :  '.tr(context)}${state.ayahNumber}',
-                              style: TextStyle(
-                                fontFamily: poppins,
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            );
-                          } else {
-                            return Text(
-                              '${'Ayah N° :  '.tr(context)}${context.read<AudioCubit>().currentAyah}',
-                              style: TextStyle(
-                                fontFamily: poppins,
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            );
-                          }
-                        },
+                      Text(
+                        'nnnnnnn',
+                        style: TextStyle(
+                          fontFamily: poppins,
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
@@ -199,9 +165,7 @@ class _BodyHomePageState extends State<BodyHomePage> {
           ),
           Gap(20),
           Expanded(
-            child: CustomTabBar(
-              length: 4,
-            ),
+            child: CustomTabBar(length: 4),
           ),
         ],
       ),

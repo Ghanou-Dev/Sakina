@@ -1,5 +1,7 @@
-import 'package:sakina/features/home/widgets/custom_item_surah.dart';
-import 'package:sakina/features/home/widgets/reciter_chikh_item.dart';
+import 'package:sakina/core/errors/failurs.dart';
+import 'package:sakina/features/home/models/audio_model.dart';
+import 'package:sakina/features/home/models/surah_model.dart';
+import 'package:sakina/features/home/widgets/item_surah_info.dart';
 
 abstract class HomeState {}
 
@@ -7,25 +9,26 @@ class HomeInitial extends HomeState {}
 
 class HomeLoading extends HomeState {}
 
-class HomeDataLoaded extends HomeState {
-  final List<CustomItemSurah> customItemSuwars;
-  final List<CustomItemSurah> customItemSuwarsEnglish;
-  final List<CustomItemSurah> taffsirOffAllSuwars;
-  final List<ReciterChikhItem> reciterChikhs;
-  HomeDataLoaded({
-    required this.customItemSuwars,
-    required this.customItemSuwarsEnglish,
-    required this.reciterChikhs,
-    required this.taffsirOffAllSuwars,
-  });
+class HomeSurahLoading extends HomeState {}
+
+class HomeAyahLoading extends HomeState {}
+
+class HomeInfoSuwarsLoaded extends HomeState {
+  List<ItemSurahInfo> infoSuwars;
+  HomeInfoSuwarsLoaded({required this.infoSuwars});
+}
+
+class HomeSurahLoaded extends HomeState {
+  SurahModel surah;
+  HomeSurahLoaded({required this.surah});
+}
+
+class HomeAyahLoaded extends HomeState {
+  AudioModel ayahAudio;
+  HomeAyahLoaded({required this.ayahAudio});
 }
 
 class HomeFailure extends HomeState {
-  final String message;
-  HomeFailure({required this.message});
-}
-
-class HomeTimeoutFailure extends HomeState {
-  final String message;
-  HomeTimeoutFailure({required this.message});
+  Failure failure;
+  HomeFailure({required this.failure});
 }

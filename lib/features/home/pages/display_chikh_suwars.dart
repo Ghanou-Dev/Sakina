@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sakina/core/constants/colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
-import 'package:sakina/features/home/widgets/custom_item_surah.dart';
-import 'package:sakina/features/home/widgets/item_mushaf.dart';
-import 'package:sakina/features/home/widgets/reciter_chikh_item.dart';
-import 'package:sakina/features/home/widgets/suwars_list_view.dart';
+import 'package:sakina/features/home/widgets/chikh_item.dart';
 
 class DisplayChikhSuwars extends StatelessWidget {
-  final ReciterChikhItem chikhItem;
-  final List<CustomItemSurah> suwars;
+  final ChikhItem chikhItem;
   const DisplayChikhSuwars({
     required this.chikhItem,
-    required this.suwars,
     super.key,
   });
 
@@ -23,7 +18,7 @@ class DisplayChikhSuwars extends StatelessWidget {
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
         title: Text(
-          chikhItem.chikh.name,
+          'chikhItem.chikh.name',
           style: TextStyle(
             fontFamily: amiri,
             fontWeight: FontWeight.bold,
@@ -60,21 +55,6 @@ class DisplayChikhSuwars extends StatelessWidget {
                   color: theredColor,
                   fontSize: 22,
                 ),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: chikhItem.chikh.moshaf.length,
-                itemBuilder: (context, index) {
-                  return ItemMushaf(
-                    suwarsListItem: SuwarsListView(
-                      mushaf: chikhItem.chikh.moshaf,
-                      suwars: suwars,
-                      chikh: chikhItem.chikh,
-                      index: index,
-                    ),
-                  );
-                },
               ),
             ),
           ],

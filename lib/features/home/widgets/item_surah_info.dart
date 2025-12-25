@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sakina/core/constants/colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
-import 'package:sakina/features/home/models/ayah_model.dart';
 
-class CustomItemSurah extends StatelessWidget {
-  final int number;
-  final String name;
-  final String englishName;
-  final String englishNameTranslation;
-  final String revelationType;
-  final List<AyahModel> ayahs;
-  const CustomItemSurah({
+class ItemSurahInfo extends StatelessWidget {
+  final String surahName;
+  final String surahNameArabic;
+  final String surahNameArabicLong;
+  final String surahNameTranslation;
+  final String revelationPlace;
+  final int totalAyah;
+  final int index;
+  const ItemSurahInfo({
     super.key,
-    required this.number,
-    required this.name,
-    required this.englishName,
-    required this.englishNameTranslation,
-    required this.revelationType,
-    required this.ayahs,
+    required this.surahName,
+    required this.surahNameArabic,
+    required this.surahNameArabicLong,
+    required this.surahNameTranslation,
+    required this.revelationPlace,
+    required this.totalAyah,
+    required this.index,
   });
 
   @override
@@ -35,7 +36,7 @@ class CustomItemSurah extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text(
-                    '$number',
+                    '$index',
                     style: TextStyle(
                       fontFamily: poppins,
                       color: theredColor,
@@ -53,7 +54,7 @@ class CustomItemSurah extends StatelessWidget {
             ],
           ),
           title: Text(
-            englishName,
+            surahName,
             style: TextStyle(
               fontFamily: poppins,
               fontWeight: FontWeight.bold,
@@ -64,7 +65,7 @@ class CustomItemSurah extends StatelessWidget {
           subtitle: Row(
             children: [
               Text(
-                revelationType,
+                revelationPlace,
                 style: TextStyle(
                   fontFamily: poppins,
                   color: secondaryColor,
@@ -83,7 +84,7 @@ class CustomItemSurah extends StatelessWidget {
               ),
               Gap(4),
               Text(
-                '${ayahs.length} VERSES',
+                '$totalAyah VERSES',
                 style: TextStyle(
                   fontFamily: poppins,
                   color: secondaryColor,
@@ -93,7 +94,7 @@ class CustomItemSurah extends StatelessWidget {
             ],
           ),
           trailing: Text(
-            name,
+            surahNameArabicLong,
             style: TextStyle(
               fontFamily: amiri,
               fontWeight: FontWeight.bold,

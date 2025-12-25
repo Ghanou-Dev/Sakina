@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
 import 'package:sakina/core/constants/colors.dart';
@@ -25,21 +24,7 @@ class _BottomBarPageState extends State<BottomBarPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {});
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    loadData();
-  }
-
-  Future<void> loadData() async {
-    if (!mounted) return;
-    if (await InternetConnection().hasInternetAccess) {
-      await context.read<HomeCubit>().getAudioSuwars();
-      await context.read<HomeCubit>().getTaffsirOfAllSuwars();
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {});
   }
 
   int currentIndex = 0;
@@ -77,8 +62,7 @@ class _BottomBarPageState extends State<BottomBarPage> {
           if (state is InternetConnectionState) {
             if (state.isConnected) {
               _showMessage('Connected'.tr(context), true);
-              await context.read<HomeCubit>().getSuwars();
-              loadData();
+              await context.read<HomeCubit>().getSuwarsInfo();
             } else {
               _showMessage('no_internet'.tr(context), false);
             }

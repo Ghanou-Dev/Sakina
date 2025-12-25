@@ -1,13 +1,14 @@
-import 'package:sakina/core/apis/quran/quran_api_keys.dart';
+import 'package:flutter/material.dart';
 import 'package:sakina/features/home/models/audio_model.dart';
 
-class SurahModel {
+class ItemSurah extends StatelessWidget {
   final String surahName;
   final String surahNameArabic;
   final String surahNameArabicLong;
   final String surahNameTranslation;
   final String revelationPlace;
   final int totalAyah;
+  final int index;
   final int surahNo;
   final AudioModel audio;
   final List<dynamic> english;
@@ -15,14 +16,15 @@ class SurahModel {
   final List<dynamic> arabic2;
   final List<dynamic> bengali;
   final List<dynamic> urdu;
-
-  SurahModel({
+  const ItemSurah({
+    super.key,
     required this.surahName,
     required this.surahNameArabic,
     required this.surahNameArabicLong,
     required this.surahNameTranslation,
     required this.revelationPlace,
     required this.totalAyah,
+    required this.index,
     required this.surahNo,
     required this.audio,
     required this.english,
@@ -32,21 +34,10 @@ class SurahModel {
     required this.urdu,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      QuranApiKeys.surahName: surahName,
-      QuranApiKeys.surahNameArabic: surahNameArabic,
-      QuranApiKeys.surahNameArabicLong: surahNameArabicLong,
-      QuranApiKeys.surahNameTranslation: surahNameTranslation,
-      QuranApiKeys.revelationPlace: revelationPlace,
-      QuranApiKeys.totalAyah: totalAyah,
-      QuranApiKeys.surahNo: surahNo,
-      QuranApiKeys.audio: audio,
-      QuranApiKeys.english: english,
-      QuranApiKeys.arabic1: arabic1,
-      QuranApiKeys.arabic2: arabic2,
-      QuranApiKeys.bengali: bengali,
-      QuranApiKeys.urdu: urdu,
-    };
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [],
+    );
   }
 }

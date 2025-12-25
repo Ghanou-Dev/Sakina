@@ -1,11 +1,11 @@
-import 'package:sakina/features/home/models/aya_model.dart';
+import 'package:sakina/features/home/models/ayah_model.dart';
 
 class AudioModel {
-  final AyaModel affasi;
-  final AyaModel shatri;
-  final AyaModel qatami;
-  final AyaModel adDosari;
-  final AyaModel arRifai;
+  final AyahModel affasi;
+  final AyahModel shatri;
+  final AyahModel qatami;
+  final AyahModel adDosari;
+  final AyahModel arRifai;
 
   AudioModel({
     required this.affasi,

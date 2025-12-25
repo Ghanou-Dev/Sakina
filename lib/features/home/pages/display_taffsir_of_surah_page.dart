@@ -1,17 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 import 'package:sakina/core/constants/colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
-import 'package:sakina/features/home/widgets/custom_item_surah.dart';
 
 class DisplayTaffsirOfSurahPage extends StatefulWidget {
-  final CustomItemSurah surahText;
-  final CustomItemSurah surahTaffsir;
   const DisplayTaffsirOfSurahPage({
-    required this.surahText,
-    required this.surahTaffsir,
     super.key,
   });
 
@@ -25,38 +18,6 @@ class _DisplayTaffsirOfSurahPageState extends State<DisplayTaffsirOfSurahPage> {
   Timer? debounced;
 
   @override
-  void initState() {
-    super.initState();
-    scrollController = ScrollController(
-      initialScrollOffset: getOffset(widget.surahText.englishName),
-    );
-    scrollController.addListener(onScroll);
-  }
-
-  double getOffset(String surahKey) {
-    final offset = context.read<HomeCubit>().getOffset(surahKey);
-    return offset;
-  }
-
-  void onScroll() {
-    debounced?.cancel();
-    debounced = Timer(Duration(milliseconds: 300), () {
-      context.read<HomeCubit>().saveOffset(
-        widget.surahText.englishName,
-        scrollController.offset,
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    scrollController.removeListener(onScroll);
-    scrollController.dispose();
-    debounced?.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -64,7 +25,7 @@ class _DisplayTaffsirOfSurahPageState extends State<DisplayTaffsirOfSurahPage> {
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
         title: Text(
-          'Taffsir of surah ${widget.surahText.englishName}',
+          'Taffsir of surah ',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontFamily: poppins,
@@ -79,11 +40,11 @@ class _DisplayTaffsirOfSurahPageState extends State<DisplayTaffsirOfSurahPage> {
             Expanded(
               child: ListView.builder(
                 controller: scrollController,
-                itemCount: widget.surahTaffsir.ayahs.length,
+                itemCount: 10,
                 itemBuilder: (context, index) {
                   return CustomTaffsirOfSurah(
-                    ayahTaffsir: widget.surahTaffsir.ayahs[index].text,
-                    ayahText: widget.surahText.ayahs[index].text,
+                    ayahTaffsir: 'widget.surahTaffsir.ayahs[index].text',
+                    ayahText: 'widget.surahText.ayahs[index].text',
                     number: index += 1,
                   );
                 },

@@ -1,188 +1,106 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sakina/core/errors/exceptions.dart';
-import 'package:sakina/features/home/models/reciter_chikh_model.dart';
-import 'package:sakina/features/home/models/surah_model.dart';
+import 'package:sakina/core/errors/failurs.dart';
+import 'package:sakina/features/home/models/audio_model.dart';
+import 'package:sakina/features/home/models/surah_info_model.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';
-import 'package:sakina/core/services/quran_api2_services/get_all_reciers.dart';
-import 'package:sakina/core/services/quran_api2_services/get_all_suwars_with_identifir.dart';
-import 'package:sakina/features/home/widgets/custom_item_surah.dart';
-import 'package:sakina/features/home/widgets/reciter_chikh_item.dart';
+import 'package:sakina/features/home/models/surah_model.dart';
+import 'package:sakina/features/home/repositories/quran_repository.dart';
+import 'package:sakina/features/home/widgets/item_surah_info.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeInitial());
+  final QuranRepository quranRepo;
+  HomeCubit({required this.quranRepo}) : super(HomeInitial());
 
-  late List<CustomItemSurah> suwars;
-  late List<CustomItemSurah> suwarsEnglish;
+  bool isTapped = false;
 
-  Future<void> getSuwars() async {
+  late List<ItemSurahInfo> allSuwarsInfo;
+  int index = 0;
+  Future<void> getSuwarsInfo() async {
     emit(HomeLoading());
 
-    try {
-      final List<SurahModel> listSuwars =
-          await GetAllSuwarsWithIdentifir.call(
-            identifir: 'ar.abdurrahmaansudais',
-          ).timeout(
-            Duration(seconds: 40),
-            onTimeout: () {
-              throw InternetTimeoutEception(message: '');
-            },
-          );
-      suwars = listSuwars
-          .map(
-            (item) => CustomItemSurah(
-              number: item.number,
-              name: item.name,
-              englishName: item.englishName,
-              englishNameTranslation: item.englishNameTranslation,
-              revelationType: item.revelationType,
-              ayahs: item.ayahs,
-            ),
-          )
-          .toList();
-    } on InternetTimeoutEception catch (e) {
-      print('[LOG]: $e');
-      emit(
-        HomeTimeoutFailure(
-          message: 'Your Internet Connection is wake! Try again later',
-        ),
-      );
-    } on NoInternetException catch (e) {
-      print('[LOG]: $e');
-      emit(HomeFailure(message: 'No Internet!'));
-    } catch (e) {
-      print('[LOG]: $e');
-      emit(HomeFailure(message: 'Error! Try again later'));
-    }
+    //  معالجة بطء التحميل و تعدل زر تشغيل و ايقاف صوت الاية
 
-    try {
-      final List<SurahModel> listSuwarsEnglish =
-          await GetAllSuwarsWithIdentifir.call(
-            identifir: 'en.asad',
-          ).timeout(
-            Duration(seconds: 40),
-            onTimeout: () {
-              throw InternetTimeoutEception(message: 'Timeout exception');
-            },
+    Either<Failure, List<SurahInfoModel>> data = await quranRepo
+        .getSuwarsInfo();
+    await Future.delayed(Duration(seconds: 2));
+    data.fold(
+      (failure) {
+        emit(HomeFailure(failure: failure));
+      },
+      (quranDAta) {
+        allSuwarsInfo = quranDAta.map((surah) {
+          index++;
+          return ItemSurahInfo(
+            index: index,
+            surahName: surah.surahName,
+            surahNameArabic: surah.surahNameArabic,
+            surahNameArabicLong: surah.surahNameArabicLong,
+            surahNameTranslation: surah.surahNameTranslation,
+            revelationPlace: surah.revelationPlace,
+            totalAyah: surah.totalAyah,
           );
-      suwarsEnglish = listSuwarsEnglish
-          .map(
-            (item) => CustomItemSurah(
-              number: item.number,
-              name: item.name,
-              englishName: item.englishName,
-              englishNameTranslation: item.englishNameTranslation,
-              revelationType: item.revelationType,
-              ayahs: item.ayahs,
-            ),
-          )
-          .toList();
+        }).toList();
 
-      emit(
-        HomeDataLoaded(
-          customItemSuwars: suwars,
-          customItemSuwarsEnglish: suwarsEnglish,
-          taffsirOffAllSuwars: [],
-          reciterChikhs: [],
-        ),
-      );
-    } on InternetTimeoutEception catch (e) {
-      print('[LOG]: $e');
-      emit(
-        HomeTimeoutFailure(message: 'Please check your network and try again!'),
-      );
-    } on NoInternetException catch (e) {
-      print('[LOG]: $e');
-      emit(HomeFailure(message: 'No Internet!'));
-    } catch (e) {
-      print('[LOG]: $e');
-      emit(HomeFailure(message: 'Error! Try again later'));
-    }
+        emit(HomeInfoSuwarsLoaded(infoSuwars: allSuwarsInfo));
+      },
+    );
   }
 
-  // get taffsir of all suwars in quran
-  List<CustomItemSurah> taffsirOffAllSuwars = [];
-  Future<void> getTaffsirOfAllSuwars() async {
-    try {
-      List<SurahModel> taffsirSuwars =
-          await GetAllSuwarsWithIdentifir.call(
-            identifir: 'ar.muyassar',
-          ).timeout(
-            Duration(seconds: 40),
-            onTimeout: () {
-              throw InternetTimeoutEception(
-                message: 'Internet conections State is Wake!',
-              );
-            },
-          );
-      taffsirOffAllSuwars = taffsirSuwars
-          .map(
-            (surah) => CustomItemSurah(
-              number: surah.number,
-              name: surah.name,
-              englishName: surah.englishName,
-              englishNameTranslation: surah.englishNameTranslation,
-              revelationType: surah.revelationType,
-              ayahs: surah.ayahs,
-            ),
-          )
-          .toList();
-      emit(
-        HomeDataLoaded(
-          customItemSuwars: suwars,
-          customItemSuwarsEnglish: suwarsEnglish,
-          taffsirOffAllSuwars: taffsirOffAllSuwars,
-          reciterChikhs: reciterChikhs,
-        ),
-      );
-      log('Taffsir of all suwars has loaded');
-    } on InternetTimeoutEception catch (e) {
-      print(e);
-      emit(HomeTimeoutFailure(message: 'Timeout Exceotion !'));
-    } on NoInternetException catch (e) {
-      emit(HomeFailure(message: e.message));
-    } catch (e) {
-      emit(HomeFailure(message: 'Error : $e'));
-    }
-  }
-
-  // get audio suwars
-  late List<ReciterChikhItem> reciterChikhs;
-  Future<void> getAudioSuwars() async {
-    int index = 0;
-    try {
-      List<ReciterChikhModel> reciterChikhList =
-          await GetAllReciers.getReciters().timeout(
-            Duration(seconds: 40),
-            onTimeout: () {
-              throw InternetTimeoutEception(message: 'Timeout Exception');
-            },
-          );
-      reciterChikhs = reciterChikhList.map((chikh) {
-        index++;
-        return ReciterChikhItem(
-          chikh: chikh,
-          index: index,
+  late SurahModel specialSurah;
+  Future<void> getSpecialSurah({required int surahNumber}) async {
+    emit(HomeSurahLoading());
+    final data = await quranRepo.getSpecialSurah(surahNumber: surahNumber);
+    data.fold(
+      (failure) {},
+      (sura) {
+        specialSurah = SurahModel(
+          surahName: sura.surahName,
+          surahNameArabic: sura.surahNameArabic,
+          surahNameArabicLong: sura.surahNameArabicLong,
+          surahNameTranslation: sura.surahNameTranslation,
+          revelationPlace: sura.revelationPlace,
+          totalAyah: sura.totalAyah,
+          surahNo: sura.surahNo,
+          audio: sura.audio,
+          english: sura.english,
+          arabic1: sura.arabic1,
+          arabic2: sura.arabic2,
+          bengali: sura.bengali,
+          urdu: sura.urdu,
         );
-      }).toList();
-      emit(
-        HomeDataLoaded(
-          customItemSuwars: suwars,
-          customItemSuwarsEnglish: suwarsEnglish,
-          taffsirOffAllSuwars: taffsirOffAllSuwars,
-          reciterChikhs: reciterChikhs,
-        ),
-      );
-    } on InternetTimeoutEception catch (e) {
-      print(e);
-      emit(HomeTimeoutFailure(message: 'Timeout Exception'));
-    } on NoInternetException catch (e) {
-      emit(HomeFailure(message: e.message));
-    } catch (e) {
-      emit(HomeFailure(message: '[ERROR] : $e '));
-    }
+      },
+    );
+    emit(HomeSurahLoaded(surah: specialSurah));
   }
+
+  late AudioModel audioAyah;
+  late int ayahNumber;
+  Future<void> getSpecialAyahAudio({
+    required int surahNo,
+    required int ayahNo,
+  }) async {
+    emit(HomeAyahLoading());
+    final data = await quranRepo.getSpecialAyahAudio(
+      surahNo: surahNo,
+      ayahNo: ayahNo,
+    );
+    ayahNumber = ayahNo;
+    data.fold(
+      (failure) {
+        log('error loading aya audio');
+      },
+      (ayah) {
+        audioAyah = ayah;
+
+        emit(HomeAyahLoaded(ayahAudio: audioAyah));
+      },
+    );
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
 
   // create map for saved scroll offset
   final Map<String, double> _savedScrollOffsets = {};

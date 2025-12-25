@@ -1,15 +1,18 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:hive_ce_flutter/adapters.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:sakina/app_localizations.dart';
+import 'package:sakina/core/apis/dio_consumer.dart';
 import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
 import 'package:sakina/core/constants/colors.dart';
-import 'package:sakina/features/home/pages/bottom_bar_page.dart';
+import 'package:sakina/core/services/quran_services/qurane_service.dart';
 import 'package:sakina/features/home/cubit/AudioCubit/audio_cubit.dart';
+import 'package:sakina/features/home/pages/bottom_bar_page.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
+import 'package:sakina/features/home/repositories/quran_repository.dart';
 import 'package:sakina/splash.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,24 +33,28 @@ void main() async {
     AudioSessionConfiguration.music(),
   );
 
-  await Hive.initFlutter();
-  // Box<String> strBox = await Hive.openBox<String>('String');
-  // strBox.add('Ghani');
-  // strBox.add('Khouloud');
-  // List<String> couple = strBox.values.toList();
-  // print(couple);
-  runApp(Sakina());
+  final Dio d = Dio();
+  runApp(
+    Sakina(
+      dio: d,
+    ),
+  );
 }
 
 class Sakina extends StatelessWidget {
-  const Sakina({super.key});
+  final Dio dio;
+  const Sakina({super.key, required this.dio});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => HomeCubit(),
+          create: (context) => HomeCubit(
+            quranRepo: QuranRepository(
+              quraneService: QuraneService(api: DioConsumer(dio: dio)),
+            ),
+          ),
         ),
         BlocProvider(
           create: (context) => AudioCubit(),

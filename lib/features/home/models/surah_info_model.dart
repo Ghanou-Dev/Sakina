@@ -1,52 +1,29 @@
 import 'package:sakina/core/apis/quran/quran_api_keys.dart';
-import 'package:sakina/core/dto/audio_dto.dart';
 
-class SurahDto {
+class SurahInfoModel {
   final String surahName;
   final String surahNameArabic;
   final String surahNameArabicLong;
   final String surahNameTranslation;
   final String revelationPlace;
   final int totalAyah;
-  final int surahNo;
-  final AudioDto audio;
-  final List<dynamic> english;
-  final List<dynamic> arabic1;
-  final List<dynamic> arabic2;
-  final List<dynamic> bengali;
-  final List<dynamic> urdu;
-
-  SurahDto({
+  SurahInfoModel({
     required this.surahName,
     required this.surahNameArabic,
     required this.surahNameArabicLong,
     required this.surahNameTranslation,
     required this.revelationPlace,
     required this.totalAyah,
-    required this.surahNo,
-    required this.audio,
-    required this.english,
-    required this.arabic1,
-    required this.arabic2,
-    required this.bengali,
-    required this.urdu,
   });
 
-  factory SurahDto.fromJson(jsonData) {
-    return SurahDto(
+  factory SurahInfoModel.fromJson(jsonData) {
+    return SurahInfoModel(
       surahName: jsonData[QuranApiKeys.surahName],
       surahNameArabic: jsonData[QuranApiKeys.surahNameArabic],
       surahNameArabicLong: jsonData[QuranApiKeys.surahNameArabicLong],
       surahNameTranslation: jsonData[QuranApiKeys.surahNameTranslation],
       revelationPlace: jsonData[QuranApiKeys.revelationPlace],
       totalAyah: jsonData[QuranApiKeys.totalAyah],
-      surahNo: jsonData[QuranApiKeys.surahNo],
-      audio: AudioDto.fromJson(jsonData[QuranApiKeys.audio]),
-      english: jsonData[QuranApiKeys.english],
-      arabic1: jsonData[QuranApiKeys.arabic1],
-      arabic2: jsonData[QuranApiKeys.arabic2],
-      bengali: jsonData[QuranApiKeys.bengali],
-      urdu: [QuranApiKeys.urdu],
     );
   }
 
@@ -58,13 +35,6 @@ class SurahDto {
       QuranApiKeys.surahNameTranslation: surahNameTranslation,
       QuranApiKeys.revelationPlace: revelationPlace,
       QuranApiKeys.totalAyah: totalAyah,
-      QuranApiKeys.surahNo: surahNo,
-      QuranApiKeys.audio: audio,
-      QuranApiKeys.english: english,
-      QuranApiKeys.arabic1: arabic1,
-      QuranApiKeys.arabic2: arabic2,
-      QuranApiKeys.bengali: bengali,
-      QuranApiKeys.urdu: urdu,
     };
   }
 }

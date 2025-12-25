@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sakina/core/constants/colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
-import 'package:sakina/features/home/cubit/AudioCubit/audio_cubit.dart';
+import 'package:sakina/core/helpers/extansions.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';
-import 'package:sakina/core/helpers/extansions.dart';
-import 'package:sakina/features/home/pages/display_chikh_suwars.dart';
-import 'package:sakina/features/home/pages/display_qurane_page.dart';
 import 'package:sakina/features/home/pages/display_surah_page.dart';
-import 'package:sakina/features/home/pages/display_taffsir_of_surah_page.dart';
+import 'package:sakina/features/home/widgets/item_surah_info.dart';
 
 class CustomTabBar extends StatefulWidget {
   final int length;
@@ -110,70 +107,96 @@ class _TadabborState extends State<Tadabbor>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
-      children: [
-        Expanded(
-          child: BlocBuilder<HomeCubit, HomeState>(
-            builder: (context, state) {
-              if (state is HomeDataLoaded) {
-                return ListView.builder(
-                  controller: scrollController,
-                  itemCount: state.customItemSuwars.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            context.read<AudioCubit>().changeLastSurahRead(
-                              lastSurahRead:
-                                  state.customItemSuwars[index].englishName,
-                            );
-
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => DisplaySurahPage(
-                                  surah: state.customItemSuwars[index],
-                                  surahEnglish:
-                                      state.customItemSuwarsEnglish[index],
-                                ),
-                              ),
-                            );
-                          },
-                          child: state.customItemSuwars[index],
-                        ),
-                        Divider(color: Colors.grey.shade300),
-                      ],
-                    );
-                  },
-                );
-              } else if (state is HomeTimeoutFailure) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/no-wifi.png',
-                        width: 150,
-                        height: 150,
-                      ),
-                      Text(
-                        "Please Check your internet connection and try again"
-                            .tr(context),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+    return BlocConsumer<HomeCubit, HomeState>(
+      listener: (context, state) {
+        if (state is HomeSurahLoaded) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return DisplaySurahPage(surah: state.surah);
+              },
+            ),
+          );
+          context.read<HomeCubit>().isTapped = false;
+        }
+      },
+      builder: (context, state) {
+        if (state is HomeLoading) {
+          return Center(child: CircularProgressIndicator());
+        } else if (state is HomeInfoSuwarsLoaded) {
+          final infoSuwars = state.infoSuwars;
+          return ListView.builder(
+            itemCount: infoSuwars.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      ////
+                      if (context.read<HomeCubit>().isTapped) {
+                        return;
+                      }
+                      context.read<HomeCubit>().isTapped = true;
+                      ////
+                      await context.read<HomeCubit>().getSpecialSurah(
+                        surahNumber: index + 1,
+                      );
+                    },
+                    child: ItemSurahInfo(
+                      surahName: infoSuwars[index].surahName,
+                      surahNameArabic: infoSuwars[index].surahNameArabic,
+                      surahNameArabicLong:
+                          infoSuwars[index].surahNameArabicLong,
+                      surahNameTranslation:
+                          infoSuwars[index].surahNameTranslation,
+                      revelationPlace: infoSuwars[index].revelationPlace,
+                      totalAyah: infoSuwars[index].totalAyah,
+                      index: index + 1,
+                    ),
                   ),
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+                  Divider(),
+                ],
+              );
             },
-          ),
-        ),
-      ],
+          );
+        } else {
+          final infoSuwars = context.read<HomeCubit>().allSuwarsInfo;
+          return ListView.builder(
+            itemCount: infoSuwars.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      ////
+                      if (context.read<HomeCubit>().isTapped) {
+                        return;
+                      }
+                      context.read<HomeCubit>().isTapped = true;
+                      //
+                      await context.read<HomeCubit>().getSpecialSurah(
+                        surahNumber: index + 1,
+                      );
+                    },
+                    child: ItemSurahInfo(
+                      surahName: infoSuwars[index].surahName,
+                      surahNameArabic: infoSuwars[index].surahNameArabic,
+                      surahNameArabicLong:
+                          infoSuwars[index].surahNameArabicLong,
+                      surahNameTranslation:
+                          infoSuwars[index].surahNameTranslation,
+                      revelationPlace: infoSuwars[index].revelationPlace,
+                      totalAyah: infoSuwars[index].totalAyah,
+                      index: index + 1,
+                    ),
+                  ),
+                  Divider(),
+                ],
+              );
+            },
+          );
+        }
+      },
     );
   }
 }
@@ -192,69 +215,8 @@ class _ListenState extends State<Listen> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Builder(
-      builder: (context) {
-        return BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            if (state is HomeDataLoaded) {
-              if (state.reciterChikhs.isNotEmpty &&
-                  state.customItemSuwars.isNotEmpty) {
-                return ListView.builder(
-                  itemCount: state.reciterChikhs.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => DisplayChikhSuwars(
-                                  chikhItem: state.reciterChikhs[index],
-                                  suwars: state.customItemSuwars,
-                                ),
-                              ),
-                            );
-                          },
-                          child: state.reciterChikhs[index],
-                        ),
-                        Divider(color: Colors.grey.shade300),
-                      ],
-                    );
-                  },
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            } else if (state is HomeTimeoutFailure) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/no-wifi.png',
-                      width: 150,
-                      height: 150,
-                    ),
-                    Text(
-                      "Please Check your internet connection and try again".tr(
-                        context,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              );
-            } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },
-        );
-      },
+    return Center(
+      child: Text('Listen'),
     );
   }
 }
@@ -273,70 +235,38 @@ class _ReadState extends State<Read> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Column(
-      children: [
-        Expanded(
-          child: BlocBuilder<HomeCubit, HomeState>(
-            builder: (context, state) {
-              if (state is HomeDataLoaded) {
-                if (state.customItemSuwars.isNotEmpty) {
-                  final suwarsData = state.customItemSuwars;
-                  return ListView.builder(
-                    itemCount: suwarsData.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DisplayQuranePage(
-                                    index: index,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: suwarsData[index],
-                          ),
-                          Divider(color: Colors.grey.shade300),
-                        ],
-                      );
-                    },
-                  );
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              } else if (state is HomeTimeoutFailure) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/no-wifi.png',
-                        width: 150,
-                        height: 150,
-                      ),
-                      Text(
-                        "Please Check your internet connection and try again"
-                            .tr(context),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+    return BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) {
+        if (state is HomeLoading) {
+          return Center(child: CircularProgressIndicator());
+        } else {
+          final infoSuwars = context.read<HomeCubit>().allSuwarsInfo;
+          return ListView.builder(
+            itemCount: infoSuwars.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: ItemSurahInfo(
+                      surahName: infoSuwars[index].surahName,
+                      surahNameArabic: infoSuwars[index].surahNameArabic,
+                      surahNameArabicLong:
+                          infoSuwars[index].surahNameArabicLong,
+                      surahNameTranslation:
+                          infoSuwars[index].surahNameTranslation,
+                      revelationPlace: infoSuwars[index].revelationPlace,
+                      totalAyah: infoSuwars[index].totalAyah,
+                      index: index + 1,
+                    ),
                   ),
-                );
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+                  Divider(),
+                ],
+              );
             },
-          ),
-        ),
-      ],
+          );
+        }
+      },
     );
   }
 }
@@ -355,72 +285,35 @@ class _TaffsirState extends State<Taffsir> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    // final suwarsDataText = context.read<HomeCubit>().suwars;
-
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-        if (state is HomeDataLoaded) {
-          if (state.taffsirOffAllSuwars.isNotEmpty) {
-            final suwarsDataText = state.customItemSuwars;
-            return Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: suwarsDataText.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      DisplayTaffsirOfSurahPage(
-                                        surahText: suwarsDataText[index],
-                                        surahTaffsir:
-                                            state.taffsirOffAllSuwars[index],
-                                      ),
-                                ),
-                              );
-                            },
-                            child: suwarsDataText[index],
-                          ),
-                          Divider(),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-              ],
-            );
-          } else {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-        } else if (state is HomeTimeoutFailure) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/no-wifi.png',
-                  width: 150,
-                  height: 150,
-                ),
-                Text(
-                  "Please Check your internet connection and try again".tr(
-                    context,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          );
+        if (state is HomeLoading) {
+          return Center(child: CircularProgressIndicator());
         } else {
-          return Center(
-            child: CircularProgressIndicator(),
+          final infoSuwars = context.read<HomeCubit>().allSuwarsInfo;
+          return ListView.builder(
+            itemCount: infoSuwars.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: ItemSurahInfo(
+                      surahName: infoSuwars[index].surahName,
+                      surahNameArabic: infoSuwars[index].surahNameArabic,
+                      surahNameArabicLong:
+                          infoSuwars[index].surahNameArabicLong,
+                      surahNameTranslation:
+                          infoSuwars[index].surahNameTranslation,
+                      revelationPlace: infoSuwars[index].revelationPlace,
+                      totalAyah: infoSuwars[index].totalAyah,
+                      index: index + 1,
+                    ),
+                  ),
+                  Divider(),
+                ],
+              );
+            },
           );
         }
       },

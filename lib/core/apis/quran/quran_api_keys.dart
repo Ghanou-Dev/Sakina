@@ -1,4 +1,4 @@
-class Api1Keys {
+class QuranApiKeys {
   static String surahName = 'surahName';
   static String surahNameArabic = 'surahNameArabic';
   static String surahNameArabicLong = 'surahNameArabicLong';

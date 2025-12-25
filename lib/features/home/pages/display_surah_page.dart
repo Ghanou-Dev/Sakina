@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,16 +8,14 @@ import 'package:sakina/features/home/cubit/AudioCubit/audio_cubit.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 import 'package:sakina/core/constants/colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
-import 'package:sakina/features/home/widgets/custom_item_surah.dart';
-import 'package:sakina/features/home/widgets/custom_item_ayah.dart';
+import 'package:sakina/features/home/models/surah_model.dart';
+import 'package:sakina/features/home/widgets/item_ayah.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class DisplaySurahPage extends StatefulWidget {
-  final CustomItemSurah surah;
-  final CustomItemSurah surahEnglish;
+  final SurahModel surah;
   const DisplaySurahPage({
     required this.surah,
-    required this.surahEnglish,
     super.key,
   });
 
@@ -42,7 +39,7 @@ class _DisplaySurahPageState extends State<DisplaySurahPage> {
         backgroundColor: Colors.white,
         scrolledUnderElevation: 0,
         title: Text(
-          widget.surah.name,
+          widget.surah.surahNameArabic,
           style: TextStyle(
             fontFamily: poppins,
             fontWeight: FontWeight.bold,
@@ -88,7 +85,7 @@ class _DisplaySurahPageState extends State<DisplaySurahPage> {
                       height: 25,
                     ),
                     Text(
-                      widget.surah.name,
+                      widget.surah.surahNameArabic,
                       style: TextStyle(
                         fontFamily: poppins,
                         fontWeight: FontWeight.normal,
@@ -98,7 +95,7 @@ class _DisplaySurahPageState extends State<DisplaySurahPage> {
                     ),
                     Gap(10),
                     Text(
-                      widget.surah.englishName,
+                      widget.surah.surahName,
                       style: TextStyle(
                         fontFamily: poppins,
                         fontWeight: FontWeight.normal,
@@ -120,7 +117,7 @@ class _DisplaySurahPageState extends State<DisplaySurahPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          widget.surah.revelationType.toUpperCase(),
+                          widget.surah.revelationPlace.toUpperCase(),
                           style: TextStyle(
                             fontFamily: poppins,
                             color: Colors.white,
@@ -139,7 +136,7 @@ class _DisplaySurahPageState extends State<DisplaySurahPage> {
                         ),
                         Gap(4),
                         Text(
-                          '${widget.surah.ayahs.length} VERSES',
+                          '${widget.surah.english.length} VERSES',
                           style: TextStyle(
                             fontFamily: poppins,
                             color: Colors.white,
@@ -158,7 +155,6 @@ class _DisplaySurahPageState extends State<DisplaySurahPage> {
             Expanded(
               child: BodyOfSurah(
                 surah: widget.surah,
-                surahEnglish: widget.surahEnglish,
               ),
             ),
           ],
@@ -169,11 +165,9 @@ class _DisplaySurahPageState extends State<DisplaySurahPage> {
 }
 
 class BodyOfSurah extends StatefulWidget {
-  final CustomItemSurah surah;
-  final CustomItemSurah surahEnglish;
+  final SurahModel surah;
   const BodyOfSurah({
     required this.surah,
-    required this.surahEnglish,
     super.key,
   });
 
@@ -189,7 +183,7 @@ class _BodyOfSurahState extends State<BodyOfSurah> {
   void initState() {
     super.initState();
     scrollController = ScrollController(
-      initialScrollOffset: getOffset(widget.surah.name),
+      initialScrollOffset: getOffset(widget.surah.surahNameArabic),
     );
     scrollController.addListener(onScroll);
   }
@@ -202,7 +196,7 @@ class _BodyOfSurahState extends State<BodyOfSurah> {
     debounced?.cancel();
     debounced = Timer(Duration(milliseconds: 300), () {
       context.read<HomeCubit>().saveOffset(
-        widget.surah.name,
+        widget.surah.surahNameArabic,
         scrollController.offset,
       );
     });
@@ -220,22 +214,47 @@ class _BodyOfSurahState extends State<BodyOfSurah> {
   Widget build(BuildContext context) {
     return ListView.builder(
       controller: scrollController,
-      itemCount: widget.surah.ayahs.length,
+      itemCount: widget.surah.arabic1.length,
       itemBuilder: (context, index) {
-        return VisibilityDetector(
-          key: Key(widget.surah.ayahs[index].text),
-          onVisibilityChanged: (info) {
-            if (info.visibleFraction >= 0.8) {
-              context.read<AudioCubit>().changeLastSurahRead(
-                lastSurahRead: widget.surah.englishName,
-                lastAyahReadNumber: index + 1,
-              );
-            }
-          },
-          child: CustomItemAyah(
-            surah: widget.surah,
-            ayah: widget.surah.ayahs[index],
-            ayahEnglish: widget.surahEnglish.ayahs[index],
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 10.0),
+          child: Column(
+            children: [
+              VisibilityDetector(
+                key: Key(widget.surah.english[index]),
+                onVisibilityChanged: (info) {
+                  if (info.visibleFraction >= 0.8) {
+                    // change number ayah index
+                  }
+                },
+                child: ItemAyah(
+                  ayahNo: index + 1,
+                  surahNo: widget.surah.surahNo,
+                  surahName: widget.surah.surahName,
+                  arabic1: widget.surah.arabic1[index],
+                  arabic2: widget.surah.arabic2[index],
+                  english: widget.surah.english[index],
+                  onTapPlay: () async {
+                    if (context.read<AudioCubit>().player.playerState.playing &&
+                        context.read<HomeCubit>().ayahNumber == index + 1) {
+                      return;
+                    }
+                    await context.read<AudioCubit>().stop();
+                    await context.read<HomeCubit>().getSpecialAyahAudio(
+                      surahNo: widget.surah.surahNo,
+                      ayahNo: index + 1,
+                    );
+                    final ayah = context.read<HomeCubit>().audioAyah;
+                    await context.read<AudioCubit>().playSpecialAyah(
+                      url: ayah.affasi.originalUrl,
+                      surahName: widget.surah.surahName,
+                      artist: ayah.affasi.reciter,
+                    );
+                  },
+                ),
+              ),
+              Divider(),
+            ],
           ),
         );
       },

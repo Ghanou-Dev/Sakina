@@ -8,9 +8,9 @@ import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
 import 'package:sakina/core/constants/colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
+import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';
 import 'package:sakina/features/home/pages/bottom_bar_page.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
-import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';
 
 class Spalsh extends StatefulWidget {
   const Spalsh({super.key});
@@ -29,7 +29,7 @@ class _SpalshState extends State<Spalsh> {
         statusBarIconBrightness: Brightness.dark,
       ),
     );
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         context.read<InternetCubit>().checkConnection();
       }
@@ -37,7 +37,6 @@ class _SpalshState extends State<Spalsh> {
   }
 
   bool isDialogActive = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,9 +123,8 @@ class _SpalshState extends State<Spalsh> {
                           builder: (context, state) {
                             if (state is HomeLoading) {
                               return Center(
-                                child: SizedBox(
-                                  width: 26,
-                                  height: 26,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
                                   child: CircularProgressIndicator(
                                     color: Colors.white,
                                   ),
@@ -219,7 +217,7 @@ class _SpalshState extends State<Spalsh> {
       );
     } else {
       try {
-        await context.read<HomeCubit>().getSuwars();
+        await context.read<HomeCubit>().getSuwarsInfo();
         Navigator.of(
           context,
         ).pushReplacementNamed(BottomBarPage.pageRoute);
