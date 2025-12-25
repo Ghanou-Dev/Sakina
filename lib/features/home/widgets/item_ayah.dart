@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gap/flutter_gap.dart';
 import 'package:sakina/core/constants/colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/features/home/cubit/AudioCubit/audio_cubit.dart';
@@ -154,6 +155,7 @@ class _ItemAyahState extends State<ItemAyah> {
             ],
           ),
         ),
+        Gap(20),
       ],
     );
   }

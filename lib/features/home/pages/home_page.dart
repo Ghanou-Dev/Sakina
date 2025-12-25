@@ -6,6 +6,8 @@ import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
 import 'package:sakina/core/constants/colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
+import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
+import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';
 import 'package:sakina/features/home/widgets/custom_tap_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -129,24 +131,56 @@ class _BodyHomePageState extends State<BodyHomePage> {
                         ),
                       ),
                       Gap(20),
-                      Text(
-                        'Al-Fatiha',
-                        style: TextStyle(
-                          fontFamily: poppins,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: 20,
-                        ),
+                      BlocBuilder<HomeCubit, HomeState>(
+                        builder: (context, state) {
+                          if (state is HomeSurahLoaded) {
+                            return Text(
+                              state.surah.surahName,
+                              style: TextStyle(
+                                fontFamily: poppins,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            );
+                          } else {
+                            return Text(
+                              context.read<HomeCubit>().currentSurahName,
+                              style: TextStyle(
+                                fontFamily: poppins,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            );
+                          }
+                        },
                       ),
                       Gap(5),
-                      Text(
-                        'nnnnnnn',
-                        style: TextStyle(
-                          fontFamily: poppins,
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      BlocBuilder<HomeCubit, HomeState>(
+                        builder: (context, state) {
+                          if (state is HomeChangeAyahNumber) {
+                            return Text(
+                              'Number of last ayah :  ${state.ayahNumber}',
+                              style: TextStyle(
+                                fontFamily: poppins,
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          } else {
+                            return Text(
+                              'Number of last ayah :  ${context.read<HomeCubit>().currentAyahNumber}',
+                              style: TextStyle(
+                                fontFamily: poppins,
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ],
                   ),

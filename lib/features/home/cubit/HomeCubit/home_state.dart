@@ -13,6 +13,11 @@ class HomeSurahLoading extends HomeState {}
 
 class HomeAyahLoading extends HomeState {}
 
+class HomeChangeAyahNumber extends HomeState {
+  int ayahNumber;
+  HomeChangeAyahNumber({required this.ayahNumber});
+}
+
 class HomeInfoSuwarsLoaded extends HomeState {
   List<ItemSurahInfo> infoSuwars;
   HomeInfoSuwarsLoaded({required this.infoSuwars});

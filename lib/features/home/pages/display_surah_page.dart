@@ -223,8 +223,11 @@ class _BodyOfSurahState extends State<BodyOfSurah> {
               VisibilityDetector(
                 key: Key(widget.surah.english[index]),
                 onVisibilityChanged: (info) {
-                  if (info.visibleFraction >= 0.8) {
+                  if (info.visibleFraction >= 0.7) {
                     // change number ayah index
+                    context.read<HomeCubit>().changeAyahNumber(
+                      ayahNumber: index + 1,
+                    );
                   }
                 },
                 child: ItemAyah(

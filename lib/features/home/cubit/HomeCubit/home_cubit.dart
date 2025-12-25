@@ -15,6 +15,13 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit({required this.quranRepo}) : super(HomeInitial());
 
   bool isTapped = false;
+  String currentSurahName = 'Al-Faatiha';
+  int currentAyahNumber = 1;
+
+  void changeAyahNumber({required int ayahNumber}) {
+    currentAyahNumber = ayahNumber;
+    emit(HomeChangeAyahNumber(ayahNumber: ayahNumber));
+  }
 
   late List<ItemSurahInfo> allSuwarsInfo;
   int index = 0;
@@ -68,8 +75,10 @@ class HomeCubit extends Cubit<HomeState> {
           bengali: sura.bengali,
           urdu: sura.urdu,
         );
+        currentSurahName = sura.surahName;
       },
     );
+
     emit(HomeSurahLoaded(surah: specialSurah));
   }
 
