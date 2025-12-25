@@ -1,14 +1,12 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
 import 'package:sakina/core/constants/colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
-import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';
 import 'package:sakina/features/home/pages/bottom_bar_page.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 
@@ -32,6 +30,7 @@ class _SpalshState extends State<Spalsh> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
         context.read<InternetCubit>().checkConnection();
+        context.read<HomeCubit>().getSuwarsInfo();
       }
     });
   }
@@ -112,37 +111,36 @@ class _SpalshState extends State<Spalsh> {
                           backgroundColor: WidgetStatePropertyAll(
                             Color(0xffF9B091),
                           ),
-                          fixedSize: WidgetStatePropertyAll(Size(185, 60)),
+                          fixedSize: WidgetStatePropertyAll(
+                            Size(185, 60),
+                          ),
                         ),
                         onPressed: () async {
-                          if (mounted) {
-                            _getStarted(context);
-                          }
+                          // Navigator.of(
+                          //   context,
+                          // ).pushReplacementNamed(BottomBarPage.pageRoute);
                         },
-                        child: BlocBuilder<HomeCubit, HomeState>(
-                          builder: (context, state) {
-                            if (state is HomeLoading) {
-                              return Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: CircularProgressIndicator(
+                        child:
+                            Text(
+                                  'Started'.tr(context),
+                                  style: TextStyle(
+                                    fontFamily: poppins,
                                     color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                ),
-                              );
-                            } else {
-                              return Text(
-                                'get_started'.tr(context),
-                                style: TextStyle(
-                                  fontFamily: poppins,
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            }
-                          },
-                        ),
+                                )
+                                .animate(
+                                  delay: 1600.ms,
+                                  onComplete: (controller) {
+                                    Navigator.of(
+                                      context,
+                                    ).pushReplacementNamed(
+                                      BottomBarPage.pageRoute,
+                                    );
+                                  },
+                                )
+                                .fadeOut(duration: 1600.ms),
                       ),
                     ),
                   ],
@@ -209,23 +207,23 @@ class _SpalshState extends State<Spalsh> {
     );
   }
 
-  Future<void> _getStarted(BuildContext context) async {
-    final bool isConnected = await InternetConnection().hasInternetAccess;
-    if (isConnected == false) {
-      _connectionStateDialog(
-        'Please Check your internet connection and try again'.tr(context),
-      );
-    } else {
-      try {
-        await context.read<HomeCubit>().getSuwarsInfo();
-        Navigator.of(
-          context,
-        ).pushReplacementNamed(BottomBarPage.pageRoute);
-      } catch (e) {
-        _connectionStateDialog(
-          'Your internet connection is wake! try again later'.tr(context),
-        );
-      }
-    }
-  }
+  // Future<void> _getStarted(BuildContext context) async {
+  //   final bool isConnected = await InternetConnection().hasInternetAccess;
+  //   if (isConnected == false) {
+  //     _connectionStateDialog(
+  //       'Please Check your internet connection and try again'.tr(context),
+  //     );
+  //   } else {
+  //     try {
+  //       await context.read<HomeCubit>().getSuwarsInfo();
+  //       Navigator.of(
+  //         context,
+  //       ).pushReplacementNamed(BottomBarPage.pageRoute);
+  //     } catch (e) {
+  //       _connectionStateDialog(
+  //         'Your internet connection is wake! try again later'.tr(context),
+  //       );
+  //     }
+  //   }
+  // }
 }

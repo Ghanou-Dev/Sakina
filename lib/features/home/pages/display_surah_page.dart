@@ -237,6 +237,7 @@ class _BodyOfSurahState extends State<BodyOfSurah> {
                   onTapPlay: () async {
                     if (context.read<AudioCubit>().player.playerState.playing &&
                         context.read<HomeCubit>().ayahNumber == index + 1) {
+                      await context.read<AudioCubit>().stop();
                       return;
                     }
                     await context.read<AudioCubit>().stop();

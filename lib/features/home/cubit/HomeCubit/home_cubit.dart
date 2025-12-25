@@ -19,13 +19,10 @@ class HomeCubit extends Cubit<HomeState> {
   late List<ItemSurahInfo> allSuwarsInfo;
   int index = 0;
   Future<void> getSuwarsInfo() async {
-    emit(HomeLoading());
-
-    //  معالجة بطء التحميل و تعدل زر تشغيل و ايقاف صوت الاية
-
+    // emit(HomeLoading());
     Either<Failure, List<SurahInfoModel>> data = await quranRepo
         .getSuwarsInfo();
-    await Future.delayed(Duration(seconds: 2));
+    // await Future.delayed(Duration(seconds: 2));
     data.fold(
       (failure) {
         emit(HomeFailure(failure: failure));
