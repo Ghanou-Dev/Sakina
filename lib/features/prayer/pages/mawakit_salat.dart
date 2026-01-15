@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
-import 'package:sakina/core/constants/colors.dart';
+import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
 
@@ -19,7 +19,7 @@ class MawakitSalat extends StatelessWidget {
           style: TextStyle(
             fontFamily: poppins,
             fontWeight: FontWeight.bold,
-            color: primaryColor,
+            color: AppColors.primaryColor,
           ),
         ),
       ),
@@ -69,7 +69,7 @@ class CurrentSalatItem extends StatelessWidget {
                   style: ButtonStyle(
                     iconSize: WidgetStatePropertyAll<double?>(32),
                     backgroundColor: WidgetStatePropertyAll(
-                      primaryColor,
+                      AppColors.primaryColor,
                     ),
                     shape: WidgetStatePropertyAll(
                       RoundedRectangleBorder(
@@ -93,7 +93,7 @@ class CurrentSalatItem extends StatelessWidget {
                       style: TextStyle(
                         fontFamily: amiri,
                         fontWeight: FontWeight.normal,
-                        color: theredColor,
+                        color: AppColors.deepBlue,
                         fontSize: 14,
                       ),
                     ),
@@ -102,7 +102,7 @@ class CurrentSalatItem extends StatelessWidget {
                       style: TextStyle(
                         fontFamily: poppins,
                         fontWeight: FontWeight.bold,
-                        color: theredColor,
+                        color: AppColors.deepBlue,
                         fontSize: 24,
                       ),
                     ),
@@ -127,7 +127,7 @@ class CurrentSalatItem extends StatelessWidget {
                     'Prayer Time',
                     style: TextStyle(
                       fontFamily: amiri,
-                      color: forthColor,
+                      color: AppColors.orange,
                       fontSize: 14,
                     ),
                   ),
@@ -135,7 +135,7 @@ class CurrentSalatItem extends StatelessWidget {
                     '12:09',
                     style: TextStyle(
                       fontFamily: poppins,
-                      color: theredColor,
+                      color: AppColors.deepBlue,
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -148,7 +148,7 @@ class CurrentSalatItem extends StatelessWidget {
                     '00 : 10 : 35',
                     style: TextStyle(
                       fontFamily: poppins,
-                      color: primaryColor,
+                      color: AppColors.primaryColor,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
@@ -157,7 +157,7 @@ class CurrentSalatItem extends StatelessWidget {
                     'Time remaining',
                     style: TextStyle(
                       fontFamily: amiri,
-                      color: forthColor,
+                      color: AppColors.orange,
                       fontSize: 14,
                     ),
                   ),
@@ -185,7 +185,7 @@ class TodaysPriyerTimeList extends StatelessWidget {
             style: TextStyle(
               fontFamily: poppins,
               fontWeight: FontWeight.bold,
-              color: primaryColor,
+              color: AppColors.primaryColor,
               fontSize: 22,
             ),
           ),
@@ -247,7 +247,7 @@ class SalatItem extends StatelessWidget {
           color: isTime ? Color(0xffdd96fa).withAlpha(400) : Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isTime ? primaryColor : Colors.grey.shade300,
+            color: isTime ? AppColors.primaryColor : Colors.grey.shade300,
           ),
         ),
         child: Padding(
@@ -269,7 +269,7 @@ class SalatItem extends StatelessWidget {
                   fontFamily: poppins,
                   fontWeight: FontWeight.normal,
                   fontSize: 18,
-                  color: theredColor,
+                  color: AppColors.deepBlue,
                 ),
               ),
               Spacer(),
@@ -281,7 +281,7 @@ class SalatItem extends StatelessWidget {
                     fontFamily: poppins,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
-                    color: primaryColor,
+                    color: AppColors.primaryColor,
                   ),
                 ),
               ),
@@ -304,7 +304,7 @@ class ChangeLocationItem extends StatelessWidget {
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
         ),
-        border: Border.all(color: primaryColor),
+        border: Border.all(color: AppColors.primaryColor),
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -316,7 +316,7 @@ class ChangeLocationItem extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: primaryColor,
+                    color: AppColors.primaryColor,
                   ),
                   child: Icon(
                     Icons.fmd_good_sharp,
@@ -332,7 +332,7 @@ class ChangeLocationItem extends StatelessWidget {
                       style: TextStyle(
                         fontFamily: poppins,
                         fontWeight: FontWeight.bold,
-                        color: primaryColor,
+                        color: AppColors.primaryColor,
                       ),
                     ),
                     Text(
@@ -340,7 +340,7 @@ class ChangeLocationItem extends StatelessWidget {
                       style: TextStyle(
                         fontFamily: poppins,
                         fontWeight: FontWeight.bold,
-                        color: theredColor,
+                        color: AppColors.deepBlue,
                       ),
                     ),
                   ],

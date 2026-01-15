@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
-import 'package:sakina/core/constants/colors.dart';
+import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage>
           style: TextStyle(
             fontFamily: poppins,
             fontWeight: FontWeight.bold,
-            color: primaryColor,
+            color: AppColors.primaryColor,
           ),
         ),
         actions: [
@@ -236,7 +236,7 @@ class _BodyHomePageState extends State<BodyHomePage> {
           actions: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor,
+                backgroundColor: AppColors.primaryColor,
                 foregroundColor: Colors.white,
               ),
               onPressed: () async {

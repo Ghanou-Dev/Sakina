@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
-import 'package:sakina/core/constants/colors.dart';
+import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 
 class CustomEmptyPageItem extends StatelessWidget {
@@ -21,7 +21,7 @@ class CustomEmptyPageItem extends StatelessWidget {
           style: TextStyle(
             fontFamily: poppins,
             fontWeight: FontWeight.normal,
-            color: theredColor,
+            color: AppColors.deepBlue,
             fontSize: 16,
           ),
         ),
@@ -30,7 +30,7 @@ class CustomEmptyPageItem extends StatelessWidget {
           style: TextStyle(
             fontFamily: poppins,
             fontWeight: FontWeight.normal,
-            color: theredColor,
+            color: AppColors.deepBlue,
             fontSize: 16,
           ),
         ),
@@ -39,7 +39,7 @@ class CustomEmptyPageItem extends StatelessWidget {
           onPressed: () {},
           icon: Icon(
             Icons.bookmark_add_outlined,
-            color: primaryColor,
+            color: AppColors.primaryColor,
             size: 40,
           ),
         ),

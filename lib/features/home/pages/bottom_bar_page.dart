@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
-import 'package:sakina/core/constants/colors.dart';
+import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/helpers/extansions.dart';
 import 'package:sakina/features/saved/pages/bookmark.dart';
 import 'package:sakina/features/hadith/pages/hadith.dart';
@@ -80,34 +80,42 @@ class _BottomBarPageState extends State<BottomBarPage> {
             currentIndex = value;
           });
         },
-        selectedItemColor: primaryColor,
-        unselectedItemColor: secondaryColor,
+        selectedItemColor: AppColors.primaryColor,
+        unselectedItemColor: AppColors.grey,
         items: [
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/Icon.svg',
-              color: currentIndex == 0 ? primaryColor : secondaryColor,
+              color: currentIndex == 0
+                  ? AppColors.primaryColor
+                  : AppColors.grey,
             ),
             label: '',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/douaa.svg',
-              color: currentIndex == 1 ? primaryColor : secondaryColor,
+              color: currentIndex == 1
+                  ? AppColors.primaryColor
+                  : AppColors.grey,
             ),
             label: '',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/salat.svg',
-              color: currentIndex == 2 ? primaryColor : secondaryColor,
+              color: currentIndex == 2
+                  ? AppColors.primaryColor
+                  : AppColors.grey,
             ),
             label: '',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
               'assets/icons/bookmark.svg',
-              color: currentIndex == 3 ? primaryColor : secondaryColor,
+              color: currentIndex == 3
+                  ? AppColors.primaryColor
+                  : AppColors.grey,
             ),
             label: '',
           ),
@@ -115,7 +123,9 @@ class _BottomBarPageState extends State<BottomBarPage> {
             icon: Icon(
               Icons.settings,
               size: 32,
-              color: currentIndex == 4 ? primaryColor : secondaryColor,
+              color: currentIndex == 4
+                  ? AppColors.primaryColor
+                  : AppColors.grey,
             ),
             label: '',
           ),

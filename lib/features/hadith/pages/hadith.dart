@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sakina/core/constants/colors.dart';
+import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
 
@@ -20,7 +20,7 @@ class Hadith extends StatelessWidget {
           style: TextStyle(
             fontFamily: poppins,
             fontWeight: FontWeight.bold,
-            color: primaryColor,
+            color: AppColors.primaryColor,
           ),
         ),
         leading: Padding(
@@ -28,7 +28,10 @@ class Hadith extends StatelessWidget {
           child: SizedBox(
             child: SvgPicture.asset(
               'assets/icons/mosque-02.svg',
-              colorFilter: ColorFilter.mode(primaryColor, BlendMode.srcIn),
+              colorFilter: ColorFilter.mode(
+                AppColors.primaryColor,
+                BlendMode.srcIn,
+              ),
             ),
           ),
         ),
@@ -126,7 +129,7 @@ class CustomHadithLafita extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(16),
-                    border: BoxBorder.all(color: theredColor),
+                    border: BoxBorder.all(color: AppColors.deepBlue),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -137,7 +140,7 @@ class CustomHadithLafita extends StatelessWidget {
                       '٥ جمادى الثاني ١٤٤٧ هـ',
                       style: TextStyle(
                         fontFamily: poppins,
-                        color: theredColor,
+                        color: AppColors.deepBlue,
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
@@ -168,7 +171,7 @@ class CustomHadithBook extends StatelessWidget {
       child: Ink(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: theredColor, width: 1),
+          border: Border.all(color: AppColors.deepBlue, width: 1),
           boxShadow: [
             BoxShadow(
               blurRadius: 10,
@@ -201,7 +204,7 @@ class CustomHadithBook extends StatelessWidget {
                       style: TextStyle(
                         fontFamily: uthmani,
                         fontWeight: FontWeight.bold,
-                        color: theredColor,
+                        color: AppColors.deepBlue,
                         fontSize: 18,
                       ),
                     ),

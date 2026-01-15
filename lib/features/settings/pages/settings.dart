@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
-import 'package:sakina/core/constants/colors.dart';
+import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
 
@@ -24,7 +24,7 @@ class _SettingsState extends State<Settings> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: AppColors.primaryColor,
         title: Text(
           'Settings'.tr(context),
           style: TextStyle(
@@ -45,7 +45,7 @@ class _SettingsState extends State<Settings> {
             width: size.width,
             height: size.height / 5,
             decoration: BoxDecoration(
-              color: primaryColor,
+              color: AppColors.primaryColor,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
@@ -100,7 +100,7 @@ class _SettingsState extends State<Settings> {
                           'Sakina Application',
                           style: TextStyle(
                             fontFamily: poppins,
-                            color: theredColor,
+                            color: AppColors.deepBlue,
                             fontSize: 16,
                           ),
                         ),

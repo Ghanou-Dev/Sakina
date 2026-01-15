@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
-import 'package:sakina/core/constants/colors.dart';
+import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 
 class CustomItemFavorietAya extends StatelessWidget {
@@ -17,7 +17,7 @@ class CustomItemFavorietAya extends StatelessWidget {
               end: Alignment.bottomRight,
               colors: [
                 Color(0xffd680f8),
-                primaryColor,
+                AppColors.primaryColor,
               ],
             ),
             borderRadius: BorderRadius.only(
@@ -56,7 +56,7 @@ class CustomItemFavorietAya extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  backgroundColor: primaryColor,
+                  backgroundColor: AppColors.primaryColor,
                   radius: 18,
                   child: Text(
                     '1',
@@ -74,7 +74,7 @@ class CustomItemFavorietAya extends StatelessWidget {
                   icon: Icon(
                     Icons.share_outlined,
                     size: 26,
-                    color: primaryColor,
+                    color: AppColors.primaryColor,
                   ),
                 ),
 
@@ -83,7 +83,7 @@ class CustomItemFavorietAya extends StatelessWidget {
                   icon: Icon(
                     Icons.play_arrow_outlined,
                     size: 32,
-                    color: primaryColor,
+                    color: AppColors.primaryColor,
                   ),
                 ),
 
@@ -92,7 +92,7 @@ class CustomItemFavorietAya extends StatelessWidget {
                   icon: Icon(
                     Icons.bookmark,
                     size: 26,
-                    color: primaryColor,
+                    color: AppColors.primaryColor,
                   ),
                 ),
               ],
@@ -111,7 +111,7 @@ class CustomItemFavorietAya extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: amiri,
                   fontWeight: FontWeight.bold,
-                  color: theredColor,
+                  color: AppColors.deepBlue,
                   fontSize: 18,
                 ),
               ),
@@ -128,7 +128,7 @@ class CustomItemFavorietAya extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: poppins,
                   fontWeight: FontWeight.normal,
-                  color: theredColor,
+                  color: AppColors.deepBlue,
                   fontSize: 18,
                 ),
               ),

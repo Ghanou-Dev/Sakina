@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:sakina/core/constants/colors.dart';
+import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
-// import 'package:sakina/widgets/custom_empty_page_item.dart';
-// import 'package:sakina/widgets/custom_item_favoriet_aya.dart';
 
 class Bookmark extends StatelessWidget {
   const Bookmark({super.key});
@@ -22,7 +20,7 @@ class Bookmark extends StatelessWidget {
           style: TextStyle(
             fontFamily: poppins,
             fontWeight: FontWeight.bold,
-            color: primaryColor,
+            color: AppColors.primaryColor,
           ),
         ),
       ),
@@ -66,12 +64,12 @@ class FavorietBody extends StatelessWidget {
               ),
               CustomFavorietPart(
                 partName: 'Ayah',
-                pathIcon: 'assets/icons/sibha_icon.svg',
+                pathIcon: 'assets/icons/surah_text_icon.svg',
                 onTap: () {},
               ),
               CustomFavorietPart(
                 partName: 'Taffsir',
-                pathIcon: 'assets/icons/hadith_icon.svg',
+                pathIcon: 'assets/icons/surah_text_icon.svg',
                 onTap: () {},
               ),
               CustomFavorietPart(
@@ -101,7 +99,7 @@ class CustomHadithWidget extends StatelessWidget {
         boxShadow: <BoxShadow>[
           BoxShadow(
             blurRadius: 10,
-            color: primaryColor,
+            color: AppColors.primaryColor,
           ),
         ],
         image: DecorationImage(
@@ -185,7 +183,6 @@ class CustomFavorietPart extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             color: Colors.white,
-            // border: Border.all(color: primaryColor),
             borderRadius: BorderRadius.circular(20),
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -205,7 +202,7 @@ class CustomFavorietPart extends StatelessWidget {
                     style: TextStyle(
                       fontFamily: poppins,
                       fontWeight: FontWeight.bold,
-                      color: primaryColor,
+                      color: AppColors.primaryColor,
                       fontSize: 18,
                     ),
                   ),

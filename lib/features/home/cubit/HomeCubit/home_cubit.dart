@@ -8,16 +8,18 @@ import 'package:sakina/features/home/models/surah_info_model.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';
 import 'package:sakina/features/home/models/surah_model.dart';
 import 'package:sakina/features/home/repositories/quran_repository.dart';
-import 'package:sakina/features/home/widgets/item_surah_info.dart';
+import 'package:sakina/features/home/widgets/tadabbor_tap/item_surah_info.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final QuranRepository quranRepo;
-  HomeCubit({required this.quranRepo}) : super(HomeInitial());
+
+  HomeCubit({
+    required this.quranRepo,
+  }) : super(HomeInitial());
 
   bool isTapped = false;
-  String currentSurahName = 'Al-Faatiha';
-  int currentAyahNumber = 1;
 
+  int currentAyahNumber = 1;
   void changeAyahNumber({required int ayahNumber}) {
     currentAyahNumber = ayahNumber;
     emit(HomeChangeAyahNumber(ayahNumber: ayahNumber));
@@ -54,6 +56,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   late SurahModel specialSurah;
+  String currentSurahName = 'Al-Faatiha';
   Future<void> getSpecialSurah({required int surahNumber}) async {
     emit(HomeSurahLoading());
     final data = await quranRepo.getSpecialSurah(surahNumber: surahNumber);

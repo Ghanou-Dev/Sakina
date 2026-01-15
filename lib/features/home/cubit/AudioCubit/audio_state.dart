@@ -1,18 +1,37 @@
-abstract class AudioState {}
+class AudioState {
+  final bool isLoading;
+  final bool isPlaying;
+  final int index;
 
-class AudioInitial extends AudioState {}
+  final Duration position;
+  final Duration buffered;
+  final Duration total;
+  AudioState({
+    required this.isLoading,
+    required this.isPlaying,
+    required this.index,
 
-class AudioLoading extends AudioState {}
+    required this.position,
+    required this.buffered,
+    required this.total,
+  });
 
-class AudioPlayingState extends AudioState {
-  final String? url;
-  AudioPlayingState({required this.url});
-}
+  AudioState copyWith({
+    bool? isLoading,
+    bool? isPlaying,
+    int? index,
 
-class AudioPausedState extends AudioState {
-  AudioPausedState();
-}
-
-class AudioStoppedState extends AudioState {
-  AudioStoppedState();
+    Duration? position,
+    Duration? buffered,
+    Duration? total,
+  }) {
+    return AudioState(
+      isLoading: isLoading ?? this.isLoading,
+      isPlaying: isPlaying ?? this.isPlaying,
+      index: index ?? this.index,
+      position: position ?? this.position,
+      buffered: buffered ?? this.buffered,
+      total: total ?? this.buffered,
+    );
+  }
 }

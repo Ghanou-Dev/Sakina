@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:sakina/core/constants/colors.dart';
+import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
-import 'package:sakina/features/home/widgets/listen_tap.dart';
+import 'package:sakina/features/home/widgets/listen_tap/listen_tap.dart';
 import 'package:sakina/features/home/widgets/read_tap.dart';
-import 'package:sakina/features/home/widgets/tadabbor_tap.dart';
+import 'package:sakina/features/home/widgets/tadabbor_tap/tadabbor_tap.dart';
 import 'package:sakina/features/home/widgets/taffsir_tap.dart';
 
 class CustomTabBar extends StatefulWidget {
@@ -37,7 +37,7 @@ class _CustomTabBarState extends State<CustomTabBar>
             indicatorWeight: 3,
             splashBorderRadius: BorderRadius.circular(15),
             isScrollable: false,
-            unselectedLabelColor: secondaryColor,
+            unselectedLabelColor: AppColors.grey,
 
             tabs: [
               Text(

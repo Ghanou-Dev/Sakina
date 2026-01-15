@@ -1,7 +1,7 @@
 import 'package:sakina/core/errors/failurs.dart';
 import 'package:sakina/features/home/models/audio_model.dart';
 import 'package:sakina/features/home/models/surah_model.dart';
-import 'package:sakina/features/home/widgets/item_surah_info.dart';
+import 'package:sakina/features/home/widgets/tadabbor_tap/item_surah_info.dart';
 
 abstract class HomeState {}
 

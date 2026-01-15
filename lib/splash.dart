@@ -4,9 +4,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
-import 'package:sakina/core/constants/colors.dart';
+import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
+import 'package:sakina/features/home/cubit/ListenCubit/listen_cubit.dart';
 import 'package:sakina/features/home/pages/bottom_bar_page.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 
@@ -31,6 +32,7 @@ class _SpalshState extends State<Spalsh> {
       if (mounted) {
         context.read<InternetCubit>().checkConnection();
         context.read<HomeCubit>().getSuwarsInfo();
+        context.read<ListenCubit>().getAllReciters();
       }
     });
   }
@@ -66,7 +68,7 @@ class _SpalshState extends State<Spalsh> {
                   style: TextStyle(
                     fontFamily: poppins,
                     fontWeight: FontWeight.bold,
-                    color: primaryColor,
+                    color: AppColors.primaryColor,
                     fontSize: 28,
                   ),
                 ),
@@ -131,16 +133,29 @@ class _SpalshState extends State<Spalsh> {
                                   ),
                                 )
                                 .animate(
-                                  delay: 1600.ms,
-                                  onComplete: (controller) {
-                                    Navigator.of(
-                                      context,
-                                    ).pushReplacementNamed(
-                                      BottomBarPage.pageRoute,
-                                    );
+                                  onPlay: (controller) {
+                                    controller.repeat();
+                                    Future.delayed(2100.ms, () {
+                                      controller.stop();
+                                      Navigator.of(
+                                        context,
+                                      ).pushReplacementNamed(
+                                        BottomBarPage.pageRoute,
+                                      );
+                                    });
                                   },
                                 )
-                                .fadeOut(duration: 1600.ms),
+                                .fadeIn(
+                                  duration: 600.ms,
+                                  curve: Curves.easeInOut,
+                                )
+                                .then(
+                                  delay: 200.ms,
+                                )
+                                .fadeOut(
+                                  duration: 600.ms,
+                                  curve: Curves.easeInOut,
+                                ),
                       ),
                     ),
                   ],
@@ -189,7 +204,7 @@ class _SpalshState extends State<Spalsh> {
           actions: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor,
+                backgroundColor: AppColors.primaryColor,
                 foregroundColor: Colors.white,
               ),
               onPressed: () async {

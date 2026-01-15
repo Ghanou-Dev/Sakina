@@ -1,23 +1,23 @@
 import 'package:dio/dio.dart';
 import 'package:sakina/core/apis/api_consumer.dart';
-import 'package:sakina/core/apis/quran/quran_api_interceptor.dart';
+// import 'package:sakina/core/apis/quran/quran_api_interceptor.dart';
 import 'package:sakina/core/errors/exceptions.dart';
 
 class DioConsumer implements ApiConsumer {
   final Dio dio;
   DioConsumer({required this.dio}) {
     // dio.options.baseUrl = '/../..';
-    dio.interceptors.add(QuranApiInterceptor());
-    dio.interceptors.add(
-      LogInterceptor(
-        request: true,
-        requestBody: true,
-        responseBody: true,
-        requestHeader: true,
-        responseHeader: true,
-        error: true,
-      ),
-    );
+    // dio.interceptors.add(QuranApiInterceptor());
+    // dio.interceptors.add(
+    //   LogInterceptor(
+    //     request: true,
+    //     requestBody: true,
+    //     responseBody: true,
+    //     requestHeader: true,
+    //     responseHeader: true,
+    //     error: true,
+    //   ),
+    // );
   }
 
   void _handelException({required DioException er}) {

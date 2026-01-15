@@ -7,11 +7,15 @@ import 'package:just_audio_background/just_audio_background.dart';
 import 'package:sakina/app_localizations.dart';
 import 'package:sakina/core/apis/dio_consumer.dart';
 import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
-import 'package:sakina/core/constants/colors.dart';
+import 'package:sakina/core/constants/app_colors.dart';
+import 'package:sakina/core/my_bloc_observer.dart';
+import 'package:sakina/core/services/quran_services/qurane_audio_service.dart';
 import 'package:sakina/core/services/quran_services/qurane_service.dart';
 import 'package:sakina/features/home/cubit/AudioCubit/audio_cubit.dart';
+import 'package:sakina/features/home/cubit/ListenCubit/listen_cubit.dart';
 import 'package:sakina/features/home/pages/bottom_bar_page.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
+import 'package:sakina/features/home/repositories/quran_audio_repository.dart';
 import 'package:sakina/features/home/repositories/quran_repository.dart';
 import 'package:sakina/splash.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,6 +38,7 @@ void main() async {
   );
 
   final Dio d = Dio();
+  Bloc.observer = MyBlocObserver();
   runApp(
     Sakina(
       dio: d,
@@ -53,6 +58,15 @@ class Sakina extends StatelessWidget {
           create: (context) => HomeCubit(
             quranRepo: QuranRepository(
               quraneService: QuraneService(api: DioConsumer(dio: dio)),
+            ),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => ListenCubit(
+            quranAudioRepository: QuranAudioRepository(
+              quraneAudioService: QuraneAudioService(
+                api: DioConsumer(dio: dio),
+              ),
             ),
           ),
         ),
@@ -89,7 +103,7 @@ class Sakina extends StatelessWidget {
         },
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: primaryColor),
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryColor),
         ),
         routes: {
           '/': (context) => Spalsh(),

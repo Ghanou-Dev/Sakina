@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';
-import 'package:sakina/features/home/widgets/item_surah_info.dart';
+import 'package:sakina/features/home/widgets/tadabbor_tap/item_surah_info.dart';
 
 class Taffsir extends StatefulWidget {
   const Taffsir({super.key});
