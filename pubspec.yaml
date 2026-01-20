@@ -53,7 +53,6 @@ dependencies:
   share_plus: ^12.0.1
   flutter_animate: ^4.5.2
   rxdart: ^0.28.0
-  quran_library: ^2.3.5
 
 dev_dependencies:
   flutter_lints: ^5.0.0
@@ -77,6 +76,8 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/data/
+    - assets/moshafe/
+    - assets/moshafe/pages/
     - assets/ramadan_icons/
 
   

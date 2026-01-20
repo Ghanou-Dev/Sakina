@@ -9,9 +9,9 @@ import 'package:sakina/features/home/models/ayah_model.dart';
 import 'package:sakina/features/home/models/surah_model.dart';
 import 'package:sakina/features/home/models/surah_info_model.dart';
 
-class QuranRepository {
+class QuranRepoo {
   final QuraneService quraneService;
-  QuranRepository({required this.quraneService});
+  QuranRepoo({required this.quraneService});
 
   Future<Either<Failure, SurahModel>> getSpecialSurah({
     required int surahNumber,

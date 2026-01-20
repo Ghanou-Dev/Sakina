@@ -53,18 +53,13 @@ class FavorietBody extends StatelessWidget {
             shrinkWrap: true,
             children: [
               CustomFavorietPart(
-                partName: 'Surah ',
-                pathIcon: 'assets/icons/surah_text_icon.svg',
-                onTap: () {},
-              ),
-              CustomFavorietPart(
-                partName: 'Listen',
-                pathIcon: 'assets/icons/listen_icon.svg',
-                onTap: () {},
-              ),
-              CustomFavorietPart(
                 partName: 'Ayah',
                 pathIcon: 'assets/icons/surah_text_icon.svg',
+                onTap: () {},
+              ),
+              CustomFavorietPart(
+                partName: 'Surah',
+                pathIcon: 'assets/icons/listen_icon.svg',
                 onTap: () {},
               ),
               CustomFavorietPart(

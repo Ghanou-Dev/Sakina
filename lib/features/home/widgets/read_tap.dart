@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';
+import 'package:sakina/features/home/pages/read_surah_page.dart';
 import 'package:sakina/features/home/widgets/tadabbor_tap/item_surah_info.dart';
 
 class Read extends StatefulWidget {
@@ -30,7 +31,15 @@ class _ReadState extends State<Read> with AutomaticKeepAliveClientMixin {
               return Column(
                 children: [
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ReadSurahPage(
+                            index: '${index + 1}',
+                          ),
+                        ),
+                      );
+                    },
                     child: ItemSurahInfo(
                       surahName: infoSuwars[index].surahName,
                       surahNameArabic: infoSuwars[index].surahNameArabic,

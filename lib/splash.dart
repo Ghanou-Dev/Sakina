@@ -33,6 +33,7 @@ class _SpalshState extends State<Spalsh> {
         context.read<InternetCubit>().checkConnection();
         context.read<HomeCubit>().getSuwarsInfo();
         context.read<ListenCubit>().getAllReciters();
+        context.read<HomeCubit>().loadFihras();
       }
     });
   }

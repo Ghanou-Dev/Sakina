@@ -1,23 +1,31 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sakina/core/errors/failurs.dart';
 import 'package:sakina/features/home/models/audio_model.dart';
 import 'package:sakina/features/home/models/surah_info_model.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';
 import 'package:sakina/features/home/models/surah_model.dart';
-import 'package:sakina/features/home/repositories/quran_repository.dart';
+import 'package:sakina/features/home/repositories/quran_repoo.dart';
 import 'package:sakina/features/home/widgets/tadabbor_tap/item_surah_info.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  final QuranRepository quranRepo;
+  final QuranRepoo quranRepo;
 
   HomeCubit({
     required this.quranRepo,
   }) : super(HomeInitial());
 
   bool isTapped = false;
+
+  late Map<String, dynamic> fihras;
+  Future<void> loadFihras() async {
+    final f = await rootBundle.loadString('assets/moshafe/moshafe.json');
+    fihras = jsonDecode(f);
+  }
 
   int currentAyahNumber = 1;
   void changeAyahNumber({required int ayahNumber}) {
@@ -28,10 +36,8 @@ class HomeCubit extends Cubit<HomeState> {
   late List<ItemSurahInfo> allSuwarsInfo;
   int index = 0;
   Future<void> getSuwarsInfo() async {
-    // emit(HomeLoading());
     Either<Failure, List<SurahInfoModel>> data = await quranRepo
         .getSuwarsInfo();
-    // await Future.delayed(Duration(seconds: 2));
     data.fold(
       (failure) {
         emit(HomeFailure(failure: failure));

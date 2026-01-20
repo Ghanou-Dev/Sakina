@@ -1,4 +1,3 @@
-import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +15,9 @@ import 'package:sakina/features/home/cubit/ListenCubit/listen_cubit.dart';
 import 'package:sakina/features/home/pages/bottom_bar_page.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 import 'package:sakina/features/home/repositories/quran_audio_repository.dart';
-import 'package:sakina/features/home/repositories/quran_repository.dart';
+import 'package:sakina/features/home/repositories/quran_repoo.dart';
 import 'package:sakina/splash.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-late final AudioHandler audioHandler;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,7 +53,7 @@ class Sakina extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => HomeCubit(
-            quranRepo: QuranRepository(
+            quranRepo: QuranRepoo(
               quraneService: QuraneService(api: DioConsumer(dio: dio)),
             ),
           ),
