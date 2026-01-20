@@ -31,7 +31,6 @@ class _ReadSurahPageState extends State<ReadSurahPage> {
   late ScrollController _scrollController;
   @override
   Widget build(BuildContext context) {
-    // final fihras = context.read<HomeCubit>().fihras;
     return Scaffold(
       body: SafeArea(
         child: ListView.builder(
@@ -43,7 +42,6 @@ class _ReadSurahPageState extends State<ReadSurahPage> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
-                    // 'assets/moshafe/pages/${fihras[widget.index]}.png',
                     'assets/moshafe/pages/$index.png',
                   ),
                   fit: BoxFit.fill,
