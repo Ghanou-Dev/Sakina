@@ -8,6 +8,7 @@ import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
 import 'package:sakina/features/home/cubit/ListenCubit/listen_cubit.dart';
+import 'package:sakina/features/home/cubit/TaffsirCubit/taffsir_cubit.dart';
 import 'package:sakina/features/home/pages/bottom_bar_page.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 
@@ -34,6 +35,7 @@ class _SpalshState extends State<Spalsh> {
         context.read<HomeCubit>().getSuwarsInfo();
         context.read<ListenCubit>().getAllReciters();
         context.read<HomeCubit>().loadFihras();
+        context.read<TaffsirCubit>().getTaffsir();
       }
     });
   }

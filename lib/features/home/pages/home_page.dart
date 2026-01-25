@@ -8,6 +8,9 @@ import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_state.dart';
+import 'package:sakina/features/home/cubit/ListenCubit/listen_cubit.dart';
+import 'package:sakina/features/home/models/reciter_model.dart';
+import 'package:sakina/features/home/pages/display_all_moshafs.dart';
 import 'package:sakina/features/home/widgets/custom_tap_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -30,11 +33,20 @@ class _HomePageState extends State<HomePage>
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
+  // search anchir bar
+  SearchController searchController = SearchController();
+  FocusNode focusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final List<ReciterModel> resiterList = context
+        .read<ListenCubit>()
+        .recitersList;
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: AppBar(
+        backgroundColor: AppColors.white,
         title: Text(
           'sakina'.tr(context),
           style: TextStyle(
@@ -44,9 +56,77 @@ class _HomePageState extends State<HomePage>
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () {},
-            child: Image.asset('assets/images/search.png'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 1.5,
+                height: 50,
+                child: Focus(
+                  focusNode: focusNode,
+                  child: SearchAnchor.bar(
+                    barHintText: 'Search for resiter',
+                    barTrailing: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            searchController.clear();
+                          });
+                        },
+                        icon: Icon(
+                          Icons.cancel_outlined,
+                        ),
+                      ),
+                    ],
+                    barBackgroundColor: WidgetStatePropertyAll(AppColors.white),
+                    barElevation: WidgetStatePropertyAll(0),
+                    viewBackgroundColor: AppColors.white,
+                    //
+                    searchController: searchController,
+                    suggestionsBuilder: (context, controller) {
+                      // filtred
+                      final filtredList = resiterList.where(
+                        (resiter) {
+                          return resiter.name.contains(controller.text);
+                        },
+                      ).toList();
+
+                      if (filtredList.isNotEmpty) {
+                        return filtredList.map((resiter) {
+                          return ListTile(
+                            title: Text(resiter.name),
+                            onTap: () {
+                              controller.closeView(resiter.name);
+                              FocusScope.of(context).unfocus();
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      DisplayAllMoshafs(reciter: resiter),
+                                ),
+                              );
+                            },
+                          );
+                        }).toList();
+                      } else {
+                        return [
+                          ListTile(
+                            title: Text('Search in arabic !'),
+                            onTap: () {
+                              controller.closeView('No result !');
+                              FocusScope.of(context).unfocus();
+                            },
+                          ),
+                        ];
+                      }
+                    },
+                    onClose: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                  ),
+                ),
+              ),
+              SizedBox(width: 14),
+            ],
           ),
         ],
       ),
@@ -199,7 +279,7 @@ class _BodyHomePageState extends State<BodyHomePage> {
           ),
           Gap(20),
           Expanded(
-            child: CustomTabBar(length: 4),
+            child: CustomTabBar(length: 3),
           ),
         ],
       ),

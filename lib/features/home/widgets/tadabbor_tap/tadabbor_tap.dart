@@ -43,6 +43,7 @@ class _TadabborState extends State<Tadabbor>
           return ListView.builder(
             itemCount: infoSuwars.length,
             itemBuilder: (context, index) {
+              // تمرير رقم السورة
               return Column(
                 children: [
                   InkWell(

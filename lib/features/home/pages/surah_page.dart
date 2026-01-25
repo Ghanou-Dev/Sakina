@@ -10,7 +10,9 @@ import 'package:sakina/features/home/cubit/AudioCubit/audio_state.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
+import 'package:sakina/features/home/cubit/TaffsirCubit/taffsir_cubit.dart';
 import 'package:sakina/features/home/models/surah_model.dart';
+import 'package:sakina/features/home/models/taffsir_surah_model.dart';
 import 'package:sakina/features/home/widgets/tadabbor_tap/item_ayah.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
@@ -27,10 +29,39 @@ class SurahPage extends StatefulWidget {
 }
 
 class _SurahPageState extends State<SurahPage> {
+  late ScrollController scrollController;
+  Timer? debounced;
+
   @override
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    scrollController = ScrollController(
+      initialScrollOffset: getOffset(widget.surah.surahNameArabic),
+    );
+    scrollController.addListener(onScroll);
+  }
+
+  double getOffset(String surahName) {
+    return context.read<HomeCubit>().getOffset(surahName);
+  }
+
+  void onScroll() {
+    debounced?.cancel();
+    debounced = Timer(Duration(milliseconds: 300), () {
+      context.read<HomeCubit>().saveOffset(
+        widget.surah.surahNameArabic,
+        scrollController.offset,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    debounced?.cancel();
+    scrollController.removeListener(onScroll);
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -63,103 +94,104 @@ class _SurahPageState extends State<SurahPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Image.asset(
-                    'assets/images/background.png',
-                    width: double.infinity,
-                    height: 257,
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    SizedBox(
+        child: SingleChildScrollView(
+          controller: scrollController,
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Image.asset(
+                      'assets/images/background.png',
                       width: double.infinity,
-                      height: 25,
+                      height: 257,
+                      fit: BoxFit.fill,
                     ),
-                    Text(
-                      widget.surah.surahNameArabic,
-                      style: TextStyle(
-                        fontFamily: poppins,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.white,
-                        fontSize: 26,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        height: 25,
                       ),
-                    ),
-                    Gap(10),
-                    Text(
-                      widget.surah.surahName,
-                      style: TextStyle(
-                        fontFamily: poppins,
-                        fontWeight: FontWeight.normal,
-                        color: Colors.white,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 60.0,
-                        vertical: 8,
-                      ),
-                      child: Divider(
-                        color: Colors.white,
-                        thickness: 0.5,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          widget.surah.revelationPlace.toUpperCase(),
-                          style: TextStyle(
-                            fontFamily: poppins,
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
+                      Text(
+                        widget.surah.surahNameArabic,
+                        style: TextStyle(
+                          fontFamily: poppins,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white,
+                          fontSize: 26,
                         ),
-                        Gap(4),
-                        Text(
-                          '.',
-                          style: TextStyle(
-                            fontFamily: poppins,
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      ),
+                      Gap(10),
+                      Text(
+                        widget.surah.surahName,
+                        style: TextStyle(
+                          fontFamily: poppins,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.white,
+                          fontSize: 16,
                         ),
-                        Gap(4),
-                        Text(
-                          '${widget.surah.english.length} VERSES',
-                          style: TextStyle(
-                            fontFamily: poppins,
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 60.0,
+                          vertical: 8,
                         ),
-                      ],
-                    ),
-                    Gap(40),
-                    SvgPicture.asset('assets/icons/bismi_allah.svg'),
-                  ],
-                ),
-              ],
-            ),
-            Gap(30),
-            Expanded(
-              child: BodyOfSurah(
+                        child: Divider(
+                          color: Colors.white,
+                          thickness: 0.5,
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            widget.surah.revelationPlace.toUpperCase(),
+                            style: TextStyle(
+                              fontFamily: poppins,
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                          Gap(4),
+                          Text(
+                            '.',
+                            style: TextStyle(
+                              fontFamily: poppins,
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Gap(4),
+                          Text(
+                            '${widget.surah.english.length} VERSES',
+                            style: TextStyle(
+                              fontFamily: poppins,
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Gap(40),
+                      SvgPicture.asset('assets/icons/bismi_allah.svg'),
+                    ],
+                  ),
+                ],
+              ),
+              Gap(30),
+              BodyOfSurah(
                 surah: widget.surah,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -178,46 +210,17 @@ class BodyOfSurah extends StatefulWidget {
 }
 
 class _BodyOfSurahState extends State<BodyOfSurah> {
-  late ScrollController scrollController;
-  Timer? debounced;
-
-  @override
-  void initState() {
-    super.initState();
-    scrollController = ScrollController(
-      initialScrollOffset: getOffset(widget.surah.surahNameArabic),
-    );
-    scrollController.addListener(onScroll);
-  }
-
-  double getOffset(String surahName) {
-    return context.read<HomeCubit>().getOffset(surahName);
-  }
-
-  void onScroll() {
-    debounced?.cancel();
-    debounced = Timer(Duration(milliseconds: 300), () {
-      context.read<HomeCubit>().saveOffset(
-        widget.surah.surahNameArabic,
-        scrollController.offset,
-      );
-    });
-  }
-
-  @override
-  void dispose() {
-    debounced?.cancel();
-    scrollController.removeListener(onScroll);
-    scrollController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      controller: scrollController,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       itemCount: widget.surah.arabic1.length,
       itemBuilder: (context, index) {
+        // الوصول الى قائمة الايات و عرض تفسير كل اية في مكانه
+        final List<TaffsirSurahModel> taffsirSuwars = context
+            .read<TaffsirCubit>()
+            .tafsirList;
         return Padding(
           padding: const EdgeInsets.only(bottom: 10.0),
           child: Column(
@@ -244,6 +247,9 @@ class _BodyOfSurahState extends State<BodyOfSurah> {
                       arabic1: widget.surah.arabic1[index],
                       arabic2: widget.surah.arabic2[index],
                       english: widget.surah.english[index],
+                      taffsir: taffsirSuwars[widget.surah.surahNo - 1]
+                          .ayahs[index]
+                          .text,
                       //////////////////////////////////////////////////////////////
                       iconButton: StreamBuilder<PlayerState>(
                         stream: context

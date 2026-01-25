@@ -5,7 +5,6 @@ import 'package:sakina/core/helpers/extansions.dart';
 import 'package:sakina/features/home/widgets/listen_tap/listen_tap.dart';
 import 'package:sakina/features/home/widgets/read_tap.dart';
 import 'package:sakina/features/home/widgets/tadabbor_tap/tadabbor_tap.dart';
-import 'package:sakina/features/home/widgets/taffsir_tap.dart';
 
 class CustomTabBar extends StatefulWidget {
   final int length;
@@ -64,14 +63,6 @@ class _CustomTabBarState extends State<CustomTabBar>
                   fontSize: 16,
                 ),
               ),
-              Text(
-                'Taffsir'.tr(context),
-                style: TextStyle(
-                  fontFamily: poppins,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
             ],
           ),
           Expanded(
@@ -80,7 +71,6 @@ class _CustomTabBarState extends State<CustomTabBar>
                 Tadabbor(),
                 Listen(),
                 Read(),
-                Taffsir(),
               ],
             ),
           ),

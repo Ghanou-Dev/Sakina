@@ -16,6 +16,7 @@ class ItemAyah extends StatefulWidget {
   final String arabic2;
   final String english;
   final Widget iconButton;
+  final String taffsir;
   const ItemAyah({
     super.key,
     required this.ayahNo,
@@ -25,6 +26,7 @@ class ItemAyah extends StatefulWidget {
     required this.arabic2,
     required this.english,
     required this.iconButton,
+    required this.taffsir,
   });
 
   @override
@@ -38,6 +40,8 @@ class _ItemAyahState extends State<ItemAyah> {
     super.initState();
     // add value to the variables isFavoriet from cubit
   }
+
+  bool isShow = false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +71,7 @@ class _ItemAyahState extends State<ItemAyah> {
                   ),
                 ),
                 Spacer(),
+                ///// share button /////////////////////////////////////////////
                 IconButton(
                   onPressed: () async {
                     final ShareResult result = await SharePlus.instance.share(
@@ -85,7 +90,7 @@ class _ItemAyahState extends State<ItemAyah> {
 
                 /// Icon play button ///////////////////////////////////////////
                 widget.iconButton,
-                ////////////////////////////////////////////////////////////////
+                //// Saved button //////////////////////////////////////////////
                 IconButton(
                   onPressed: () {
                     setState(() {
@@ -99,10 +104,30 @@ class _ItemAyahState extends State<ItemAyah> {
                     color: AppColors.primaryColor,
                   ),
                 ),
+
+                /// taffsir ayah button ////////////////////////////////////////
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: IconButton(
+                    iconSize: 30,
+                    color: AppColors.primaryColor,
+                    onPressed: () {
+                      setState(() {
+                        isShow = !isShow;
+                      });
+                    },
+                    icon: Icon(
+                      isShow
+                          ? Icons.keyboard_arrow_down_sharp
+                          : Icons.keyboard_arrow_left_sharp,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
         ),
+        /////////////////// texts //////////////////////////////////////////////
         Padding(
           padding: const EdgeInsets.all(10.0),
           child: Row(
@@ -143,6 +168,27 @@ class _ItemAyahState extends State<ItemAyah> {
             ],
           ),
         ),
+
+        /// taffsir ////////////////////////////////////////////////////////////
+        isShow
+            ? Row(
+                textDirection: TextDirection.rtl,
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      widget.taffsir,
+                      textDirection: TextDirection.rtl,
+                      style: TextStyle(
+                        fontFamily: uthmani,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.black,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : SizedBox(),
         Gap(20),
       ],
     );

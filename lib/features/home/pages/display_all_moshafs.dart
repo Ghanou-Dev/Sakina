@@ -35,12 +35,6 @@ class DisplayAllMoshafs extends StatelessWidget {
             color: AppColors.primaryColor,
           ),
         ),
-        actions: [
-          TextButton(
-            onPressed: () {},
-            child: Image.asset('assets/images/search.png'),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

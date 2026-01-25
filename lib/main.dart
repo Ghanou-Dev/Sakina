@@ -12,10 +12,13 @@ import 'package:sakina/core/services/quran_services/qurane_audio_service.dart';
 import 'package:sakina/core/services/quran_services/qurane_service.dart';
 import 'package:sakina/features/home/cubit/AudioCubit/audio_cubit.dart';
 import 'package:sakina/features/home/cubit/ListenCubit/listen_cubit.dart';
+import 'package:sakina/features/home/cubit/TaffsirCubit/taffsir_cubit.dart';
 import 'package:sakina/features/home/pages/bottom_bar_page.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
 import 'package:sakina/features/home/repositories/quran_audio_repository.dart';
 import 'package:sakina/features/home/repositories/quran_repoo.dart';
+import 'package:sakina/features/home/repositories/taffsir_repo.dart';
+import 'package:sakina/features/home/services/get_taffsir_of_qurane_service.dart';
 import 'package:sakina/splash.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -72,6 +75,15 @@ class Sakina extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => InternetCubit(),
+        ),
+        BlocProvider(
+          create: (context) => TaffsirCubit(
+            taffsirRepo: TaffsirRepo(
+              taffsirService: GetTaffsirOfQuranService(
+                api: DioConsumer(dio: dio),
+              ),
+            ),
+          ),
         ),
       ],
       child: MaterialApp(

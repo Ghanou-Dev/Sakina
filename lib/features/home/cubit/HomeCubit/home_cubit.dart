@@ -115,8 +115,6 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  //////////////////////////////////////////////////////////////////////////////
-
   // create map for saved scroll offset
   final Map<String, double> _savedScrollOffsets = {};
 

@@ -6,7 +6,7 @@ import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
 import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/helpers/extansions.dart';
 import 'package:sakina/features/saved/pages/bookmark.dart';
-import 'package:sakina/features/hadith/pages/hadith.dart';
+import 'package:sakina/features/hadith/presentation/pages/hadith.dart';
 import 'package:sakina/features/settings/pages/settings.dart';
 import 'package:sakina/features/home/pages/home_page.dart';
 import 'package:sakina/features/prayer/pages/mawakit_salat.dart';
