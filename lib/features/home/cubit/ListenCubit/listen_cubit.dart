@@ -9,7 +9,7 @@ class ListenCubit extends Cubit<ListenState> {
   final QuranAudioRepository quranAudioRepository;
   ListenCubit({required this.quranAudioRepository}) : super(ListenInitial());
 
-  late List<ReciterModel> recitersList;
+  List<ReciterModel> recitersList = [];
   bool recitersDataLoaded = false;
   Future<void> getAllReciters() async {
     if (recitersDataLoaded) {

@@ -5,11 +5,19 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:sakina/app_localizations.dart';
 import 'package:sakina/core/apis/dio_consumer.dart';
-import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
 import 'package:sakina/core/constants/app_colors.dart';
+import 'package:sakina/core/cubits/internet_cubit.dart';
 import 'package:sakina/core/my_bloc_observer.dart';
 import 'package:sakina/core/services/quran_services/qurane_audio_service.dart';
 import 'package:sakina/core/services/quran_services/qurane_service.dart';
+import 'package:sakina/features/hadith/data/data_sources/hadith_remote_data_source.dart';
+import 'package:sakina/features/hadith/data/repositories/hadith_repo_impl.dart';
+import 'package:sakina/features/hadith/domain/usecases/get_all_books_usecase.dart';
+import 'package:sakina/features/hadith/domain/usecases/get_all_chapters_usecase.dart';
+import 'package:sakina/features/hadith/domain/usecases/get_all_hadiths_usecase.dart';
+import 'package:sakina/features/hadith/presentation/cubits/book_cubit/book_cubit.dart';
+import 'package:sakina/features/hadith/presentation/cubits/chapter_cubit/chapter_cubit.dart';
+import 'package:sakina/features/hadith/presentation/cubits/hadith_cubit/hadith_cubit.dart';
 import 'package:sakina/features/home/cubit/AudioCubit/audio_cubit.dart';
 import 'package:sakina/features/home/cubit/ListenCubit/listen_cubit.dart';
 import 'package:sakina/features/home/cubit/TaffsirCubit/taffsir_cubit.dart';
@@ -54,6 +62,7 @@ class Sakina extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => InternetCubit()),
         BlocProvider(
           create: (context) => HomeCubit(
             quranRepo: QuranRepoo(
@@ -74,13 +83,43 @@ class Sakina extends StatelessWidget {
           create: (context) => AudioCubit(),
         ),
         BlocProvider(
-          create: (context) => InternetCubit(),
-        ),
-        BlocProvider(
           create: (context) => TaffsirCubit(
             taffsirRepo: TaffsirRepo(
               taffsirService: GetTaffsirOfQuranService(
                 api: DioConsumer(dio: dio),
+              ),
+            ),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => BookCubit(
+            getAllBooksUsecase: GetAllBooksUsecase(
+              hadithRepo: HadithRepoImpl(
+                remoteDataSource: HadithRemoteDataSourceImpl(
+                  apiConsumer: DioConsumer(dio: dio),
+                ),
+              ),
+            ),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => ChapterCubit(
+            getAllChaptersUsecase: GetAllChaptersUsecase(
+              hadithRepo: HadithRepoImpl(
+                remoteDataSource: HadithRemoteDataSourceImpl(
+                  apiConsumer: DioConsumer(dio: dio),
+                ),
+              ),
+            ),
+          ),
+        ),
+        BlocProvider(
+          create: (context) => HadithCubit(
+            getAllHadithsUsecase: GetAllHadithsUsecase(
+              hadithRepo: HadithRepoImpl(
+                remoteDataSource: HadithRemoteDataSourceImpl(
+                  apiConsumer: DioConsumer(dio: dio),
+                ),
               ),
             ),
           ),

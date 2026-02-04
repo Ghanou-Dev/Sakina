@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
-import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
 import 'package:sakina/core/constants/app_colors.dart';
-import 'package:sakina/core/helpers/extansions.dart';
+import 'package:sakina/core/constants/fonts.dart';
+import 'package:sakina/core/cubits/internet_cubit.dart';
 import 'package:sakina/features/saved/pages/bookmark.dart';
-import 'package:sakina/features/hadith/presentation/pages/hadith.dart';
+import 'package:sakina/features/hadith/presentation/pages/hadith_page.dart';
 import 'package:sakina/features/settings/pages/settings.dart';
 import 'package:sakina/features/home/pages/home_page.dart';
 import 'package:sakina/features/prayer/pages/mawakit_salat.dart';
@@ -36,41 +35,41 @@ class _BottomBarPageState extends State<BottomBarPage> {
     Settings(),
   ];
 
-  void _showMessage(String message, bool isConnected) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: isConnected ? Colors.greenAccent : Colors.redAccent,
-        dismissDirection: DismissDirection.startToEnd,
-        duration: isConnected ? Duration(seconds: 3) : Duration(seconds: 3),
-
-        content: Text(
-          message,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black87,
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<InternetCubit, InternetState>(
-        listener: (context, state) async {
-          if (state is InternetConnectionState) {
-            if (state.isConnected) {
-              _showMessage('Connected'.tr(context), true);
-              await context.read<HomeCubit>().getSuwarsInfo();
-            } else {
-              _showMessage('no_internet'.tr(context), false);
-            }
-          }
-        },
-        child: IndexedStack(
-          index: currentIndex,
-          children: pages,
+      body: SafeArea(
+        child: BlocBuilder<InternetCubit, InternetState>(
+          builder: (context, state) {
+            final isConnected = state.isConnected;
+            return Column(
+              children: [
+                isConnected
+                    ? SizedBox()
+                    : Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height / 30,
+                        color: Colors.red,
+                        child: Center(
+                          child: Text(
+                            'No internet !',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontFamily: poppins,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                Expanded(
+                  child: IndexedStack(
+                    index: currentIndex,
+                    children: pages,
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

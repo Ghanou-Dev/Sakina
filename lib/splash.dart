@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_gap/flutter_gap.dart';
-import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
 import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
+import 'package:sakina/core/cubits/internet_cubit.dart';
 import 'package:sakina/core/helpers/extansions.dart';
+import 'package:sakina/features/hadith/presentation/cubits/book_cubit/book_cubit.dart';
 import 'package:sakina/features/home/cubit/ListenCubit/listen_cubit.dart';
 import 'package:sakina/features/home/cubit/TaffsirCubit/taffsir_cubit.dart';
 import 'package:sakina/features/home/pages/bottom_bar_page.dart';
@@ -31,11 +31,13 @@ class _SpalshState extends State<Spalsh> {
     );
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        context.read<InternetCubit>().checkConnection();
+        context.read<InternetCubit>().listenToConnectionChanges();
         context.read<HomeCubit>().getSuwarsInfo();
         context.read<ListenCubit>().getAllReciters();
         context.read<HomeCubit>().loadFihras();
         context.read<TaffsirCubit>().getTaffsir();
+        // hadith feature
+        context.read<BookCubit>().getAllBooks();
       }
     });
   }
@@ -47,201 +49,115 @@ class _SpalshState extends State<Spalsh> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: BlocListener<InternetCubit, InternetState>(
-            listener: (context, state) {
-              if (state is InternetConnectionState) {
-                if (!mounted) return;
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 80),
+              Text(
+                'sakina'.tr(context),
+                style: TextStyle(
+                  fontFamily: poppins,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor,
+                  fontSize: 28,
+                ),
+              ),
+              SizedBox(
+                height: 15,
+                width: double.infinity,
+              ),
+              Text(
+                'learen_quran_and'.tr(context),
+                style: TextStyle(
+                  fontFamily: poppins,
+                  fontSize: 18,
+                  color: Color(0xff8789A3),
+                ),
+              ),
+              Text(
+                'recite_once_everyday'.tr(context),
+                style: TextStyle(
+                  fontFamily: poppins,
+                  fontSize: 18,
+                  color: Color(0xff8789A3),
+                ),
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Stack(
+                clipBehavior: Clip.none,
 
-                if (state.isConnected == false) {
-                  _connectionStateDialog('no_internet'.tr(context));
-                }
-                if (state.isConnected && isDialogActive) {
-                  isDialogActive = false;
-                  Navigator.pop(context);
-                }
-              }
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 80),
-                Text(
-                  'sakina'.tr(context),
-                  style: TextStyle(
-                    fontFamily: poppins,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                    fontSize: 28,
+                children: [
+                  Image.asset(
+                    'assets/images/image1.png',
+                    fit: BoxFit.cover,
+                    height: 450,
+                    width: 314,
                   ),
-                ),
-                SizedBox(
-                  height: 15,
-                  width: double.infinity,
-                ),
-                Text(
-                  'learen_quran_and'.tr(context),
-                  style: TextStyle(
-                    fontFamily: poppins,
-                    fontSize: 18,
-                    color: Color(0xff8789A3),
-                  ),
-                ),
-                Text(
-                  'recite_once_everyday'.tr(context),
-                  style: TextStyle(
-                    fontFamily: poppins,
-                    fontSize: 18,
-                    color: Color(0xff8789A3),
-                  ),
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                Stack(
-                  clipBehavior: Clip.none,
-
-                  children: [
-                    Image.asset(
-                      'assets/images/image1.png',
-                      fit: BoxFit.cover,
-                      height: 450,
-                      width: 314,
-                    ),
-                    Positioned(
-                      bottom: -20,
-                      left: 70,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStatePropertyAll(
-                            Color(0xffF9B091),
-                          ),
-                          fixedSize: WidgetStatePropertyAll(
-                            Size(185, 60),
-                          ),
+                  Positioned(
+                    bottom: -20,
+                    left: 70,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStatePropertyAll(
+                          Color(0xffF9B091),
                         ),
-                        onPressed: () async {
-                          // Navigator.of(
-                          //   context,
-                          // ).pushReplacementNamed(BottomBarPage.pageRoute);
-                        },
-                        child:
-                            Text(
-                                  'Started'.tr(context),
-                                  style: TextStyle(
-                                    fontFamily: poppins,
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )
-                                .animate(
-                                  onPlay: (controller) {
-                                    controller.repeat();
-                                    Future.delayed(2100.ms, () {
-                                      controller.stop();
-                                      Navigator.of(
-                                        context,
-                                      ).pushReplacementNamed(
-                                        BottomBarPage.pageRoute,
-                                      );
-                                    });
-                                  },
-                                )
-                                .fadeIn(
-                                  duration: 600.ms,
-                                  curve: Curves.easeInOut,
-                                )
-                                .then(
-                                  delay: 200.ms,
-                                )
-                                .fadeOut(
-                                  duration: 600.ms,
-                                  curve: Curves.easeInOut,
-                                ),
+                        fixedSize: WidgetStatePropertyAll(
+                          Size(185, 60),
+                        ),
                       ),
+                      onPressed: () async {
+                        // Navigator.of(
+                        //   context,
+                        // ).pushReplacementNamed(BottomBarPage.pageRoute);
+                      },
+                      child:
+                          Text(
+                                'Started'.tr(context),
+                                style: TextStyle(
+                                  fontFamily: poppins,
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                              .animate(
+                                onPlay: (controller) {
+                                  controller.repeat();
+                                  Future.delayed(2100.ms, () {
+                                    controller.stop();
+                                    Navigator.of(
+                                      context,
+                                    ).pushReplacementNamed(
+                                      BottomBarPage.pageRoute,
+                                    );
+                                  });
+                                },
+                              )
+                              .fadeIn(
+                                duration: 600.ms,
+                                curve: Curves.easeInOut,
+                              )
+                              .then(
+                                delay: 200.ms,
+                              )
+                              .fadeOut(
+                                duration: 600.ms,
+                                curve: Curves.easeInOut,
+                              ),
                     ),
-                  ],
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 50,
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-
-  void _connectionStateDialog(String message) {
-    if (!mounted) return;
-    isDialogActive = true;
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          content: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Gap(30),
-              Image.asset(
-                'assets/images/no-wifi.png',
-                height: 70,
-                width: 70,
-              ),
-              Gap(30),
-              Text(
-                message,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
-                foregroundColor: Colors.white,
-              ),
-              onPressed: () async {
-                isDialogActive = false;
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'ok'.tr(context),
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // Future<void> _getStarted(BuildContext context) async {
-  //   final bool isConnected = await InternetConnection().hasInternetAccess;
-  //   if (isConnected == false) {
-  //     _connectionStateDialog(
-  //       'Please Check your internet connection and try again'.tr(context),
-  //     );
-  //   } else {
-  //     try {
-  //       await context.read<HomeCubit>().getSuwarsInfo();
-  //       Navigator.of(
-  //         context,
-  //       ).pushReplacementNamed(BottomBarPage.pageRoute);
-  //     } catch (e) {
-  //       _connectionStateDialog(
-  //         'Your internet connection is wake! try again later'.tr(context),
-  //       );
-  //     }
-  //   }
-  // }
 }

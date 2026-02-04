@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
-import 'package:sakina/core/cubits/InternetCubit/internet_cubit.dart';
 import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
@@ -33,105 +32,97 @@ class _HomePageState extends State<HomePage>
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
 
-  // search anchir bar
-  SearchController searchController = SearchController();
-  FocusNode focusNode = FocusNode();
-
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final List<ReciterModel> resiterList = context
-        .read<ListenCubit>()
-        .recitersList;
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        title: Text(
-          'sakina'.tr(context),
-          style: TextStyle(
-            fontFamily: poppins,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width / 1.5,
-                height: 50,
-                child: Focus(
-                  focusNode: focusNode,
-                  child: SearchAnchor.bar(
-                    barHintText: 'Search for resiter',
-                    barTrailing: [
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            searchController.clear();
-                          });
-                        },
-                        icon: Icon(
-                          Icons.cancel_outlined,
-                        ),
-                      ),
-                    ],
-                    barBackgroundColor: WidgetStatePropertyAll(AppColors.white),
-                    barElevation: WidgetStatePropertyAll(0),
-                    viewBackgroundColor: AppColors.white,
-                    //
-                    searchController: searchController,
-                    suggestionsBuilder: (context, controller) {
-                      // filtred
-                      final filtredList = resiterList.where(
-                        (resiter) {
-                          return resiter.name.contains(controller.text);
-                        },
-                      ).toList();
-
-                      if (filtredList.isNotEmpty) {
-                        return filtredList.map((resiter) {
-                          return ListTile(
-                            title: Text(resiter.name),
-                            onTap: () {
-                              controller.closeView(resiter.name);
-                              FocusScope.of(context).unfocus();
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      DisplayAllMoshafs(reciter: resiter),
-                                ),
-                              );
-                            },
-                          );
-                        }).toList();
-                      } else {
-                        return [
-                          ListTile(
-                            title: Text('Search in arabic !'),
-                            onTap: () {
-                              controller.closeView('No result !');
-                              FocusScope.of(context).unfocus();
-                            },
-                          ),
-                        ];
-                      }
-                    },
-                    onClose: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(width: 14),
-            ],
-          ),
-        ],
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: AppColors.white,
+      //   title: Text(
+      //     'sakina'.tr(context),
+      //     style: TextStyle(
+      //       fontFamily: poppins,
+      //       fontWeight: FontWeight.bold,
+      //       color: AppColors.primaryColor,
+      //     ),
+      //   ),
+      //   actions: [
+      //     // Row(
+      //     //   mainAxisAlignment: MainAxisAlignment.end,
+      //     //   children: [
+      //     //     SizedBox(
+      //     //       width: MediaQuery.of(context).size.width / 1.5,
+      //     //       height: 50,
+      //     //       child: Focus(
+      //     //         focusNode: focusNode,
+      //     //         child: SearchAnchor.bar(
+      //     //           barHintText: 'Search for resiter',
+      //     //           barTrailing: [
+      //     //             IconButton(
+      //     //               onPressed: () {
+      //     //                 setState(() {
+      //     //                   searchController.clear();
+      //     //                 });
+      //     //               },
+      //     //               icon: Icon(
+      //     //                 Icons.cancel_outlined,
+      //     //               ),
+      //     //             ),
+      //     //           ],
+      //     //           barBackgroundColor: WidgetStatePropertyAll(AppColors.white),
+      //     //           barElevation: WidgetStatePropertyAll(0),
+      //     //           viewBackgroundColor: AppColors.white,
+      //     //           //
+      //     //           searchController: searchController,
+      //     //           suggestionsBuilder: (context, controller) {
+      //     //             // filtred
+      //     //             final filtredList = resiterList.where(
+      //     //               (resiter) {
+      //     //                 return resiter.name.contains(controller.text);
+      //     //               },
+      //     //             ).toList();
+      //     //             if (filtredList.isNotEmpty) {
+      //     //               return filtredList.map((resiter) {
+      //     //                 return ListTile(
+      //     //                   title: Text(resiter.name),
+      //     //                   onTap: () {
+      //     //                     controller.closeView(resiter.name);
+      //     //                     FocusScope.of(context).unfocus();
+      //     //                     Navigator.of(context).push(
+      //     //                       MaterialPageRoute(
+      //     //                         builder: (context) =>
+      //     //                             DisplayAllMoshafs(reciter: resiter),
+      //     //                       ),
+      //     //                     );
+      //     //                   },
+      //     //                 );
+      //     //               }).toList();
+      //     //             } else {
+      //     //               return [
+      //     //                 ListTile(
+      //     //                   title: Text('Search in arabic !'),
+      //     //                   onTap: () {
+      //     //                     controller.closeView('No result !');
+      //     //                     FocusScope.of(context).unfocus();
+      //     //                   },
+      //     //                 ),
+      //     //               ];
+      //     //             }
+      //     //           },
+      //     //           onClose: () {
+      //     //             FocusScope.of(context).requestFocus(FocusNode());
+      //     //           },
+      //     //         ),
+      //     //       ),
+      //     //     ),
+      //     //     SizedBox(width: 14),
+      //     //   ],
+      //     // ),
+      //   ],
+      // ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(10.0),
         child: BodyHomePage(),
       ),
     );
@@ -148,25 +139,86 @@ class BodyHomePage extends StatefulWidget {
 class _BodyHomePageState extends State<BodyHomePage> {
   bool isDialogActive = false;
 
+  // search anchir bar
+  SearchController searchController = SearchController();
+  FocusNode focusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
-    return BlocListener<InternetCubit, InternetState>(
-      listener: (context, state) {
-        if (state is InternetConnectionState) {
-          if (state.isConnected == false) {
-            _showDialog(
-              'Please Check your internet connection and try again'.tr(context),
-            );
-          }
-          if (state.isConnected && isDialogActive) {
-            isDialogActive = false;
-            Navigator.of(context).pop();
-          }
-        }
-      },
+    final List<ReciterModel> resiterList = context
+        .read<ListenCubit>()
+        .recitersList;
+    return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Focus(
+              focusNode: focusNode,
+              child: SearchAnchor.bar(
+                barHintText: 'Search for resiter',
+                barTrailing: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        searchController.clear();
+                      });
+                    },
+                    icon: Icon(
+                      Icons.cancel_outlined,
+                    ),
+                  ),
+                ],
+                barBackgroundColor: WidgetStatePropertyAll(AppColors.white),
+                barElevation: WidgetStatePropertyAll(0),
+                viewBackgroundColor: AppColors.white,
+                //
+                searchController: searchController,
+                suggestionsBuilder: (context, controller) {
+                  // filtred
+                  final filtredList = resiterList.where(
+                    (resiter) {
+                      return resiter.name.contains(controller.text);
+                    },
+                  ).toList();
+
+                  if (filtredList.isNotEmpty) {
+                    return filtredList.map((resiter) {
+                      return ListTile(
+                        title: Text(resiter.name),
+                        onTap: () {
+                          controller.closeView(resiter.name);
+                          FocusScope.of(context).unfocus();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DisplayAllMoshafs(reciter: resiter),
+                            ),
+                          );
+                        },
+                      );
+                    }).toList();
+                  } else {
+                    return [
+                      ListTile(
+                        title: Text('Search in arabic !'),
+                        onTap: () {
+                          controller.closeView('No result !');
+                          FocusScope.of(context).unfocus();
+                        },
+                      ),
+                    ];
+                  }
+                },
+                onClose: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                },
+              ),
+            ),
+          ),
+
+          //////////////////////////////////////////////////////////////////////
           Container(
             width: double.infinity,
             height: 131,
@@ -283,54 +335,6 @@ class _BodyHomePageState extends State<BodyHomePage> {
           ),
         ],
       ),
-    );
-  }
-
-  void _showDialog(String message) {
-    isDialogActive = true;
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          content: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Gap(30),
-              Image.asset(
-                'assets/images/no-wifi.png',
-                height: 70,
-                width: 70,
-              ),
-              Gap(30),
-              Text(
-                message,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          actions: [
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
-                foregroundColor: Colors.white,
-              ),
-              onPressed: () async {
-                isDialogActive = false;
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'ok'.tr(context),
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }
