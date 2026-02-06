@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sakina/core/connection/presentation/cubit/network_cubit.dart';
 import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
-import 'package:sakina/core/cubits/internet_cubit.dart';
 import 'package:sakina/core/helpers/extansions.dart';
 import 'package:sakina/features/hadith/presentation/cubits/book_cubit/book_cubit.dart';
 import 'package:sakina/features/home/cubit/ListenCubit/listen_cubit.dart';
@@ -31,7 +31,7 @@ class _SpalshState extends State<Spalsh> {
     );
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        context.read<InternetCubit>().listenToConnectionChanges();
+        context.read<NetWorkCubit>().listenToStatusChanges();
         context.read<HomeCubit>().getSuwarsInfo();
         context.read<ListenCubit>().getAllReciters();
         context.read<HomeCubit>().loadFihras();

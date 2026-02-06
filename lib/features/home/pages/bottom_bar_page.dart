@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:sakina/core/connection/presentation/cubit/network_cubit.dart';
 import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
-import 'package:sakina/core/cubits/internet_cubit.dart';
 import 'package:sakina/features/saved/pages/bookmark.dart';
 import 'package:sakina/features/hadith/presentation/pages/hadith_page.dart';
 import 'package:sakina/features/settings/pages/settings.dart';
@@ -23,7 +25,6 @@ class _BottomBarPageState extends State<BottomBarPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {});
   }
 
   int currentIndex = 0;
@@ -35,40 +36,75 @@ class _BottomBarPageState extends State<BottomBarPage> {
     Settings(),
   ];
 
+  bool isShowBar = false;
+  bool isConnected = true;
+  Timer? timer;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: BlocBuilder<InternetCubit, InternetState>(
+        child: BlocConsumer<NetWorkCubit, NetWorkState>(
+          listener: (context, state) {
+            if (state is NetWorkChanges) {
+              if (state.isConnected) {
+                setState(() {
+                  isShowBar = true;
+                  isConnected = true;
+                });
+                timer?.cancel();
+                timer = Timer(
+                  Duration(seconds: 2),
+                  () {
+                    setState(() {
+                      isShowBar = false;
+                      isConnected = true;
+                    });
+                  },
+                );
+              } else {
+                setState(() {
+                  isShowBar = true;
+                  isConnected = false;
+                });
+              }
+            }
+          },
           builder: (context, state) {
-            final isConnected = state.isConnected;
-            return Column(
-              children: [
-                isConnected
-                    ? SizedBox()
-                    : Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height / 30,
-                        color: Colors.red,
-                        child: Center(
-                          child: Text(
-                            'No internet !',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: poppins,
-                              color: AppColors.white,
+            if (state is NetWorkChanges) {
+              return Column(
+                children: [
+                  isShowBar
+                      ? Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height / 30,
+                          color: isConnected ? Colors.green : Colors.red,
+                          child: Center(
+                            child: Text(
+                              isConnected ? 'Connection' : 'No Internet',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: poppins,
+                                color: AppColors.white,
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                Expanded(
-                  child: IndexedStack(
-                    index: currentIndex,
-                    children: pages,
+                        )
+                      : SizedBox.shrink(),
+                  Expanded(
+                    child: IndexedStack(
+                      index: currentIndex,
+                      children: pages,
+                    ),
                   ),
-                ),
-              ],
-            );
+                ],
+              );
+            } else {
+              return IndexedStack(
+                index: currentIndex,
+                children: pages,
+              );
+            }
           },
         ),
       ),

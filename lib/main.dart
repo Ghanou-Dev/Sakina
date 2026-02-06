@@ -2,11 +2,15 @@ import 'package:audio_session/audio_session.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:sakina/app_localizations.dart';
 import 'package:sakina/core/apis/dio_consumer.dart';
+import 'package:sakina/core/connection/data/repositories/connection_repo_impl.dart';
+import 'package:sakina/core/connection/domain/usecases/get_connection_status_usecase.dart';
+import 'package:sakina/core/connection/domain/usecases/listen_to_connection_status.dart';
+import 'package:sakina/core/connection/presentation/cubit/network_cubit.dart';
 import 'package:sakina/core/constants/app_colors.dart';
-import 'package:sakina/core/cubits/internet_cubit.dart';
 import 'package:sakina/core/my_bloc_observer.dart';
 import 'package:sakina/core/services/quran_services/qurane_audio_service.dart';
 import 'package:sakina/core/services/quran_services/qurane_service.dart';
@@ -62,7 +66,20 @@ class Sakina extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => InternetCubit()),
+        BlocProvider(
+          create: (context) => NetWorkCubit(
+            getConnectionStatusUsecase: GetConnectionStatusUsecase(
+              connectionRepo: ConnectionRepoImpl(
+                connection: InternetConnection(),
+              ),
+            ),
+            listenToConnectionStatus: ListenToConnectionStatus(
+              connectionRepo: ConnectionRepoImpl(
+                connection: InternetConnection(),
+              ),
+            ),
+          ),
+        ),
         BlocProvider(
           create: (context) => HomeCubit(
             quranRepo: QuranRepoo(
