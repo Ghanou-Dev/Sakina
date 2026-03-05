@@ -15,7 +15,7 @@ class TaffsirRepo {
       List<TaffsirSurahModel> tafsir = await taffsirService.call();
       return Right(tafsir);
     } on InternetTimeoutEception catch (e) {
-      return Left(TimeoutFailure(message: e.message));
+      return Left(TimeoutFailure(message: e.message ?? 'Timeoute failure'));
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } on NoInternetException catch (e) {

@@ -37,90 +37,6 @@ class _HomePageState extends State<HomePage>
     super.build(context);
     return Scaffold(
       backgroundColor: AppColors.white,
-      // appBar: AppBar(
-      //   backgroundColor: AppColors.white,
-      //   title: Text(
-      //     'sakina'.tr(context),
-      //     style: TextStyle(
-      //       fontFamily: poppins,
-      //       fontWeight: FontWeight.bold,
-      //       color: AppColors.primaryColor,
-      //     ),
-      //   ),
-      //   actions: [
-      //     // Row(
-      //     //   mainAxisAlignment: MainAxisAlignment.end,
-      //     //   children: [
-      //     //     SizedBox(
-      //     //       width: MediaQuery.of(context).size.width / 1.5,
-      //     //       height: 50,
-      //     //       child: Focus(
-      //     //         focusNode: focusNode,
-      //     //         child: SearchAnchor.bar(
-      //     //           barHintText: 'Search for resiter',
-      //     //           barTrailing: [
-      //     //             IconButton(
-      //     //               onPressed: () {
-      //     //                 setState(() {
-      //     //                   searchController.clear();
-      //     //                 });
-      //     //               },
-      //     //               icon: Icon(
-      //     //                 Icons.cancel_outlined,
-      //     //               ),
-      //     //             ),
-      //     //           ],
-      //     //           barBackgroundColor: WidgetStatePropertyAll(AppColors.white),
-      //     //           barElevation: WidgetStatePropertyAll(0),
-      //     //           viewBackgroundColor: AppColors.white,
-      //     //           //
-      //     //           searchController: searchController,
-      //     //           suggestionsBuilder: (context, controller) {
-      //     //             // filtred
-      //     //             final filtredList = resiterList.where(
-      //     //               (resiter) {
-      //     //                 return resiter.name.contains(controller.text);
-      //     //               },
-      //     //             ).toList();
-      //     //             if (filtredList.isNotEmpty) {
-      //     //               return filtredList.map((resiter) {
-      //     //                 return ListTile(
-      //     //                   title: Text(resiter.name),
-      //     //                   onTap: () {
-      //     //                     controller.closeView(resiter.name);
-      //     //                     FocusScope.of(context).unfocus();
-      //     //                     Navigator.of(context).push(
-      //     //                       MaterialPageRoute(
-      //     //                         builder: (context) =>
-      //     //                             DisplayAllMoshafs(reciter: resiter),
-      //     //                       ),
-      //     //                     );
-      //     //                   },
-      //     //                 );
-      //     //               }).toList();
-      //     //             } else {
-      //     //               return [
-      //     //                 ListTile(
-      //     //                   title: Text('Search in arabic !'),
-      //     //                   onTap: () {
-      //     //                     controller.closeView('No result !');
-      //     //                     FocusScope.of(context).unfocus();
-      //     //                   },
-      //     //                 ),
-      //     //               ];
-      //     //             }
-      //     //           },
-      //     //           onClose: () {
-      //     //             FocusScope.of(context).requestFocus(FocusNode());
-      //     //           },
-      //     //         ),
-      //     //       ),
-      //     //     ),
-      //     //     SizedBox(width: 14),
-      //     //   ],
-      //     // ),
-      //   ],
-      // ),
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: BodyHomePage(),
@@ -139,7 +55,7 @@ class BodyHomePage extends StatefulWidget {
 class _BodyHomePageState extends State<BodyHomePage> {
   bool isDialogActive = false;
 
-  // search anchir bar
+  // search anchor bar
   SearchController searchController = SearchController();
   FocusNode focusNode = FocusNode();
 

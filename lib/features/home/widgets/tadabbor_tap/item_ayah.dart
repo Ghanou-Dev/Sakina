@@ -1,17 +1,18 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
 import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
-// import 'package:sakina/features/home/cubit/AudioCubit/audio_cubit.dart';
-// import 'package:sakina/features/home/cubit/AudioCubit/audio_state.dart';
+import 'package:sakina/features/saved/domain/entitys/saved_ayah_entity.dart';
+import 'package:sakina/features/saved/presentation/cubits/saved_ayah_cubit/saved_ayah_cubit.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ItemAyah extends StatefulWidget {
   final int ayahNo;
   final int surahNo;
   final String surahName;
+  final String surahArabicName;
   final String arabic1;
   final String arabic2;
   final String english;
@@ -22,6 +23,7 @@ class ItemAyah extends StatefulWidget {
     required this.ayahNo,
     required this.surahNo,
     required this.surahName,
+    required this.surahArabicName,
     required this.arabic1,
     required this.arabic2,
     required this.english,
@@ -34,11 +36,9 @@ class ItemAyah extends StatefulWidget {
 }
 
 class _ItemAyahState extends State<ItemAyah> {
-  bool isFavoriet = false;
   @override
   void initState() {
     super.initState();
-    // add value to the variables isFavoriet from cubit
   }
 
   bool isShow = false;
@@ -91,18 +91,43 @@ class _ItemAyahState extends State<ItemAyah> {
                 /// Icon play button ///////////////////////////////////////////
                 widget.iconButton,
                 //// Saved button //////////////////////////////////////////////
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isFavoriet = !isFavoriet;
-                    });
+                BlocSelector<SavedAyahCubit, SavedAyahState, bool>(
+                  selector: (state) {
+                    return state.savedAyahsKeys.contains(widget.arabic1);
                   },
-                  icon: Icon(
-                    isFavoriet
-                        ? Icons.bookmark
-                        : Icons.bookmark_border_outlined,
-                    color: AppColors.primaryColor,
-                  ),
+                  builder: (context, state) {
+                    return IconButton(
+                      onPressed: () async {
+                        state
+                            ? context.read<SavedAyahCubit>().removeSavedAyah(
+                                ayah: SavedAyahEntity(
+                                  surahNumber: widget.surahNo,
+                                  textArabic: widget.arabic1,
+                                  textEnglish: widget.english,
+                                  taffsir: widget.taffsir,
+                                  ayahNumber: widget.ayahNo,
+                                  surahArabicName: widget.surahArabicName,
+                                  surahEnglishName: widget.surahName,
+                                ),
+                              )
+                            : context.read<SavedAyahCubit>().saveAyah(
+                                ayah: SavedAyahEntity(
+                                  surahNumber: widget.surahNo,
+                                  textArabic: widget.arabic1,
+                                  textEnglish: widget.english,
+                                  taffsir: widget.taffsir,
+                                  ayahNumber: widget.ayahNo,
+                                  surahArabicName: widget.surahArabicName,
+                                  surahEnglishName: widget.surahName,
+                                ),
+                              );
+                      },
+                      icon: Icon(
+                        state ? Icons.bookmark : Icons.bookmark_border_outlined,
+                        color: AppColors.primaryColor,
+                      ),
+                    );
+                  },
                 ),
 
                 /// taffsir ayah button ////////////////////////////////////////

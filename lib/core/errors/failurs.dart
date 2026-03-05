@@ -1,26 +1,36 @@
-abstract class Failure {}
+abstract class Failure {
+  final String message;
+  Failure({required this.message});
+}
 
 class TimeoutFailure extends Failure {
-  final String? message;
-  TimeoutFailure({required this.message});
+  TimeoutFailure({required super.message});
 }
 
 class NoInternetFailure extends Failure {
-  final String message;
-  NoInternetFailure({required this.message});
+  NoInternetFailure({required super.message});
 }
 
 class ServerFailure extends Failure {
-  final String message;
-  ServerFailure({required this.message});
+  ServerFailure({required super.message});
 }
 
 class CancelFailure extends Failure {
-  final String message;
-  CancelFailure({required this.message});
+  CancelFailure({required super.message});
 }
 
 class UnknownFailure extends Failure {
-  final String message;
-  UnknownFailure({required this.message});
+  UnknownFailure({required super.message});
+}
+
+class CanNotSavedFailure extends Failure {
+  CanNotSavedFailure({required super.message});
+}
+
+class NoSavedFailure extends Failure {
+  NoSavedFailure({required super.message});
+}
+
+class DeleteFailure extends Failure {
+  DeleteFailure({required super.message});
 }

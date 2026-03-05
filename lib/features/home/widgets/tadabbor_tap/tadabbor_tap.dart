@@ -22,19 +22,7 @@ class _TadabborState extends State<Tadabbor>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocConsumer<HomeCubit, HomeState>(
-      listener: (context, state) {
-        if (state is HomeSurahLoaded) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return SurahPage(surah: state.surah);
-              },
-            ),
-          );
-          context.read<HomeCubit>().isTapped = false;
-        }
-      },
+    return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
         if (state is HomeLoading) {
           return Center(child: CircularProgressIndicator());
@@ -49,15 +37,24 @@ class _TadabborState extends State<Tadabbor>
                   InkWell(
                     onTap: () async {
                       ////
-                      if (context.read<HomeCubit>().isTapped) {
-                        return;
-                      }
-                      context.read<HomeCubit>().isTapped = true;
+                      // if (context.read<HomeCubit>().isTapped) {
+                      //   return;
+                      // }
+                      // context.read<HomeCubit>().isTapped = true;
                       ////
                       context.read<HomeCubit>().currentSurahName =
                           infoSuwars[index].surahName;
-                      await context.read<HomeCubit>().getSpecialSurah(
+                      context.read<HomeCubit>().getSpecialSurah(
                         surahNumber: index + 1,
+                      );
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return SurahPage(
+                              surahInfo: infoSuwars[index],
+                            );
+                          },
+                        ),
                       );
                     },
                     child: ItemSurahInfo(
@@ -86,15 +83,17 @@ class _TadabborState extends State<Tadabbor>
                 children: [
                   InkWell(
                     onTap: () async {
-                      ////
-                      if (context.read<HomeCubit>().isTapped) {
-                        return;
-                      }
-                      context.read<HomeCubit>().isTapped = true;
-
-                      ///
-                      await context.read<HomeCubit>().getSpecialSurah(
+                      context.read<HomeCubit>().getSpecialSurah(
                         surahNumber: index + 1,
+                      );
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return SurahPage(
+                              surahInfo: infoSuwars[index],
+                            );
+                          },
+                        ),
                       );
                     },
                     splashColor: AppColors.silver.withAlpha(150),

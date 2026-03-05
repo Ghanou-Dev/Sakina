@@ -19,7 +19,7 @@ class HomeCubit extends Cubit<HomeState> {
     required this.quranRepo,
   }) : super(HomeInitial());
 
-  bool isTapped = false;
+  // bool isTapped = false;
 
   late Map<String, dynamic> fihras;
   Future<void> loadFihras() async {
@@ -29,6 +29,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   int currentAyahNumber = 1;
   void changeAyahNumber({required int ayahNumber}) {
+    if (this.ayahNumber == ayahNumber) return;
     currentAyahNumber = ayahNumber;
     emit(HomeChangeAyahNumber(ayahNumber: ayahNumber));
   }
@@ -92,7 +93,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   late AudioModel audioAyah;
-  late int ayahNumber;
+  int ayahNumber = 0;
   Future<void> getSpecialAyahAudio({
     required int surahNo,
     required int ayahNo,

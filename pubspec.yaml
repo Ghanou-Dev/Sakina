@@ -44,8 +44,6 @@ dependencies:
   geolocator: ^14.0.2
   geocoding: ^4.0.0
   internet_connection_checker_plus: ^2.9.1
-  hive_ce: ^2.15.1
-  hive_ce_flutter: ^2.3.3
   shared_preferences: ^2.5.4
   visibility_detector: ^0.4.0+2
   dio: ^5.9.0
@@ -56,11 +54,18 @@ dependencies:
   equatable: ^2.0.8
   scrollable_positioned_list: ^0.3.8
   shimmer: ^3.0.0
+  hive_ce: ^2.19.3
+  hive_ce_flutter: ^2.3.4
+  get_it: ^9.2.1
+  
 
 dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
+  
+  hive_ce_generator: ^1.11.1
+  build_runner: ^2.11.0
 
 
 # For information on the generic Dart part of this file, see the

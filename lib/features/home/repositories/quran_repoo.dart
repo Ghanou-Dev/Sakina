@@ -63,7 +63,7 @@ class QuranRepoo {
       );
       return Right(surah);
     } on InternetTimeoutEception catch (e) {
-      return Left(TimeoutFailure(message: e.message));
+      return Left(TimeoutFailure(message: e.message ?? 'Timeoute failure'));
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } on NoInternetException catch (e) {
@@ -93,7 +93,7 @@ class QuranRepoo {
 
       return Right(suwars);
     } on InternetTimeoutEception catch (e) {
-      return Left(TimeoutFailure(message: e.message));
+      return Left(TimeoutFailure(message: e.message ?? 'Timeout Failure'));
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } on NoInternetException catch (e) {
@@ -143,7 +143,7 @@ class QuranRepoo {
       );
       return Right(ayahAudio);
     } on InternetTimeoutEception catch (e) {
-      return Left(TimeoutFailure(message: e.message));
+      return Left(TimeoutFailure(message: e.message ?? 'Timeoute failure'));
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } on NoInternetException catch (e) {

@@ -19,7 +19,7 @@ class HadithRepoImpl implements HadithRepo {
       List<BookModel> allBooks = await remoteDataSource.getAllBooks();
       return Right(allBooks);
     } on InternetTimeoutEception catch (er) {
-      return Left(TimeoutFailure(message: er.message));
+      return Left(TimeoutFailure(message: er.message ?? 'Timeout failure'));
     } on ServerException catch (er) {
       return Left(ServerFailure(message: er.message));
     } on CancelException catch (er) {
@@ -43,7 +43,7 @@ class HadithRepoImpl implements HadithRepo {
       );
       return Right(chapters);
     } on InternetTimeoutEception catch (er) {
-      return Left(TimeoutFailure(message: er.message));
+      return Left(TimeoutFailure(message: er.message ?? 'Timeout failure'));
     } on ServerException catch (er) {
       return Left(ServerFailure(message: er.message));
     } on CancelException catch (er) {
@@ -69,7 +69,7 @@ class HadithRepoImpl implements HadithRepo {
       );
       return Right(hadiths);
     } on InternetTimeoutEception catch (er) {
-      return Left(TimeoutFailure(message: er.message));
+      return Left(TimeoutFailure(message: er.message ?? 'TimeoutFailure'));
     } on ServerException catch (er) {
       return Left(ServerFailure(message: er.message));
     } on CancelException catch (er) {

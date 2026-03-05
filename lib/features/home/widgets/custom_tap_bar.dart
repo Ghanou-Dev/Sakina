@@ -22,7 +22,6 @@ class _CustomTabBarState extends State<CustomTabBar>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
     return DefaultTabController(
       length: widget.length,
       child: Column(

@@ -11,6 +11,8 @@ class ReadSurahPage extends StatefulWidget {
 }
 
 class _ReadSurahPageState extends State<ReadSurahPage> {
+  late ScrollController _scrollController;
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -24,11 +26,11 @@ class _ReadSurahPageState extends State<ReadSurahPage> {
   }
 
   void goToPage({required int index}) {
-    double offset = index * (MediaQuery.of(context).size.height - 50);
+    final indexPage = index - 1;
+    double offset = indexPage * (MediaQuery.of(context).size.height - 36);
     _scrollController.jumpTo(offset);
   }
 
-  late ScrollController _scrollController;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,11 +40,12 @@ class _ReadSurahPageState extends State<ReadSurahPage> {
           itemCount: 604,
           itemBuilder: (context, index) {
             return Container(
-              height: MediaQuery.of(context).size.height - 50,
+              height: MediaQuery.of(context).size.height - 36,
+              width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
-                    'assets/moshafe/pages/$index.png',
+                    'assets/moshafe/pages/${index + 1}.png',
                   ),
                   fit: BoxFit.fill,
                 ),

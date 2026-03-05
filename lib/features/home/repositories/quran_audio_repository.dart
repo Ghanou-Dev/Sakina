@@ -35,7 +35,7 @@ class QuranAudioRepository {
           .toList();
       return Right(reciters);
     } on InternetTimeoutEception catch (e) {
-      return Left(TimeoutFailure(message: e.message));
+      return Left(TimeoutFailure(message: e.message ?? 'Timeout failure'));
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
     } on NoInternetException catch (e) {

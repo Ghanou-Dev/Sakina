@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:sakina/core/connection/presentation/cubit/network_cubit.dart';
 import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
-import 'package:sakina/features/saved/pages/bookmark.dart';
+import 'package:sakina/features/saved/presentation/pages/bookmark.dart';
 import 'package:sakina/features/hadith/presentation/pages/hadith_page.dart';
 import 'package:sakina/features/settings/pages/settings.dart';
 import 'package:sakina/features/home/pages/home_page.dart';
@@ -77,7 +77,7 @@ class _BottomBarPageState extends State<BottomBarPage> {
                   isShowBar
                       ? Container(
                           width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height / 30,
+                          height: MediaQuery.of(context).size.height / 32,
                           color: isConnected ? Colors.green : Colors.red,
                           child: Center(
                             child: Text(

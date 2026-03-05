@@ -24,7 +24,6 @@ class AudioCubit extends Cubit<AudioState> {
       ) {
     init();
     initListenDataStream();
-
     player.durationStream.listen(
       (totalDuration) {
         total = totalDuration ?? Duration.zero;

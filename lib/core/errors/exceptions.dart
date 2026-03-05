@@ -22,3 +22,18 @@ class UnknownException implements Exception {
   final String message;
   UnknownException({required this.message});
 }
+
+class CanNotSavedException implements Exception {
+  final String message;
+  CanNotSavedException({required this.message});
+}
+
+class NoSavedException implements Exception {
+  final String message;
+  NoSavedException({required this.message});
+}
+
+class DeleteException implements Exception {
+  final String message;
+  DeleteException({required this.message});
+}
