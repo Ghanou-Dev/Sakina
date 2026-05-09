@@ -10,7 +10,7 @@ import 'package:sakina/features/saved/presentation/pages/bookmark.dart';
 import 'package:sakina/features/hadith/presentation/pages/hadith_page.dart';
 import 'package:sakina/features/settings/pages/settings.dart';
 import 'package:sakina/features/home/pages/home_page.dart';
-import 'package:sakina/features/prayer/pages/mawakit_salat.dart';
+import 'package:sakina/features/prayer/presentation/pages/mawakit_salat.dart';
 
 class BottomBarPage extends StatefulWidget {
   const BottomBarPage({super.key});
