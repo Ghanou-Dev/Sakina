@@ -1,377 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gap/flutter_gap.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/constants/fonts.dart';
 import 'package:sakina/core/helpers/extansions.dart';
+import 'package:sakina/features/prayer/presentation/cubits/location_cubit/location_cubit.dart';
+import 'package:sakina/features/prayer/presentation/cubits/prayer_cubit/prayer_cubit.dart';
+import 'package:sakina/features/prayer/presentation/widgets/change_location_item.dart';
+import 'package:sakina/features/prayer/presentation/widgets/current_salat_item.dart';
+import 'package:sakina/features/prayer/presentation/widgets/todays_prayer_time_list.dart';
 
-class MawakitSalat extends StatelessWidget {
+class MawakitSalat extends StatefulWidget {
   const MawakitSalat({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        scrolledUnderElevation: 0,
-        title: Text(
-          'Mawaqit Al-Salat'.tr(context),
-          style: TextStyle(
-            fontFamily: poppins,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
-          ),
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14.0),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: ListView(
-                children: [
-                  CurrentSalatItem(),
-                  Gap(10),
-                  TodaysPriyerTimeList(),
-                ],
-              ),
-            ),
-            Gap(10),
-            ChangeLocationItem(),
-          ],
-        ),
-      ),
-    );
-  }
+  State<MawakitSalat> createState() => _MawakitSalatState();
 }
 
-class CurrentSalatItem extends StatelessWidget {
-  const CurrentSalatItem({super.key});
-
+class _MawakitSalatState extends State<MawakitSalat> {
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Container(
-      height: size.height / 3.8,
-      width: size.width,
-      decoration: BoxDecoration(
-        color: Color(0xffdd96fa),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  style: ButtonStyle(
-                    iconSize: WidgetStatePropertyAll<double?>(32),
-                    backgroundColor: WidgetStatePropertyAll(
-                      AppColors.primaryColor,
-                    ),
-                    shape: WidgetStatePropertyAll(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadiusGeometry.circular(16),
-                      ),
-                    ),
-                  ),
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.wb_sunny_outlined,
-                    color: Colors.white,
-                  ),
-                ),
-                Gap(10),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'The following prayer',
-                      style: TextStyle(
-                        fontFamily: amiri,
-                        fontWeight: FontWeight.normal,
-                        color: AppColors.deepBlue,
-                        fontSize: 14,
-                      ),
-                    ),
-                    Text(
-                      'Duher',
-                      style: TextStyle(
-                        fontFamily: poppins,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.deepBlue,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-              width: double.infinity,
-              height: size.height / 7,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    'Prayer Time',
-                    style: TextStyle(
-                      fontFamily: amiri,
-                      color: AppColors.orange,
-                      fontSize: 14,
-                    ),
-                  ),
-                  Text(
-                    '12:09',
-                    style: TextStyle(
-                      fontFamily: poppins,
-                      color: AppColors.deepBlue,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Divider(color: Colors.grey.shade300),
-                  ),
-                  Text(
-                    '00 : 10 : 35',
-                    style: TextStyle(
-                      fontFamily: poppins,
-                      color: AppColors.primaryColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'Time remaining',
-                    style: TextStyle(
-                      fontFamily: amiri,
-                      color: AppColors.orange,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+  void initState() {
+    super.initState();
+
+    final locationState = context.read<LocationCubit>().state;
+
+    if (locationState is LocationInitial) {
+      context.read<PrayerCubit>().getPrayerTimes(
+        locationEntity: locationState.locationEntity,
+      );
+    }
   }
-}
 
-class TodaysPriyerTimeList extends StatelessWidget {
-  const TodaysPriyerTimeList({super.key});
-
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          child: Text(
-            'Today\'s Payer Times',
-            style: TextStyle(
-              fontFamily: poppins,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryColor,
-              fontSize: 22,
-            ),
-          ),
-        ),
-        SalatItem(
-          iconPath: 'assets/images/sunrise.png',
-          isTime: false,
-          nameSalat: 'Fajer',
-          time: '06:14',
-        ),
-        SalatItem(
-          iconPath: 'assets/images/sunny.png',
-          isTime: true,
-          nameSalat: 'Duher',
-          time: '12:09',
-        ),
-        SalatItem(
-          iconPath: 'assets/images/sunny_with_cloud.png',
-          isTime: false,
-          nameSalat: 'Aser',
-          time: '04:26',
-        ),
-        SalatItem(
-          iconPath: 'assets/images/sunset.png',
-          isTime: false,
-          nameSalat: 'Maghrib',
-          time: '06:30',
-        ),
-        SalatItem(
-          iconPath: 'assets/images/clearn_night.png',
-          isTime: false,
-          nameSalat: 'Eisha',
-          time: '07:30',
-        ),
-      ],
-    );
-  }
-}
-
-class SalatItem extends StatelessWidget {
-  final bool isTime;
-  final String nameSalat;
-  final String time;
-  final String iconPath;
-  const SalatItem({
-    super.key,
-    required this.isTime,
-    required this.nameSalat,
-    required this.time,
-    required this.iconPath,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: isTime ? Color(0xffdd96fa).withAlpha(400) : Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: isTime ? AppColors.primaryColor : Colors.grey.shade300,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                  iconPath,
-                  height: 36,
-                  width: 36,
-                ),
-              ),
-              Gap(10),
-              Text(
-                nameSalat,
+    return BlocConsumer<LocationCubit, LocationState>(
+      listener: (context, state) {
+        if (state is LocationLoading) {
+          isLoading = true;
+        } else {
+          isLoading = false;
+        }
+      },
+      builder: (context, state) {
+        return ModalProgressHUD(
+          inAsyncCall: isLoading,
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              scrolledUnderElevation: 0,
+              title: Text(
+                'Mawaqit Al-Salat'.tr(context),
                 style: TextStyle(
                   fontFamily: poppins,
-                  fontWeight: FontWeight.normal,
-                  fontSize: 18,
-                  color: AppColors.deepBlue,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryColor,
                 ),
               ),
-              Spacer(),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  time,
-                  style: TextStyle(
-                    fontFamily: poppins,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: AppColors.primaryColor,
+            ),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14.0),
+              child: Column(
+                children: <Widget>[
+                  CurrentSalatItem(),
+                  Expanded(
+                    child: ListView(
+                      children: [
+                        // Gap(10),
+                        TodaysPriyerTimeList(),
+                      ],
+                    ),
                   ),
-                ),
+                  Gap(10),
+                  ChangeLocationItem(),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class ChangeLocationItem extends StatelessWidget {
-  const ChangeLocationItem({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
-        border: Border.all(color: AppColors.primaryColor),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: AppColors.primaryColor,
-                  ),
-                  child: Icon(
-                    Icons.fmd_good_sharp,
-                    color: Colors.white,
-                  ),
-                ),
-                Gap(20),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Current Location',
-                      style: TextStyle(
-                        fontFamily: poppins,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                    Text(
-                      'Algeria ,Ain Defla ,Boumedfea',
-                      style: TextStyle(
-                        fontFamily: poppins,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.deepBlue,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: Row(
-                    children: [
-                      Image.asset('assets/images/vector.png'),
-                      Gap(16),
-                      Text(
-                        'Update your Location',
-                        style: TextStyle(
-                          fontFamily: poppins,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xffa2a1ff),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+        );
+      },
     );
   }
 }

@@ -34,3 +34,11 @@ class NoSavedFailure extends Failure {
 class DeleteFailure extends Failure {
   DeleteFailure({required super.message});
 }
+
+class GetLocationFailure extends Failure {
+  GetLocationFailure({required super.message});
+}
+
+class LocationNotEnableFailure extends Failure {
+  LocationNotEnableFailure({required super.message});
+}

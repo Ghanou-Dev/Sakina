@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:sakina/app_localizations.dart';
+import 'package:sakina/core/services/app_localizations.dart';
 import 'package:sakina/core/connection/presentation/cubit/network_cubit.dart';
 import 'package:sakina/core/constants/app_colors.dart';
 import 'package:sakina/core/my_bloc_observer.dart';
@@ -15,6 +15,8 @@ import 'package:sakina/features/home/cubit/ListenCubit/listen_cubit.dart';
 import 'package:sakina/features/home/cubit/TaffsirCubit/taffsir_cubit.dart';
 import 'package:sakina/features/home/pages/bottom_bar_page.dart';
 import 'package:sakina/features/home/cubit/HomeCubit/home_cubit.dart';
+import 'package:sakina/features/prayer/presentation/cubits/location_cubit/location_cubit.dart';
+import 'package:sakina/features/prayer/presentation/cubits/prayer_cubit/prayer_cubit.dart';
 import 'package:sakina/features/saved/data/models/saved_ayah_model.dart';
 import 'package:sakina/features/saved/data/models/saved_hadith_model.dart';
 import 'package:sakina/features/saved/data/models/saved_surah_model.dart';
@@ -22,7 +24,8 @@ import 'package:sakina/features/saved/presentation/cubits/saved_ayah_cubit/saved
 import 'package:sakina/features/saved/presentation/cubits/saved_hadith_cubit/saved_hadith_cubit.dart';
 import 'package:sakina/splash.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'injection_container.dart' as di;
+import 'core/services/injection_container.dart' as di;
+import 'package:timezone/data/latest.dart' as tz;
 
 void main() async {
   // init flutter
@@ -48,6 +51,8 @@ void main() async {
   // initialize service localtor
   await di.init();
   Bloc.observer = MyBlocObserver();
+  // init timezones
+  tz.initializeTimeZones();
   runApp(
     Sakina(),
   );
@@ -72,6 +77,8 @@ class Sakina extends StatelessWidget {
         BlocProvider(create: (context) => di.sl<HadithCubit>()),
         BlocProvider(create: (context) => di.sl<SavedHadithCubit>()),
         BlocProvider(create: (context) => di.sl<SavedAyahCubit>()),
+        BlocProvider(create: (context) => di.sl<LocationCubit>()),
+        BlocProvider(create: (context) => di.sl<PrayerCubit>()),
       ],
       child: MaterialApp(
         supportedLocales: [

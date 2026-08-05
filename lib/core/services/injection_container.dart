@@ -28,6 +28,14 @@ import 'package:sakina/features/home/repositories/quran_audio_repository.dart';
 import 'package:sakina/features/home/repositories/quran_repoo.dart';
 import 'package:sakina/features/home/repositories/taffsir_repo.dart';
 import 'package:sakina/features/home/services/get_taffsir_of_qurane_service.dart';
+import 'package:sakina/features/prayer/data/repositories/prayer_repo_impl.dart';
+import 'package:sakina/features/prayer/data/srcs/location_data_src.dart';
+import 'package:sakina/features/prayer/data/srcs/prayer_times_data_src.dart';
+import 'package:sakina/features/prayer/domain/repositories/prayer_repo.dart';
+import 'package:sakina/features/prayer/domain/usecases/get_location_usecase.dart';
+import 'package:sakina/features/prayer/domain/usecases/get_prayer_times_usecase.dart';
+import 'package:sakina/features/prayer/presentation/cubits/location_cubit/location_cubit.dart';
+import 'package:sakina/features/prayer/presentation/cubits/prayer_cubit/prayer_cubit.dart';
 import 'package:sakina/features/saved/data/data_sources/saved_data_source.dart';
 import 'package:sakina/features/saved/data/models/saved_ayah_model.dart';
 import 'package:sakina/features/saved/data/models/saved_hadith_model.dart';
@@ -47,6 +55,38 @@ final sl = GetIt.instance;
 
 Future<void> init() async {
   //// features
+  /// Prayer Cubit //////////////////////////////////////////////////////////////
+  sl.registerFactory<PrayerCubit>(
+    () => PrayerCubit(getPrayerTimesUsecase: sl<GetPrayerTimesUsecase>()),
+  );
+  // usecase
+  sl.registerLazySingleton<GetPrayerTimesUsecase>(
+    () => GetPrayerTimesUsecase(prayerRepo: sl<PrayerRepo>()),
+  );
+  //
+
+  /// Location Cubit ////////////////////////////////////////////////////////////
+  sl.registerFactory<LocationCubit>(
+    () => LocationCubit(
+      getLocationUsecase: sl<GetLocationUsecase>(),
+    ),
+  );
+  // usecases
+  sl.registerLazySingleton<GetLocationUsecase>(
+    () => GetLocationUsecase(prayerRepo: sl<PrayerRepo>()),
+  );
+
+  // repositories
+  sl.registerLazySingleton<PrayerRepo>(
+    () => PrayerRepoImpl(
+      locationDataSrc: sl<LocationDataSrc>(),
+      prayerTimesDataSrc: sl<PrayerTimesDataSrc>(),
+    ),
+  );
+  // data src
+  sl.registerLazySingleton<LocationDataSrc>(() => LocationDataSrcImpl());
+  sl.registerLazySingleton<PrayerTimesDataSrc>(() => PrayerTimesDataSrcImpl());
+
   // Saved Ayah Cubit //////////////////////////////////////////////////////////
   // bloc
   sl.registerFactory<SavedAyahCubit>(

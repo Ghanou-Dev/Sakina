@@ -37,3 +37,13 @@ class DeleteException implements Exception {
   final String message;
   DeleteException({required this.message});
 }
+
+class GetLocationException implements Exception {
+  final String message;
+  GetLocationException({required this.message});
+}
+
+class LocationNotEnabelException implements Exception {
+  final String message;
+  LocationNotEnabelException({required this.message});
+}

@@ -36,27 +36,40 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_gap: ^1.2.0
   flutter_svg: ^2.2.1
+  #
   just_audio: ^0.10.5
   audio_service: ^0.18.18
   audio_session: ^0.2.2
   just_audio_background: ^0.0.1-beta.17
-  flutter_native_splash: ^2.4.6
-  geolocator: ^14.0.2
-  geocoding: ^4.0.0
+  #
   internet_connection_checker_plus: ^2.9.1
-  shared_preferences: ^2.5.4
+  flutter_native_splash: ^2.4.6
   visibility_detector: ^0.4.0+2
   dio: ^5.9.0
   dartz: ^0.10.1
+  shimmer: ^3.0.0
   share_plus: ^12.0.1
   flutter_animate: ^4.5.2
   rxdart: ^0.28.0
   equatable: ^2.0.8
   scrollable_positioned_list: ^0.3.8
-  shimmer: ^3.0.0
+  modal_progress_hud_nsn: ^0.5.1
+  #
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
+  shared_preferences: ^2.5.4
   get_it: ^9.2.1
+  #
+  alarm: ^5.4.0
+  adhan_dart: ^2.0.1
+  timezone: ^0.10.1
+  flutter_timezone: ^5.0.2
+  permission_handler: ^12.0.1
+  auto_start_flutter: ^1.4.0
+  geolocator: ^14.0.2
+  geocoding: ^4.0.0
+  location: ^8.0.1
+
   
 
 dev_dependencies:
